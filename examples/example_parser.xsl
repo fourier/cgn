@@ -13,27 +13,22 @@
   <xsl:variable name="this:parser-package">com.veroveli.example.parser</xsl:variable>
   
   <xsl:template match="/" mode="this:genparser">
+    <xsl:param name="parser-class"/>
     <xsl:param name="parser-package"/>
     <!-- creating parser -->
     <xsl:message>Generating JSON parser</xsl:message>
     <xsl:call-template name="cgn:generate-json-parser">
       <xsl:with-param name="parser-package" select="$parser-package"/>
-      <xsl:with-param name="parser-class" select="$this:parser-class"/>
+      <xsl:with-param name="parser-class" select="$parser-class"/>
     </xsl:call-template>
   </xsl:template>
 
   <xsl:template name="jcgn:gen-parser-main">
     <xsl:call-template name="jcgn:genobjects"/>
     <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser">
+      <xsl:with-param name="parser-class" select="$this:parser-class"/>
       <xsl:with-param name="parser-package" select="$this:parser-package"/>
     </xsl:apply-templates>
-    <!--xsl:variable name="str" select="'[string]'"/>
-    <xsl:value-of select="if (cgn:is-array($str)) then 'array' else 'not array'"/>
-    <xsl:if test="cgn:is-array($str)">
-      <xsl:text>&#10;</xsl:text>
-      <xsl:value-of select="cgn:array-type($str)"/>
-      <xsl:text>&#10;</xsl:text>
-    </xsl:if-->
   </xsl:template>
   
   
