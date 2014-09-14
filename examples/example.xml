@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+  <!--
+      field type defined by cgn:type field. 
+      possible types: string, int, double, long, boolean, byte
+      string is a default field type (if not specified)
+      alternatively if specified array, the attribute array-type is mandatory
+  -->
+  <!--
+      cgn:package - package to place generated class. Can be set
+      individually per object or globally in cgn:objects element level
+  -->
+  <!-- cgn:read-only - generate setters if 'true'. False by default.
+       can be specifiend globally in cgn:objects element level
+  -->
+  <!-- jcgn:builder - generate builder class if 'true'. False by default.
+       can be specifiend globally in cgn:objects element level
+  -->
+
+  <!-- jcgn:parcelable - imlpement the Parcelable Android interface if 'true'. False by default.
+       can be specifiend globally in cgn:objects element level
+  -->
+
+  <copyright>Copyright (c) 2014 by Veroveli AB
+This file and its contents are Confidential.</copyright>
+  
+  <objects cgn:package="com.veroveli.example">
+
+    <object cgn:name="PersonalUserData" cgn:read-only="false">
+      <field cgn:name="name" cgn:type="string"/>
+      <field cgn:name="occupation" cgn:type="string"/>
+      <field cgn:name="age" cgn:type="int"/>
+      <field cgn:name="completed-at" cgn:type="string"/>
+      <field cgn:name="userId" cgn:type="int"/>
+    </object>
+
+    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
+      <field cgn:name="id" cgn:type="int"/>
+      <field cgn:name="personalUserData" cgn:type="PersonalUserData"/>
+      <field cgn:name="vacation" cgn:type="boolean"/>
+    </object>
+
+    <object cgn:name="Company" cgn:package="com.veroveli.protocol" jcgn:parcelable="true">
+      <field cgn:name="name" cgn:type="string"/>
+      <field cgn:name="employees" cgn:type="array" cgn:array-type="Employee"/>
+      <field cgn:name="ids" cgn:type="array" cgn:array-type="int"/>
+    </object>
+
+    <object cgn:name="Buffer" cgn:read-only="true" jcgn:parcelable="true">
+      <field cgn:name="tag" cgn:type="byte"/>
+      <field cgn:name="message" cgn:type="array" cgn:array-type="byte"/>
+      <field cgn:name="dates" cgn:type="array" cgn:array-type="date"/>
+      <field cgn:name="date" cgn:type="date" />
+    </object>
+
+    <cgn:object cgn:name="UserName" cgn:read-only="true" jcgn:builder="true">
+      <cgn:field cgn:name="user-name" cgn:type="string"/>
+    </cgn:object>
+
+  </objects>
+
+
+  <objects cgn:package="com.veroveli.messages" cgn:read-only="true" cgn:json="true" jcgn:builder="true">
+    <object cgn:name="Person" cgn:json="false">
+      <field cgn:name="name"/>
+      <field cgn:name="id" cgn:type="int"/>
+    </object>
+    
+    <object cgn:name="Conversation">
+      <field cgn:name="title" cgn:type="string"/>
+      <field cgn:name="participant-ids" cgn:type="array" cgn:array-type="int"/>
+      <field cgn:name="messages" cgn:type="array" cgn:array-type="string"/>
+    </object>
+    
+    <object cgn:name="Conversations" cgn:read-only="false">
+      <field cgn:name="date" cgn:type="string"/>
+      <field cgn:name="conversanions" cgn:type="array" cgn:array-type="Conversation"/>
+      <field cgn:name="company" cgn:type="Company"/>
+    </object>
+  </objects>
+
+</root>
+  
