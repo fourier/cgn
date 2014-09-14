@@ -13,10 +13,10 @@ Directory structure:
 └── saxon - SAXON is XSL processor (http://saxon.sourceforge.net)
 </pre>
 
-To see usage example, go to ***examples*** directory and run
+See the the [example.xml](https://github.com/fourier/cgn/blob/master/examples/example.xml) in ***examples*** directory for the example and descriptions of all possible fields.
+To use the ***example.xml*** to generate sources, go to the ***examples*** directory and run
 <pre>
 ./genpojos_and_parser.sh
 </pre>
 
-It will generate the ***gen*** directory with sources based on schemas in ***example.xml*** file.
-
+It will generate the ***gen*** directory with sources (POJOs and JSON parser) based on schemas in the ***example.xml*** file.

@@ -3,9 +3,14 @@
 <root xmlns="https://github.com/fourier/cgn" 
       xmlns:cgn="https://github.com/fourier/cgn"
       xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- the cgn:copyright element is optional, contains the copyright
+       information to put in the beginning of every generated file
+  -->
+  
   <!--
       field type defined by cgn:type field. 
-      possible types: string, int, double, long, boolean, byte
+      possible types: date, string, int, double, long, boolean, byte
       string is a default field type (if not specified)
       Array types defined as '[type]'. For example, array of strings:
       cgn:type="[string]"
@@ -21,7 +26,12 @@
        can be specifiend globally in cgn:objects element level
   -->
 
-  <!-- jcgn:parcelable - imlpement the Parcelable Android interface if 'true'. False by default.
+  <!-- jcgn:parcelable - implement the Parcelable Android interface if 'true'. False by default.
+       can be specifiend globally in cgn:objects element level
+  -->
+
+  <!-- cgn:json - either 'true' or 'false', 'false' by default.
+       Specifies if need to generate json parser for the object.
        can be specifiend globally in cgn:objects element level
   -->
 
@@ -31,10 +41,10 @@ This file and its contents are Confidential.</copyright>
   <objects cgn:package="com.veroveli.example">
 
     <object cgn:name="PersonalUserData" cgn:read-only="false">
-      <field cgn:name="name" cgn:type="string"/>
-      <field cgn:name="occupation" cgn:type="string"/>
+      <field cgn:name="name"/>
+      <field cgn:name="occupation"/>
       <field cgn:name="age" cgn:type="int"/>
-      <field cgn:name="completed-at" cgn:type="string"/>
+      <field cgn:name="completed-at" cgn:type="date"/>
       <field cgn:name="userId" cgn:type="int"/>
     </object>
 
@@ -45,7 +55,7 @@ This file and its contents are Confidential.</copyright>
     </object>
 
     <object cgn:name="Company" cgn:package="com.veroveli.protocol" jcgn:parcelable="true">
-      <field cgn:name="name" cgn:type="string"/>
+      <field cgn:name="name"/>
       <field cgn:name="employees" cgn:type="[Employee]"/>
       <field cgn:name="ids" cgn:type="[int]"/>
     </object>
@@ -57,9 +67,9 @@ This file and its contents are Confidential.</copyright>
       <field cgn:name="date" cgn:type="date" />
     </object>
 
-    <cgn:object cgn:name="UserName" cgn:read-only="true" jcgn:builder="true">
-      <cgn:field cgn:name="user-name" cgn:type="string"/>
-    </cgn:object>
+    <object cgn:name="UserName" cgn:read-only="true" jcgn:builder="true">
+      <field cgn:name="user-name" cgn:type="string"/>
+    </object>
 
   </objects>
 
@@ -71,13 +81,13 @@ This file and its contents are Confidential.</copyright>
     </object>
     
     <object cgn:name="Conversation">
-      <field cgn:name="title" cgn:type="string"/>
+      <field cgn:name="title"/>
       <field cgn:name="participant-ids" cgn:type="[int]"/>
       <field cgn:name="messages" cgn:type="[string]"/>
     </object>
     
     <object cgn:name="Conversations" cgn:read-only="false">
-      <field cgn:name="date" cgn:type="string"/>
+      <field cgn:name="date" cgn:type="date"/>
       <field cgn:name="conversanions" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
     </object>
