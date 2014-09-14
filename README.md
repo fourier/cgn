@@ -1,6 +1,6 @@
 Code generator (cgn)
 ====================
-This projec makes it simple to generate POJOs and Json parser (based on [jackson](https://github.com/FasterXML/jackson)) using [Saxon HE](http://saxon.sourceforge.net/) XSL processor.
+This project makes it simple to generate POJOs and Json parser (based on [jackson](https://github.com/FasterXML/jackson)) using [Saxon HE](http://saxon.sourceforge.net/) XSL processor.
 
 Directory structure:
 <pre>

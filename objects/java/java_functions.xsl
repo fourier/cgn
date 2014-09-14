@@ -30,8 +30,9 @@
     <xsl:value-of select="$primitive-type-to-java-primitive-type-map/entry[@key=$type]"/>
   </xsl:function>
 
-  <xsl:function name="cgn:array-to-java-type">
-    <xsl:param name="array-type"/>
+  <xsl:function name="jcgn:array-to-java-type">
+    <xsl:param name="type"/>
+    <xsl:variable name="array-type" select="cgn:array-type($type)"/>
     <xsl:choose>
       <xsl:when test="cgn:is-primitive-type($array-type)">
         <xsl:value-of select="$primitive-type-to-java-type-map/entry[@key=$array-type]"/>
@@ -44,7 +45,6 @@
 
   <xsl:function name="cgn:type-to-java-type">
     <xsl:param name="type"/>
-    <xsl:param name="array-type"/>
     <xsl:choose>
       <!-- first verify if primitive type -->
       <xsl:when test="cgn:is-primitive-type($type)">
@@ -53,8 +53,8 @@
       <xsl:otherwise>
         <!-- not a primitive type, verify if an array -->
         <xsl:choose>
-          <xsl:when test="$type='array'">
-            <xsl:value-of select="concat('java.util.ArrayList&lt;', cgn:array-to-java-type($array-type), '&gt;')"/>
+          <xsl:when test="cgn:is-array($type)">
+            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type), '&gt;')"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- not an array, just return as it is -->

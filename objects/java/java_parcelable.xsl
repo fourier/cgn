@@ -4,12 +4,11 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
                 xmlns:this="https://github.com/fourier/cgn/java/parcelable">
     
-  <xsl:template match="cgn:field" mode="this:parcelReader">
+  <xsl:template match="cgn:field" mode="this:parcel-reader">
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="array-type" select="./@cgn:array-type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@cgn:array-type)"/>
+    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type)"/>
     <xsl:variable name="primitive-type-reader-map">
       <entry key="string">in.readString()</entry>
       <entry key="int">in.readInt()</entry>
@@ -26,7 +25,7 @@
       ' = ')"/>
     <xsl:choose>
       <!-- test if not an array -->
-      <xsl:when test="not(@cgn:array-type)">
+      <xsl:when test="not(cgn:is-array($type))">
         <xsl:choose>
           <!-- if primitive type, use the map above -->
           <xsl:when test="cgn:is-primitive-type($type)">
@@ -44,6 +43,7 @@
       </xsl:when>
       <!-- if array use an appropriate readers -->
       <xsl:otherwise>
+        <xsl:variable name="array-type" select="cgn:array-type($type)"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
             <xsl:value-of select="concat('(',
@@ -66,12 +66,11 @@
     <xsl:text>;&#10;</xsl:text>
   </xsl:template>
 
-  <xsl:template match="cgn:field" mode="this:parcelWriter">
+  <xsl:template match="cgn:field" mode="this:parcel-writer">
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="array-type" select="./@cgn:array-type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@cgn:array-type)"/>
+    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type)"/>
     <xsl:variable name="primitive-type-writer-map">
       <entry key="string">out.writeString(</entry>
       <entry key="int">out.writeInt(</entry>
@@ -85,7 +84,7 @@
     <xsl:value-of select="cgn:indent($indent+1)"/>
     <xsl:choose>
       <!-- test if not an array -->
-      <xsl:when test="not(@cgn:array-type)">
+      <xsl:when test="not(cgn:is-array($type))">
         <xsl:choose>
           <!-- if primitive type, use the map above -->
           <xsl:when test="cgn:is-primitive-type($type)">
@@ -106,6 +105,7 @@
       </xsl:when>
       <!-- if array use an appropriate writers -->
       <xsl:otherwise>
+        <xsl:variable name="array-type" select="cgn:array-type($type)"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
             <xsl:value-of select="concat('out.writeSerializable(',
@@ -124,7 +124,7 @@
   </xsl:template>
 
   
-  <xsl:template name="this:describeContents">
+  <xsl:template name="this:describe-contents">
     <xsl:param name="indent"/>
     <xsl:value-of select="cgn:indent($indent)"/>
     <xsl:text>@Override&#10;</xsl:text>
@@ -190,7 +190,7 @@
                           $class-name,
                           '(android.os.Parcel in) {&#10;')"/>
     <xsl:for-each select="cgn:field">
-      <xsl:apply-templates select="." mode="this:parcelReader">
+      <xsl:apply-templates select="." mode="this:parcel-reader">
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:apply-templates>
     </xsl:for-each>
@@ -203,14 +203,14 @@
     <xsl:value-of select="concat(cgn:indent($indent),
                           'public void writeToParcel(android.os.Parcel out, int flags) {&#10;')"/>
     <xsl:for-each select="cgn:field">
-      <xsl:apply-templates select="." mode="this:parcelWriter">
+      <xsl:apply-templates select="." mode="this:parcel-writer">
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:apply-templates>
     </xsl:for-each>
     <xsl:value-of select="concat(cgn:indent($indent),'}&#10;&#10;')"/>
 
     <!-- create describeContents -->
-    <xsl:call-template name="this:describeContents">
+    <xsl:call-template name="this:describe-contents">
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:call-template>
     

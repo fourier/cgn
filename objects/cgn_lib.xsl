@@ -100,6 +100,17 @@
     <xsl:sequence select="exists($cgn:primitive-types-list[. = $type])"/>
   </xsl:function>
 
+  <xsl:function name="cgn:is-array">
+    <xsl:param name="type"/>
+    <xsl:sequence select="starts-with($type, '[') and ends-with($type,']')"/>
+  </xsl:function>
+
+  <xsl:function name="cgn:array-type">
+    <xsl:param name="type"/>
+    <xsl:sequence select="substring($type, 2, string-length($type)-2)"/>
+  </xsl:function>
+
+  
   <xsl:function name="cgn:indent">
     <xsl:param name="level"/>
     <xsl:variable name="result">

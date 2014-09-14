@@ -27,6 +27,13 @@
     <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser">
       <xsl:with-param name="parser-package" select="$this:parser-package"/>
     </xsl:apply-templates>
+    <!--xsl:variable name="str" select="'[string]'"/>
+    <xsl:value-of select="if (cgn:is-array($str)) then 'array' else 'not array'"/>
+    <xsl:if test="cgn:is-array($str)">
+      <xsl:text>&#10;</xsl:text>
+      <xsl:value-of select="cgn:array-type($str)"/>
+      <xsl:text>&#10;</xsl:text>
+    </xsl:if-->
   </xsl:template>
   
   

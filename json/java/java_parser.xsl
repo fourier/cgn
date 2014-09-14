@@ -94,7 +94,7 @@
         <xsl:value-of select="this:json-node-getter-for-type($type,$parser-var,$parser-class)"/>
       </xsl:when>
       <!-- array - use special helper -->
-      <xsl:when test="$type='array'">
+      <xsl:when test="cgn:is-array($type)">
         <xsl:text>array</xsl:text>
       </xsl:when>
       <!-- object - use parser defined -->
@@ -167,9 +167,9 @@
       <xsl:value-of select="concat(cgn:indent($indent+3),
         'if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {&#10;')"/>
       <!-- if array - special processing -->
-      <xsl:if test="$type='array'">
-        <xsl:variable name="array-type" select="./@cgn:array-type"/>
-        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', cgn:array-to-java-type($array-type), '&gt;')"/>
+      <xsl:if test="cgn:is-array($type)">
+        <xsl:variable name="array-type" select="cgn:array-type($type)"/>
+        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type), '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
           $java-array-type,
           ' array = new ',
@@ -183,7 +183,7 @@
                               'array.add(')"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
-            <xsl:value-of select="concat(cgn:array-to-java-type($array-type),
+            <xsl:value-of select="concat(jcgn:array-to-java-type($type),
                                   '.valueOf(',
                                   this:json-node-getter-for-type($array-type, 'parser', $parser-class),
                                   ')')"/>
@@ -262,7 +262,7 @@
       <xsl:when test="cgn:is-primitive-type($type)">
         <xsl:value-of select="$type-to-predicate-map/entry[@key=$type]"/>
       </xsl:when>
-      <xsl:when test="$type='array'">
+      <xsl:when test="cgn:is-array($type)">
         <xsl:value-of select="concat($token-var, ' == JsonToken.START_ARRAY')"/>
       </xsl:when>
       <xsl:otherwise>

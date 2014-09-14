@@ -7,7 +7,8 @@
       field type defined by cgn:type field. 
       possible types: string, int, double, long, boolean, byte
       string is a default field type (if not specified)
-      alternatively if specified array, the attribute array-type is mandatory
+      Array types defined as '[type]'. For example, array of strings:
+      cgn:type="[string]"
   -->
   <!--
       cgn:package - package to place generated class. Can be set
@@ -45,14 +46,14 @@ This file and its contents are Confidential.</copyright>
 
     <object cgn:name="Company" cgn:package="com.veroveli.protocol" jcgn:parcelable="true">
       <field cgn:name="name" cgn:type="string"/>
-      <field cgn:name="employees" cgn:type="array" cgn:array-type="Employee"/>
-      <field cgn:name="ids" cgn:type="array" cgn:array-type="int"/>
+      <field cgn:name="employees" cgn:type="[Employee]"/>
+      <field cgn:name="ids" cgn:type="[int]"/>
     </object>
 
     <object cgn:name="Buffer" cgn:read-only="true" jcgn:parcelable="true">
       <field cgn:name="tag" cgn:type="byte"/>
-      <field cgn:name="message" cgn:type="array" cgn:array-type="byte"/>
-      <field cgn:name="dates" cgn:type="array" cgn:array-type="date"/>
+      <field cgn:name="message" cgn:type="[byte]"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
       <field cgn:name="date" cgn:type="date" />
     </object>
 
@@ -71,13 +72,13 @@ This file and its contents are Confidential.</copyright>
     
     <object cgn:name="Conversation">
       <field cgn:name="title" cgn:type="string"/>
-      <field cgn:name="participant-ids" cgn:type="array" cgn:array-type="int"/>
-      <field cgn:name="messages" cgn:type="array" cgn:array-type="string"/>
+      <field cgn:name="participant-ids" cgn:type="[int]"/>
+      <field cgn:name="messages" cgn:type="[string]"/>
     </object>
     
     <object cgn:name="Conversations" cgn:read-only="false">
       <field cgn:name="date" cgn:type="string"/>
-      <field cgn:name="conversanions" cgn:type="array" cgn:array-type="Conversation"/>
+      <field cgn:name="conversanions" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
     </object>
   </objects>

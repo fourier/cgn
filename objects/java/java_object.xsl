@@ -11,7 +11,7 @@
     <xsl:variable name="package" select="./@cgn:package"/>
     <!-- iterate over field, extracting type -->
     <xsl:for-each select="cgn:field">
-      <xsl:variable name="type" select="if (not(@cgn:array-type)) then @cgn:type else @cgn:array-type"/>
+      <xsl:variable name="type" select="if (not(cgn:is-array(@cgn:type))) then @cgn:type else cgn:array-type(@cgn:type)"/>
       <!-- iterate over objects trying to find the same type -->
       <xsl:for-each select="//cgn:object[@cgn:name=$type and not(@cgn:package = $package)]">
         <xsl:value-of select="jcgn:generate-import(concat(@cgn:package, '.', @cgn:name))"/>
@@ -74,7 +74,7 @@
            "private String iDate;"
       -->
       <xsl:for-each select="cgn:field">
-        <xsl:apply-templates select="." mode="jcgn:generateField"/>
+        <xsl:apply-templates select="." mode="jcgn:generate-field"/>
       </xsl:for-each>
       <xsl:text>&#10;</xsl:text>
 

@@ -56,7 +56,7 @@
          "private String iDate;"
     -->
     <xsl:for-each select="cgn:field">
-      <xsl:apply-templates select="." mode="jcgn:generateField">
+      <xsl:apply-templates select="." mode="jcgn:generate-field">
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:apply-templates>
     </xsl:for-each>
