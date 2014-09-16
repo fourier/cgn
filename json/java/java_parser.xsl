@@ -5,30 +5,72 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
   <xsl:template name="this:generate-date-parser">
-    <xsl:text>    public static Date parseISO8601Date(String dateString) throws IOException {
-        // the difference is in ISO8601 TZ info contains ':', while android and
-        // Java SimpleDateFormat doesn't have it
-        SimpleDateFormat format = null;
-        String dateToParse = dateString;
-        switch (dateString.length()) {
-            case 10: // format like 2014-09-04
-                format = new SimpleDateFormat("yyyy-MM-dd");
-                break;
-            case 29: // format like "2014-09-04T08:45:00.000-04:00"
-                dateToParse = dateString.substring(0,dateString.length()-3) + dateString.substring(dateString.length()-2, dateString.length());
-            case 28: // format like "2014-09-04T08:45:00.000-0400"
-                format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-                break;
-            default:
-                format = new SimpleDateFormat();
+    <xsl:text>    private static final Map&lt;String, String&gt; DATE_FORMAT_REGEXPS = new HashMap&lt;String, String&gt;() {{
+        put("^\\d{8}$", "yyyyMMdd");
+        put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
+        put("^\\d{4}-\\d{1,2}-\\d{1,2}$", "yyyy-MM-dd");
+        put("^\\d{1,2}/\\d{1,2}/\\d{4}$", "MM/dd/yyyy");
+        put("^\\d{4}/\\d{1,2}/\\d{1,2}$", "yyyy/MM/dd");
+        put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}$", "dd MMM yyyy");
+        put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}$", "dd MMMM yyyy");
+        put("^\\d{12}$", "yyyyMMddHHmm");
+        put("^\\d{8}\\s\\d{4}$", "yyyyMMdd HHmm");
+        put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}$", "dd-MM-yyyy HH:mm");
+        put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy-MM-dd HH:mm");
+        put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}$", "MM/dd/yyyy HH:mm");
+        put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}$", "yyyy/MM/dd HH:mm");
+        put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMM yyyy HH:mm");
+        put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}$", "dd MMMM yyyy HH:mm");
+        put("^\\d{14}$", "yyyyMMddHHmmss");
+        put("^\\d{8}\\s\\d{6}$", "yyyyMMdd HHmmss");
+        put("^\\d{1,2}-\\d{1,2}-\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd-MM-yyyy HH:mm:ss");
+        put("^\\d{4}-\\d{1,2}-\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy-MM-dd HH:mm:ss");
+        put("^\\d{1,2}/\\d{1,2}/\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "MM/dd/yyyy HH:mm:ss");
+        put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
+        put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
+        put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy HH:mm:ss");
+    }};
+
+    /**
+     * Determine SimpleDateFormat pattern matching with the given date string. Returns null if
+     * format is unknown. You can simply extend DateUtil with more formats if needed.
+     * @param dateString The date string to determine the SimpleDateFormat pattern for.
+     * @return The matching SimpleDateFormat pattern, or null if format is unknown.
+     * @see SimpleDateFormat
+     */
+    private static String determineDateFormat(String dateString) {
+        for (String regexp : DATE_FORMAT_REGEXPS.keySet()) {
+            if (dateString.toLowerCase().matches(regexp)) {
+                return DATE_FORMAT_REGEXPS.get(regexp);
+            }
         }
+        return null; // Unknown format.
+    }
+
+    public static Date parseDate(String dateString) throws IOException {
+        String dateFormat = determineDateFormat(dateString);
+        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat) : SimpleDateFormat();
         Date result = null;
         try {
-            result = format.parse(dateToParse);
+            result = fmt.parse(dateString);
         } catch (ParseException e) {
             throw new IOException("Unable to parse date: ".concat(dateString));
         }
         return result;
+    }&#10;&#10;</xsl:text>
+  </xsl:template>
+
+  <xsl:template name="this:generate-iso-date-parser">
+    <xsl:text>    private static org.joda.time.DateTime parseISODate(String dateString) throws IOException {
+        org.joda.time.DateTime date = null;
+        try {
+           date = org.joda.time.format.ISODateTimeFormat.dateTimeParser().parseDateTime(dateString);
+        } catch (UnsupportedOperationException e) {
+            throw new IOException("Unable to parse date: ".concat(dateString));
+        } catch (IllegalArgumentException e) {
+            throw new IOException("Unable to parse date: ".concat(dateString));
+        }
+        return date;
     }&#10;&#10;</xsl:text>
   </xsl:template>
 
@@ -57,6 +99,7 @@
 
   <xsl:function name="this:json-node-getter-for-type">
     <xsl:param name="type"/>
+    <xsl:param name="date-type"/>
     <xsl:param name="json-node-var"/>
     <xsl:param name="parser-class"/>
     <xsl:variable name="primitive-type-to-getter">
@@ -72,9 +115,16 @@
     <xsl:if test="$type='byte'">
       <xsl:text>(byte)</xsl:text>
     </xsl:if>
-    <xsl:if test="$type='date'">
-      <xsl:text>parseISO8601Date(</xsl:text>
-    </xsl:if>
+
+    <xsl:choose>
+      <xsl:when test="$type='date' and $date-type='java.util.Date'">
+        <xsl:text>parseDate(</xsl:text>
+      </xsl:when>
+      <xsl:when test="$type='date' and $date-type='org.joda.time.DateTime'">
+        <xsl:text>parseISODate(</xsl:text>
+      </xsl:when>
+    </xsl:choose>
+    
     <xsl:value-of select="concat($json-node-var, '.', $primitive-type-to-getter/entry[@key=$type])"/>
     <xsl:if test="$type='date'">
       <xsl:text>)</xsl:text>
@@ -88,10 +138,11 @@
     <xsl:param name="parser-class"/>
     
     <xsl:variable name="type" select="./@cgn:type"/>
+    <xsl:variable name="date-type" select="../@cgn:date-type"/>
     <xsl:choose>
       <!-- primitive type - use a table above -->
       <xsl:when test="cgn:is-primitive-type($type)">
-        <xsl:value-of select="this:json-node-getter-for-type($type,$parser-var,$parser-class)"/>
+        <xsl:value-of select="this:json-node-getter-for-type($type,../@jcgn:date-type, $parser-var,$parser-class)"/>
       </xsl:when>
       <!-- array - use special helper -->
       <xsl:when test="cgn:is-array($type)">
@@ -120,6 +171,7 @@
     <xsl:param name="indent" select="1"/>
     <xsl:param name="parser-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
+    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
     <xsl:value-of select="concat(cgn:indent($indent),
       'public static ',
       $pojo,
@@ -169,7 +221,7 @@
       <!-- if array - special processing -->
       <xsl:if test="cgn:is-array($type)">
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
-        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type), '&gt;')"/>
+        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $date-type), '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
           $java-array-type,
           ' array = new ',
@@ -183,9 +235,9 @@
                               'array.add(')"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
-            <xsl:value-of select="concat(jcgn:array-to-java-type($type),
+            <xsl:value-of select="concat(jcgn:array-to-java-type($type, $date-type),
                                   '.valueOf(',
-                                  this:json-node-getter-for-type($array-type, 'parser', $parser-class),
+                                  this:json-node-getter-for-type($array-type, $date-type, 'parser', $parser-class),
                                   ')')"/>
           </xsl:when>
           <xsl:otherwise> <!-- for classes -->
@@ -329,6 +381,13 @@
 
       <!-- generate static method for date parsing -->
       <xsl:call-template name="this:generate-date-parser"/>
+
+      <!-- if necessary, generate Joda DateTime parser -->
+      <xsl:for-each select="//cgn:object[@cgn:json='true']">
+        <xsl:if test="@jcgn:date-type='org.joda.time.DateTime'">
+          <xsl:call-template name="this:generate-iso-date-parser"/>
+        </xsl:if>
+    </xsl:for-each>
 
       <!-- generate actual parsers -->
       <xsl:for-each select="//cgn:object[@cgn:json='true']">

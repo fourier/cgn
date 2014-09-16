@@ -52,7 +52,7 @@
     -->
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
-    <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type)"/>
+    <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $type, ' ', $name, ';&#10;')"/>
   </xsl:template>
   
@@ -61,7 +61,7 @@
         Generate a getter for a field.
     -->
     <xsl:param name="indent" select="0" />
-    <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type))"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type))"/>
     <xsl:text> </xsl:text>
     <xsl:value-of select="concat('get',
                           cgn:pascalize-string(./@cgn:name),
@@ -81,7 +81,7 @@
     <xsl:param name="class-name"/>
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="./@cgn:name"/>
-    <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type)"/>
+    <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
     <xsl:variable name="var-name" select="cgn:generate-field-name($name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
@@ -115,7 +115,7 @@
     <!-- arguments list -->
     <xsl:for-each select="cgn:field">
       <!-- take type, space, variable name -->
-      <xsl:value-of select="concat(cgn:type-to-java-type(./@cgn:type),
+      <xsl:value-of select="concat(cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type),
                             ' ',
                             cgn:camelize-string(./@cgn:name))"/>
       <xsl:if test="position() != last( )">, </xsl:if>

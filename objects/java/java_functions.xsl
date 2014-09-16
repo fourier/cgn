@@ -32,10 +32,19 @@
 
   <xsl:function name="jcgn:array-to-java-type">
     <xsl:param name="type"/>
+    <xsl:param name="date-type"/>
     <xsl:variable name="array-type" select="cgn:array-type($type)"/>
     <xsl:choose>
       <xsl:when test="cgn:is-primitive-type($array-type)">
-        <xsl:value-of select="$primitive-type-to-java-type-map/entry[@key=$array-type]"/>
+        <!-- handle case of the date-type separately -->
+        <xsl:choose>
+          <xsl:when test="$array-type = 'date'">
+            <xsl:value-of select="$date-type"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="$primitive-type-to-java-type-map/entry[@key=$array-type]"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$array-type"/>
@@ -45,16 +54,25 @@
 
   <xsl:function name="cgn:type-to-java-type">
     <xsl:param name="type"/>
+    <xsl:param name="date-type"/>
     <xsl:choose>
       <!-- first verify if primitive type -->
       <xsl:when test="cgn:is-primitive-type($type)">
-        <xsl:value-of select="cgn:primitive-type-to-java-type($type)"/>
+        <!-- handle case of the date-type separately -->
+        <xsl:choose>
+          <xsl:when test="$type = 'date'">
+            <xsl:value-of select="$date-type"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="cgn:primitive-type-to-java-type($type)"/>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
         <!-- not a primitive type, verify if an array -->
         <xsl:choose>
           <xsl:when test="cgn:is-array($type)">
-            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type), '&gt;')"/>
+            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $date-type), '&gt;')"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- not an array, just return as it is -->
@@ -64,6 +82,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+
 
   <xsl:function name="jcgn:generate-import">
     <xsl:param name="package"/>

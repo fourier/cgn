@@ -6,6 +6,7 @@
   <!-- defaults -->
   <xsl:variable name="jcgn:default-builder">false</xsl:variable>
   <xsl:variable name="jcgn:default-parcelable">false</xsl:variable>
+  <xsl:variable name="jcgn:default-date-type">java.util.Date</xsl:variable>
    
 </xsl:stylesheet>
 

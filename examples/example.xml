@@ -40,12 +40,13 @@ This file and its contents are Confidential.</copyright>
   
   <objects cgn:package="com.veroveli.example">
 
-    <object cgn:name="PersonalUserData" cgn:read-only="false">
+    <object cgn:name="PersonalUserData" cgn:read-only="false" jcgn:date-type="org.joda.time.DateTime">
       <field cgn:name="name"/>
       <field cgn:name="occupation"/>
       <field cgn:name="age" cgn:type="int"/>
       <field cgn:name="completed-at" cgn:type="date"/>
       <field cgn:name="userId" cgn:type="int"/>
+      <field cgn:name="visits" cgn:type="[date]"/>
     </object>
 
     <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
@@ -86,7 +87,7 @@ This file and its contents are Confidential.</copyright>
       <field cgn:name="messages" cgn:type="[string]"/>
     </object>
     
-    <object cgn:name="Conversations" cgn:read-only="false">
+    <object cgn:name="Conversations" cgn:read-only="false" jcgn:date-type="org.joda.time.DateTime">
       <field cgn:name="date" cgn:type="date"/>
       <field cgn:name="conversanions" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
