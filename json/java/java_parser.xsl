@@ -78,6 +78,8 @@
     <xsl:text>import java.text.ParseException;&#10;</xsl:text>
     <xsl:text>import java.text.SimpleDateFormat;&#10;</xsl:text>
     <xsl:text>import java.util.Date;&#10;</xsl:text>
+    <xsl:text>import java.util.Map;&#10;</xsl:text>
+    <xsl:text>import java.util.HashMap;&#10;</xsl:text>
     <xsl:text>import com.fasterxml.jackson.core.JsonParser;&#10;</xsl:text>
     <xsl:text>import com.fasterxml.jackson.core.JsonToken;&#10;</xsl:text>
     <xsl:text>import java.io.IOException;&#10;</xsl:text>
