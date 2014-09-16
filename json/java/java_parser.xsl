@@ -49,7 +49,7 @@
 
     public static Date parseDate(String dateString) throws IOException {
         String dateFormat = determineDateFormat(dateString);
-        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat) : SimpleDateFormat();
+        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat) : new SimpleDateFormat();
         Date result = null;
         try {
             result = fmt.parse(dateString);
@@ -385,12 +385,11 @@
       <xsl:call-template name="this:generate-date-parser"/>
 
       <!-- if necessary, generate Joda DateTime parser -->
-      <xsl:for-each select="//cgn:object[@cgn:json='true']">
-        <xsl:if test="@jcgn:date-type='org.joda.time.DateTime'">
-          <xsl:call-template name="this:generate-iso-date-parser"/>
-        </xsl:if>
-    </xsl:for-each>
+      <xsl:if test="//cgn:object[@cgn:json='true' and @jcgn:date-type='org.joda.time.DateTime']">
+        <xsl:call-template name="this:generate-iso-date-parser"/>
+      </xsl:if>
 
+      
       <!-- generate actual parsers -->
       <xsl:for-each select="//cgn:object[@cgn:json='true']">
         <xsl:call-template name="cgn:generate-pojo-parser">

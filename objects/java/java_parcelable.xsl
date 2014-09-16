@@ -16,7 +16,9 @@
       <entry key="long">in.readLong()</entry>
       <entry key="boolean">in.readByte() == 0 ? false : true</entry>
       <entry key="byte">in.readByte()</entry>
-      <entry key="date">(java.util.Date)in.readSerializable()</entry>
+      <entry key="date"><xsl:value-of select="concat('(',
+      ../@jcgn:date-type,
+      ')in.readSerializable()')"/></entry>
     </xsl:variable>
 
     <xsl:value-of select="concat(cgn:indent($indent+1),
