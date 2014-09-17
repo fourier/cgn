@@ -103,6 +103,26 @@
                           '}&#10;&#10;')"/>
   </xsl:template>
 
+  <xsl:template name="jcgn:generate-arguments">
+    <!-- arguments list -->
+    <xsl:for-each select="cgn:field">
+      <!-- take type, space, variable name -->
+      <xsl:value-of select="concat(cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type),
+                            ' ',
+                            cgn:camelize-string(./@cgn:name))"/>
+      <xsl:if test="position() != last( )">, </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
+  <xsl:template name="jcgn:generate-assignments">
+    <xsl:param name="indent" select="0" />
+    <xsl:for-each select="cgn:field">
+      <xsl:value-of select="concat(cgn:indent($indent+2),
+                            cgn:generate-field-assignment(./@cgn:name))"/>
+    </xsl:for-each>
+  </xsl:template>
+    
+
   <xsl:template name="java-constructor">
     <!-- called from cgn:object, generates a constructor from fields, like:
          public UserName(String date) {
@@ -112,20 +132,13 @@
     <xsl:param name="class-name"/>
     <xsl:param name="indent" select="0" />
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name,'(')"/>
-    <!-- arguments list -->
-    <xsl:for-each select="cgn:field">
-      <!-- take type, space, variable name -->
-      <xsl:value-of select="concat(cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type),
-                            ' ',
-                            cgn:camelize-string(./@cgn:name))"/>
-      <xsl:if test="position() != last( )">, </xsl:if>
-    </xsl:for-each>
+    <!-- generate arguments -->
+    <xsl:call-template name="jcgn:generate-arguments"/>
     <xsl:text>) {&#10;</xsl:text>
     <!-- body of constructor : list of field assignments -->
-    <xsl:for-each select="cgn:field">
-      <xsl:value-of select="concat(cgn:indent($indent+2),
-                            cgn:generate-field-assignment(./@cgn:name))"/>
-    </xsl:for-each>
+    <xsl:call-template name="jcgn:generate-assignments">
+      <xsl:with-param name="indent" select="$indent"/>
+    </xsl:call-template>
     <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
   </xsl:template>
 
