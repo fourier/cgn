@@ -47,11 +47,16 @@
     <xsl:variable name="type" select="cgn:array-type($field-type)"/>
     <xsl:variable name="java-type" select="jcgn:array-to-java-type($field-type, $date-type)"/>
     <xsl:value-of select="concat(cgn:indent($indent),
+                          'if (',
+                          $field-value,
+                          ' != null) {&#10;')"/>
+    
+    <xsl:value-of select="concat(cgn:indent($indent+1),
                           'gen.writeArrayFieldStart(&quot;',
                           $field-name,
                           '&quot;);&#10;')"/>
     <!-- for loop -->
-    <xsl:value-of select="concat(cgn:indent($indent),
+    <xsl:value-of select="concat(cgn:indent($indent+1),
                           'for (',
                           $java-type,
                           ' value : ',
@@ -60,13 +65,13 @@
     <xsl:choose>
       <xsl:when test="$type='int' or $type='long'
                       or $type='double' or $type='byte'">
-        <xsl:value-of select="concat(cgn:indent($indent+1),
+        <xsl:value-of select="concat(cgn:indent($indent+2),
                               'gen.writeNumber(value.',
                               $type,
                               'Value());&#10;')"/>
       </xsl:when>
       <xsl:when test="$type='string'">
-        <xsl:value-of select="concat(cgn:indent($indent+1),
+        <xsl:value-of select="concat(cgn:indent($indent+2),
                               'gen.writeString(value);&#10;')"/>
       </xsl:when>
       <xsl:when test="$type='date'">
@@ -74,27 +79,30 @@
         <xsl:choose>
           <xsl:when test="not($date-type = '') and $date-type = 'org.joda.time.DateTime'">
             
-            <xsl:value-of select="concat(cgn:indent($indent+1),
+            <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'gen.writeString(ISO8601_JODA_DATE_FORMAT.print(value));&#10;')"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat(cgn:indent($indent+1),
+            <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'gen.writeString(ISO8601_JAVA_DATE_FORMAT.format(value));&#10;')"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
 
       <xsl:otherwise>
-        <xsl:value-of select="concat(cgn:indent($indent+1),
+        <xsl:value-of select="concat(cgn:indent($indent+2),
                               'generateJson(gen, value);&#10;')"/>
       </xsl:otherwise>
     </xsl:choose>
-      <!-- end for loop -->
-    <xsl:value-of select="concat(cgn:indent($indent),
-      '}&#10;')"/>
+    <!-- end for loop -->
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+                          '}&#10;')"/>
     
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+                          'gen.writeEndArray();&#10;')"/>
+
     <xsl:value-of select="concat(cgn:indent($indent),
-      'gen.writeEndArray();&#10;')"/>
+                          '}&#10;')"/>
   </xsl:template>
 
   <xsl:template name="this:generate-field">
@@ -119,6 +127,10 @@
           </xsl:when>
           <xsl:when test="$field-type='string'">
             <xsl:value-of select="concat(cgn:indent($indent),
+                                  'if (',
+                                  $field-value,
+                                  ' != null)&#10;',
+                                  cgn:indent($indent+1),
                                   'gen.writeStringField(&quot;',
                                   $field-name,
                                   '&quot;, ',
@@ -139,6 +151,10 @@
               <xsl:when test="not($date-type = '') and $date-type = 'org.joda.time.DateTime'">
                 
                 <xsl:value-of select="concat(cgn:indent($indent),
+                                      'if (',
+                                      $field-value,
+                                      ' != null)&#10;',
+                                      cgn:indent($indent+1),
                                       'gen.writeStringField(&quot;',
                                       $field-name,
                                       '&quot;, ISO8601_JODA_DATE_FORMAT.print(',
@@ -147,6 +163,10 @@
               </xsl:when>
               <xsl:otherwise>
                 <xsl:value-of select="concat(cgn:indent($indent),
+                                      'if (',
+                                      $field-value,
+                                      ' != null)&#10;',
+                                      cgn:indent($indent+1),
                                       'gen.writeStringField(&quot;',
                                       $field-name,
                                       '&quot;, ISO8601_JAVA_DATE_FORMAT.format(',
@@ -163,6 +183,10 @@
       <!-- it is an object -->
       <xsl:otherwise>
         <xsl:value-of select="concat(cgn:indent($indent),
+                              'if (',
+                              $field-value,
+                              ' != null)&#10;',
+                              cgn:indent($indent+1),
                               $gen-class,
                               '.generateJson(gen, ',
                               $field-value,
@@ -225,7 +249,11 @@
                           cgn:indent($indent+3),
                           'gen.writeObjectFieldStart(fieldName);&#10;',
                           cgn:indent($indent+2),
-                          '}&#10;')"/>
+                          '}&#10;&#10;')"/>
+    <!-- if object is not null -->
+    <xsl:value-of select="concat(cgn:indent($indent+2),
+                          'if (object != null) {&#10;')"/>
+    
     <!-- iterate through fields -->
     <xsl:for-each select="cgn:field">
       <xsl:variable name="name" select="./@cgn:name"/>
@@ -233,7 +261,7 @@
       <xsl:variable name="getter-name" select="jcgn:create-getter-name(./@cgn:name)"/>
 
       <xsl:value-of select="concat('&#10;',
-                            cgn:indent($indent+2),
+                            cgn:indent($indent+3),
                             '/* processing field: &quot;',
                             $name,
                             '&quot; */&#10;')"/>
@@ -243,7 +271,7 @@
         <!-- array -->
         <xsl:when test="cgn:is-array($type)">
           <xsl:call-template name="this:generate-array-field">
-            <xsl:with-param name="indent" select="$indent+2"/>
+            <xsl:with-param name="indent" select="$indent+3"/>
             <xsl:with-param name="gen-class" select="$gen-class"/>
             <xsl:with-param name="field-name" select="$name"/>
             <xsl:with-param name="field-value" select="concat('object.',
@@ -256,7 +284,7 @@
         <!-- not an array -->
         <xsl:otherwise>
           <xsl:call-template name="this:generate-field">
-            <xsl:with-param name="indent" select="$indent+2"/>
+            <xsl:with-param name="indent" select="$indent+3"/>
             <xsl:with-param name="gen-class" select="$gen-class"/>
             <xsl:with-param name="field-name" select="$name"/>
             <xsl:with-param name="field-value" select="concat('object.',
@@ -268,8 +296,11 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
-    
 
+    <!-- end of if object != null -->
+    <xsl:value-of select="concat(cgn:indent($indent+2),
+      '}&#10;')"/>
+    
     <!-- end of the object -->
     <xsl:value-of select="concat('&#10; ',
                           cgn:indent($indent+2),
