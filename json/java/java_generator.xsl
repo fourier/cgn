@@ -131,7 +131,7 @@
           </xsl:when>
           <xsl:when test="$field-type='boolean'">
             <xsl:value-of select="concat(cgn:indent($indent),
-                                  'gen.writeBooloanField(&quot;',
+                                  'gen.writeBooleanField(&quot;',
                                   $field-name,
                                   '&quot;, ',
                                   $field-value,
