@@ -5,13 +5,9 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
   <xsl:template name="this:gen-generate-imports">
-    <xsl:text>import java.text.ParseException;&#10;</xsl:text>
     <xsl:text>import java.text.SimpleDateFormat;&#10;</xsl:text>
     <xsl:text>import java.util.Date;&#10;</xsl:text>
-    <xsl:text>import java.util.Map;&#10;</xsl:text>
-    <xsl:text>import java.util.HashMap;&#10;</xsl:text>
     <xsl:text>import com.fasterxml.jackson.core.JsonGenerator;&#10;</xsl:text>
-    <xsl:text>import com.fasterxml.jackson.core.JsonGenerationException;&#10;</xsl:text>
     <xsl:text>import java.io.IOException;&#10;</xsl:text>
     <!-- import all objects -->
     <xsl:for-each select="//cgn:object[@cgn:json='true']">
