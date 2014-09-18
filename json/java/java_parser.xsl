@@ -29,6 +29,7 @@
         put("^\\d{4}/\\d{1,2}/\\d{1,2}\\s\\d{1,2}:\\d{2}:\\d{2}$", "yyyy/MM/dd HH:mm:ss");
         put("^\\d{1,2}\\s[a-z]{3}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMM yyyy HH:mm:ss");
         put("^\\d{1,2}\\s[a-z]{4,}\\s\\d{4}\\s\\d{1,2}:\\d{2}:\\d{2}$", "dd MMMM yyyy HH:mm:ss");
+        put("^\\d{4}-\\d{2}-\\d{2}t\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}\\d{2}$", "yyyy-MM-dd'T'HH:mm:ssZ");
     }};
 
     /**
@@ -205,7 +206,7 @@
     <xsl:for-each select="cgn:field">
       <xsl:variable name="name" select="./@cgn:name"/>
       <xsl:variable name="type" select="./@cgn:type"/>
-      <xsl:variable name="setter-name" select="cgn:create-setter-name(./@cgn:name)"/>
+      <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
       <!-- generate if switch -->
       <xsl:value-of select="cgn:indent($indent+2)"/>
       <xsl:if test="position()!=1">

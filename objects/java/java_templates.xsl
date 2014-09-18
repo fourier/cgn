@@ -63,8 +63,7 @@
     <xsl:param name="indent" select="0" />
     <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type))"/>
     <xsl:text> </xsl:text>
-    <xsl:value-of select="concat('get',
-                          cgn:pascalize-string(./@cgn:name),
+    <xsl:value-of select="concat(jcgn:create-setter-name(./@cgn:name),
                           '() {&#10;',
                           cgn:indent($indent+2),
                           'return this.',
@@ -85,7 +84,7 @@
     <xsl:variable name="var-name" select="cgn:generate-field-name($name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
-                          cgn:create-setter-name(./@cgn:name),
+                          jcgn:create-setter-name(./@cgn:name),
                           '(',
                           $type,
                           ' ',

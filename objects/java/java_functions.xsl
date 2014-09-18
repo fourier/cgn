@@ -102,10 +102,16 @@
   </xsl:function>                  
 
 
-  <xsl:function name="cgn:create-setter-name">
+  <xsl:function name="jcgn:create-setter-name">
     <xsl:param name="name"/>
     <xsl:value-of select="concat('set',
       cgn:pascalize-string($name))"/>
   </xsl:function>
-  
+
+  <xsl:function name="jcgn:create-getter-name">
+    <xsl:param name="name"/>
+    <xsl:value-of select="concat('get',
+      cgn:pascalize-string($name))"/>
+  </xsl:function>
+
 </xsl:stylesheet>

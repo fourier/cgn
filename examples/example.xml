@@ -91,8 +91,24 @@ This file and its contents are Confidential.</copyright>
       <field cgn:name="date" cgn:type="date"/>
       <field cgn:name="conversanions" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
+      <field cgn:name="joda-dates" cgn:type="[date]"/>
+      
     </object>
+
+    <object cgn:name="LogEntry" cgn:read-only="false">
+      <field cgn:name="date" cgn:type="date"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
+      <field cgn:name="doubleValue" cgn:type="double"/>
+      <field cgn:name="stringValue" cgn:type="string"/>
+      <field cgn:name="boolValue" cgn:type="boolean"/>
+      <field cgn:name="intValue" cgn:type="int"/>
+      <field cgn:name="longValue" cgn:type="long"/>
+      <field cgn:name="byteValue" cgn:type="byte"/>
+      <field cgn:name="longArray" cgn:type="[long]"/>
+    </object>
+    
   </objects>
 
+  
 </root>
   
