@@ -63,7 +63,7 @@
     <xsl:param name="indent" select="0" />
     <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type))"/>
     <xsl:text> </xsl:text>
-    <xsl:value-of select="concat(jcgn:create-setter-name(./@cgn:name),
+    <xsl:value-of select="concat(jcgn:create-getter-name(./@cgn:name),
                           '() {&#10;',
                           cgn:indent($indent+2),
                           'return this.',
