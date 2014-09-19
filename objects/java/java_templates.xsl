@@ -62,7 +62,7 @@
     <xsl:if test="($indent = 0 and $cgn:xml-name)">
       <xsl:value-of select="cgn:generate-class-comment($cgn:xml-name)"/>
     </xsl:if>
-    <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, 'interface ', $class-name, ' ')" />
+    <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, ' interface ', $class-name, ' ')" />
     <xsl:if test="$extends-interface and not($extends-interface = '')">
       <xsl:value-of select="concat('extends ', $extends-interface, ' ')"/>
     </xsl:if>
