@@ -17,18 +17,22 @@
       <xsl:value-of select="concat('package ', $package, ';&#10;&#10;')"/>
     </xsl:if>
   </xsl:template>
-
+  
+  <!--
+      Java class templates: header and footer
+  -->
   <xsl:template name="java-class-header">
     <!-- generate class header string like "class UserName [extends Task][implements BaseRequest]{" -->
     <xsl:param name="class-name"/>
     <xsl:param name="extends-class"/>
     <xsl:param name="implements-interface"/>
+    <xsl:param name="access" select="'public'"/>
     <xsl:param name="attributes"/>
     <xsl:param name="indent" select="0" />
     <xsl:if test="($indent = 0 and $cgn:xml-name)">
       <xsl:value-of select="cgn:generate-class-comment($cgn:xml-name)"/>
     </xsl:if>
-    <xsl:value-of select="concat(cgn:indent($indent), 'public ', $attributes, 'class ', $class-name, ' ')" />
+    <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, 'class ', $class-name, ' ')" />
     <xsl:if test="$extends-class">
       <xsl:value-of select="concat('extends ', $extends-class, ' ')"/>
     </xsl:if>
@@ -45,6 +49,27 @@
     <xsl:text>}&#10;</xsl:text>
   </xsl:template>
 
+  <!--
+      Java interface template: header (footer is the same as java class)
+  -->
+  <xsl:template name="java-interface-header">
+    <!-- generate class header string like "class UserName [extends Task][implements BaseRequest]{" -->
+    <xsl:param name="class-name"/>
+    <xsl:param name="access" select="'public'"/>    
+    <xsl:param name="extends-interface"/>
+    <xsl:param name="attributes"/>
+    <xsl:param name="indent" select="0" />
+    <xsl:if test="($indent = 0 and $cgn:xml-name)">
+      <xsl:value-of select="cgn:generate-class-comment($cgn:xml-name)"/>
+    </xsl:if>
+    <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, 'interface ', $class-name, ' ')" />
+    <xsl:if test="$extends-interface and not($extends-interface = '')">
+      <xsl:value-of select="concat('extends ', $extends-interface, ' ')"/>
+    </xsl:if>
+    <xsl:text>{&#10;</xsl:text>
+  </xsl:template>
+
+  
   <xsl:template match="cgn:field" mode="jcgn:generate-field">
     <!--
         Generates a field in class like
