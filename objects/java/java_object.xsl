@@ -107,13 +107,13 @@
 
       <!-- now generate a list of getters for params -->
       <xsl:for-each select="cgn:field">
-        <xsl:apply-templates select="." mode="jcgn:generateGetter"/>
+        <xsl:apply-templates select="." mode="jcgn:generate-getter"/>
       </xsl:for-each>
 
       <!-- verify if class is not read-only, generate setters -->
       <xsl:if test="$read-only='false'">
         <xsl:for-each select="cgn:field">
-          <xsl:apply-templates select="." mode="jcgn:generateSetter">
+          <xsl:apply-templates select="." mode="jcgn:generate-setter">
             <xsl:with-param name="class-name" select="$class-name"/>
           </xsl:apply-templates>
         </xsl:for-each>

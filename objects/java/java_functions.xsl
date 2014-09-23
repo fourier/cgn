@@ -4,7 +4,7 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
   
 
-  <xsl:variable name="primitive-type-to-java-type-map">
+  <xsl:variable name="jcgn:primitive-type-to-java-type-map">
     <entry key="string">String</entry>
     <entry key="date">java.util.Date</entry>
     <entry key="int">Integer</entry>
@@ -14,7 +14,7 @@
     <entry key="byte">Byte</entry>
   </xsl:variable>
 
-  <xsl:variable name="primitive-type-to-java-primitive-type-map">
+  <xsl:variable name="jcgn:primitive-type-to-java-primitive-type-map">
     <entry key="string">String</entry>
     <entry key="date">java.util.Date</entry>
     <entry key="int">int</entry>
@@ -24,10 +24,18 @@
     <entry key="byte">byte</entry>
   </xsl:variable>
 
+
+  <xsl:function name="jcgn:is-primitive-java-type">
+    <xsl:param name="name"/>
+    <xsl:variable name="primitive-java-types">byte,short,int,long,float,double,boolean,char,String</xsl:variable>
+    <xsl:variable name="primitive-java-types-list" select="tokenize($primitive-java-types, ',')"/>
+    <xsl:sequence select="exists($primitive-java-types-list[. = $name])"/>
+  </xsl:function>
   
-  <xsl:function name="cgn:primitive-type-to-java-type">
+  
+  <xsl:function name="jcgn:primitive-type-to-java-type">
     <xsl:param name="type"/>
-    <xsl:value-of select="$primitive-type-to-java-primitive-type-map/entry[@key=$type]"/>
+    <xsl:value-of select="$jcgn:primitive-type-to-java-primitive-type-map/entry[@key=$type]"/>
   </xsl:function>
 
   <xsl:function name="jcgn:array-to-java-type">
@@ -42,7 +50,7 @@
             <xsl:value-of select="$date-type"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$primitive-type-to-java-type-map/entry[@key=$array-type]"/>
+            <xsl:value-of select="$jcgn:primitive-type-to-java-type-map/entry[@key=$array-type]"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -64,7 +72,7 @@
             <xsl:value-of select="$date-type"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="cgn:primitive-type-to-java-type($type)"/>
+            <xsl:value-of select="jcgn:primitive-type-to-java-type($type)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -114,4 +122,33 @@
       cgn:pascalize-string($name))"/>
   </xsl:function>
 
+  <xsl:function name="jcgn:create-function-argument">
+    <xsl:param name="name"/>
+    <xsl:variable name="arg-name" select="cgn:camelize-string($name)"/>
+    <xsl:choose>
+      <xsl:when test="jcgn:is-primitive-java-type($arg-name)">
+        <xsl:value-of select="concat('_', $arg-name)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$arg-name"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xsl:function name="jcgn:generate-field-assignment">
+    <!--
+        convert a parameter to the field name. Example:
+        cgn:generate-field-assignment("user-name")
+        returns iUserName = userName;
+    -->
+    <xsl:param name="field"/>
+    <xsl:value-of select="concat(
+                          cgn:generate-field-name($field),
+                          ' = ',
+                          jcgn:create-function-argument($field),
+                          ';&#10;')"/>
+  </xsl:function>
+
+  
+  
 </xsl:stylesheet>

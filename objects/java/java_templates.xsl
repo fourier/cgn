@@ -81,7 +81,7 @@
     <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $type, ' ', $name, ';&#10;')"/>
   </xsl:template>
   
-  <xsl:template match="cgn:field" mode="jcgn:generateGetter">
+  <xsl:template match="cgn:field" mode="jcgn:generate-getter">
     <!--
         Generate a getter for a field.
     -->
@@ -98,7 +98,7 @@
                           '}&#10;&#10;')"/>
   </xsl:template>
 
-  <xsl:template match="cgn:field" mode="jcgn:generateSetter">
+  <xsl:template match="cgn:field" mode="jcgn:generate-setter">
     <!--
         Generate a setter for a field.
     -->
@@ -113,14 +113,11 @@
                           '(',
                           $type,
                           ' ',
-                          cgn:camelize-string($name),
+                          jcgn:create-function-argument($name),
                           ') {&#10;',
                           cgn:indent($indent+2),
                           'this.',
-                          $var-name,
-                          ' = ',
-                          cgn:camelize-string($name),
-                          ';&#10;',
+                          jcgn:generate-field-assignment($name),
                           cgn:indent($indent+2),
                           'return this;&#10;',
                           cgn:indent($indent+1),
@@ -133,7 +130,7 @@
       <!-- take type, space, variable name -->
       <xsl:value-of select="concat(cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type),
                             ' ',
-                            cgn:camelize-string(./@cgn:name))"/>
+                            jcgn:create-function-argument(./@cgn:name))"/>
       <xsl:if test="position() != last( )">, </xsl:if>
     </xsl:for-each>
   </xsl:template>
@@ -142,7 +139,7 @@
     <xsl:param name="indent" select="0" />
     <xsl:for-each select="cgn:field">
       <xsl:value-of select="concat(cgn:indent($indent+2),
-                            cgn:generate-field-assignment(./@cgn:name))"/>
+                            jcgn:generate-field-assignment(./@cgn:name))"/>
     </xsl:for-each>
   </xsl:template>
     
