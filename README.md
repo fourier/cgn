@@ -35,7 +35,7 @@ Example how to specify simple object:
 
 Here we create a package and 2 objects in a package. 
 
-The first object, ***PersonalUserData***, will have setters and will have a JSON-parser generated. If the field doesn't have a type, the **string** type assumed. One can see how to define arrays as types as well - using square brackets as in **visits** field. 
+The first object, ***PersonalUserData***, will have setters and will have a JSON-parser/generator created. If the field doesn't have a type, the **string** type assumed. One can see how to define arrays as types as well - using square brackets as in **visits** field. 
 
 The second object will not have any setters, however the [Builder](http://en.wikipedia.org/wiki/Builder_pattern) inner class will be generated. The object as well will implement Android's [Parcelable](http://developer.android.com/reference/android/os/Parcelable.html) interface. One can see how the previously defined object can be used as a field type.
 
