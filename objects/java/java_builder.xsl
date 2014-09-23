@@ -69,7 +69,7 @@
 
     <!-- verify if class is not read-only, generate setters -->
     <xsl:for-each select="cgn:field">
-      <xsl:apply-templates select="." mode="jcgn:generateSetter">
+      <xsl:apply-templates select="." mode="jcgn:generate-setter">
         <xsl:with-param name="class-name" select="$builder-class-name"/>
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:apply-templates>
