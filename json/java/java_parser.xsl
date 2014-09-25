@@ -302,7 +302,9 @@
       <entry key="int"><xsl:value-of select="concat($token-var,
       ' == JsonToken.VALUE_NUMBER_INT')"/></entry>
       <entry key="double"><xsl:value-of select="concat($token-var,
-      ' == JsonToken.VALUE_NUMBER_FLOAT')"/></entry>
+      ' == JsonToken.VALUE_NUMBER_FLOAT || ',
+      $token-var,
+      ' == JsonToken.VALUE_NUMBER_INT')"/></entry>
       <entry key="long"><xsl:value-of select="concat($token-var,
       ' == JsonToken.VALUE_NUMBER_INT')"/></entry>
       <entry key="boolean"><xsl:value-of select="concat($token-var,
