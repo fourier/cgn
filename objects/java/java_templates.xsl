@@ -76,7 +76,7 @@
         "    private String name;\n"
     -->
     <xsl:param name="indent" select="0" />
-    <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
+    <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $type, ' ', $name, ';&#10;')"/>
   </xsl:template>
@@ -92,7 +92,7 @@
                           '() {&#10;',
                           cgn:indent($indent+2),
                           'return this.',
-                          cgn:generate-field-name(./@cgn:name),
+                          jcgn:generate-field-name(./@cgn:name),
                           ';&#10;',
                           cgn:indent($indent+1),
                           '}&#10;&#10;')"/>
@@ -106,7 +106,7 @@
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
-    <xsl:variable name="var-name" select="cgn:generate-field-name($name)"/>
+    <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
                           jcgn:create-setter-name(./@cgn:name),

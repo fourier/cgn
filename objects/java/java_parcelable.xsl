@@ -6,7 +6,7 @@
     
   <xsl:template match="cgn:field" mode="this:parcel-reader">
     <xsl:param name="indent"/>
-    <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
+    <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
     <xsl:variable name="primitive-type-reader-map">
@@ -70,7 +70,7 @@
 
   <xsl:template match="cgn:field" mode="this:parcel-writer">
     <xsl:param name="indent"/>
-    <xsl:variable name="name" select="cgn:generate-field-name(./@cgn:name)"/>
+    <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
     <xsl:variable name="primitive-type-writer-map">

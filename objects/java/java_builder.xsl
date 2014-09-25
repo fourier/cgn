@@ -21,7 +21,7 @@
                           $class-name,
                           '(')"/>
     <xsl:for-each select="cgn:field">
-      <xsl:value-of select="cgn:generate-field-name(./@cgn:name)"/>
+      <xsl:value-of select="jcgn:generate-field-name(./@cgn:name)"/>
       <xsl:if test="position() != last()">
         <xsl:text>, </xsl:text>
       </xsl:if>

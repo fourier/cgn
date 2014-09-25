@@ -46,16 +46,6 @@
     <xsl:value-of select="$result"/>
   </xsl:function>
 
-  <xsl:function name="cgn:generate-field-name">
-    <!--
-        convert a parameter to the field name. Example:
-        cgn:generate-field-name("user-name")
-        returns iUserName
-    -->
-    <xsl:param name="field"/>
-    <xsl:value-of select="concat('i', cgn:pascalize-string($field))"/>
-  </xsl:function>
-
   <xsl:function name="cgn:get-short-filename">
     <!--
         returns the short file name of the argument supplied. Examlp:
