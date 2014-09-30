@@ -116,6 +116,13 @@
       cgn:pascalize-string($name))"/>
   </xsl:function>
 
+  <xsl:function name="jcgn:create-is-set-name">
+    <xsl:param name="name"/>
+    <xsl:value-of select="concat('isSet',
+      cgn:pascalize-string($name))"/>
+  </xsl:function>
+
+  
   <xsl:function name="jcgn:create-getter-name">
     <xsl:param name="name"/>
     <xsl:value-of select="concat('get',
