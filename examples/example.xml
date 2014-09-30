@@ -37,7 +37,23 @@
 
   <copyright>Copyright (c) 2014 by Veroveli AB
 This file and its contents are Confidential.</copyright>
-  
+
+  <objects cgn:package="com.mycompany.example"
+           cgn:read-only="false"
+           jcgn:builder="true"
+           jcgn:parcelable="true">
+    <cgn:object cgn:name="WorkPackage">
+      <cgn:field cgn:name="customer-id" cgn:type="long" />
+      <cgn:field cgn:name="workcode-id" cgn:type="long"/>
+      <cgn:field cgn:name="project-id" cgn:type="long"/>
+    </cgn:object>
+
+    <cgn:object cgn:name="Model">
+      <cgn:field cgn:name="used-work-packages" cgn:type="[WorkPackage]"/>
+      <cgn:field cgn:name="time" cgn:type="date"/>
+    </cgn:object>
+  </objects>
+
   <objects cgn:package="com.veroveli.example">
 
     <object cgn:name="PersonalUserData" cgn:read-only="false" jcgn:date-type="org.joda.time.DateTime">
