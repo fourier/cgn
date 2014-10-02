@@ -7,15 +7,21 @@
   <xsl:include href="java_variables.xsl"/>
   <xsl:include href="java_phase1.xsl"/>
   <xsl:include href="java_phase2.xsl"/>
+  <xsl:include href="java_phase3.xsl"/>
 
   <xsl:variable name="jcgn:preprocessed-objects1">
     <!-- 1st phase: adding default values defined in jcgn to cgn:objects -->
     <xsl:apply-templates select="$cgn:preprocessed-objects" mode="jcgn:phase1" />
   </xsl:variable>
 
-  <xsl:variable name="jcgn:preprocessed-objects">
-    <!-- 2nd phase: adding values from cgn:objects to cgn:object, if not exist already -->
+  <xsl:variable name="jcgn:preprocessed-objects2">
+    <!-- 2nd phase: if not set jcgn:type for cgn:type='date', set it -->
     <xsl:apply-templates select="$jcgn:preprocessed-objects1" mode="jcgn:phase2" />
+  </xsl:variable>
+
+    <xsl:variable name="jcgn:preprocessed-objects">
+    <!-- 2nd phase: adding values from cgn:objects to cgn:object, if not exist already -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects2" mode="jcgn:phase3" />
   </xsl:variable>
 
   
