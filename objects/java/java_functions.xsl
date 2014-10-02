@@ -40,17 +40,17 @@
 
   <xsl:function name="jcgn:array-to-java-type">
     <xsl:param name="type"/>
-    <xsl:param name="date-type"/>
+    <xsl:param name="jtype"/>
     <xsl:variable name="array-type" select="cgn:array-type($type)"/>
     <xsl:choose>
       <xsl:when test="cgn:is-primitive-type($array-type)">
-        <!-- handle case of the date-type separately -->
+        <!-- handle case of the jcgn:type separately -->
         <xsl:choose>
-          <xsl:when test="$array-type = 'date'">
-            <xsl:value-of select="$date-type"/>
+          <xsl:when test="not($jtype)">
+            <xsl:value-of select="$jcgn:primitive-type-to-java-type-map/entry[@key=$array-type]"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$jcgn:primitive-type-to-java-type-map/entry[@key=$array-type]"/>
+            <xsl:value-of select="$jtype"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -62,17 +62,17 @@
 
   <xsl:function name="cgn:type-to-java-type">
     <xsl:param name="type"/>
-    <xsl:param name="date-type"/>
+    <xsl:param name="jtype"/>
     <xsl:choose>
       <!-- first verify if primitive type -->
       <xsl:when test="cgn:is-primitive-type($type)">
-        <!-- handle case of the date-type separately -->
+        <!-- handle case of the jcgn:type separately -->
         <xsl:choose>
-          <xsl:when test="$type = 'date'">
-            <xsl:value-of select="$date-type"/>
+          <xsl:when test="not($jtype)">
+            <xsl:value-of select="jcgn:primitive-type-to-java-type($type)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="jcgn:primitive-type-to-java-type($type)"/>
+            <xsl:value-of select="$jtype"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -80,11 +80,12 @@
         <!-- not a primitive type, verify if an array -->
         <xsl:choose>
           <xsl:when test="cgn:is-array($type)">
-            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $date-type), '&gt;')"/>
+            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $jtype), '&gt;')"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- not an array, just return as it is -->
             <xsl:value-of select="$type"/>
+            <!--xsl:message terminate="yes"><xsl:value-of select="concat('Unknown type: ', $type)"/></xsl:message-->
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>

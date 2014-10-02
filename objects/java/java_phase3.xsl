@@ -6,9 +6,14 @@
   <xsl:template match="cgn:field" mode="jcgn:phase3">
     <xsl:copy>
       <!-- default jcgn:type for date is java.util.Date -->
-      <xsl:if test="@cgn:type = 'date' and not(@jcgn:type)">
-        <xsl:attribute name="jcgn:type" select="$jcgn:default-date-type"/>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="@cgn:type = 'date' and not(@jcgn:type)">
+          <xsl:attribute name="jcgn:type" select="$jcgn:default-date-type"/>
+        </xsl:when>
+        <xsl:when test="cgn:is-array(@cgn:type) and (cgn:array-type(@cgn:type) = 'date') and not(@jcgn:type)">
+          <xsl:attribute name="jcgn:type" select="$jcgn:default-date-type"/>
+        </xsl:when>
+      </xsl:choose>
       <!-- copy the rest -->
       <xsl:copy-of select="@*|node()" />
     </xsl:copy>

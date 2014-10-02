@@ -29,16 +29,6 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- date-type attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:date-type)">
-          <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:date-type"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
       
       <!-- copy the rest -->
       <xsl:copy-of select="@*|node()" />

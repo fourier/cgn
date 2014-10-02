@@ -8,7 +8,7 @@
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
+    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
     <xsl:variable name="primitive-type-reader-map">
       <entry key="string">in.readString()</entry>
       <entry key="int">in.readInt()</entry>
@@ -17,7 +17,7 @@
       <entry key="boolean">in.readByte() == 0 ? false : true</entry>
       <entry key="byte">in.readByte()</entry>
       <entry key="date"><xsl:value-of select="concat('(',
-      ../@jcgn:date-type,
+      ./@jcgn:type,
       ')in.readSerializable()')"/></entry>
     </xsl:variable>
 
@@ -72,7 +72,7 @@
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ../@jcgn:date-type)"/>
+    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
     <xsl:variable name="primitive-type-writer-map">
       <entry key="string">out.writeString(</entry>
       <entry key="int">out.writeInt(</entry>

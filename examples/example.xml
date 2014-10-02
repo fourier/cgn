@@ -56,13 +56,13 @@ This file and its contents are Confidential.</copyright>
 
   <objects cgn:package="com.veroveli.example">
 
-    <object cgn:name="PersonalUserData" cgn:read-only="false" jcgn:date-type="org.joda.time.DateTime">
+    <object cgn:name="PersonalUserData" cgn:read-only="false">
       <field cgn:name="name"/>
       <field cgn:name="occupation"/>
       <field cgn:name="age" cgn:type="int"/>
       <field cgn:name="completed-at" cgn:type="date"/>
       <field cgn:name="userId" cgn:type="int"/>
-      <field cgn:name="visits" cgn:type="[date]"/>
+      <field cgn:name="visits" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
     </object>
 
     <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">

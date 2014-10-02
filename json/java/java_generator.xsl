@@ -43,9 +43,9 @@
     <xsl:param name="field-name"/>
     <xsl:param name="field-value"/>
     <xsl:param name="field-type"/>
-    <xsl:param name="date-type"/>
+    <xsl:param name="jtype"/>
     <xsl:variable name="type" select="cgn:array-type($field-type)"/>
-    <xsl:variable name="java-type" select="jcgn:array-to-java-type($field-type, $date-type)"/>
+    <xsl:variable name="java-type" select="jcgn:array-to-java-type($field-type, $jtype)"/>
     <xsl:value-of select="concat(cgn:indent($indent),
                           'if (',
                           $field-value,
@@ -77,14 +77,17 @@
       <xsl:when test="$type='date'">
         <!-- verify if joda time -->
         <xsl:choose>
-          <xsl:when test="not($date-type = '') and $date-type = 'org.joda.time.DateTime'">
+          <xsl:when test="$jtype = 'org.joda.time.DateTime'">
             
             <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'gen.writeString(ISO8601_JODA_DATE_FORMAT.print(value));&#10;')"/>
           </xsl:when>
-          <xsl:otherwise>
+          <xsl:when test="$jtype = 'java.util.Date'">
             <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'gen.writeString(ISO8601_JAVA_DATE_FORMAT.format(value));&#10;')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message terminate="yes"><xsl:value-of select="concat('Unknown date type: ', $jtype)"/></xsl:message>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -111,7 +114,7 @@
     <xsl:param name="field-name"/>
     <xsl:param name="field-value"/>
     <xsl:param name="field-type"/>
-    <xsl:param name="date-type"/>
+    <xsl:param name="jtype"/>
     <!-- determine if field of simple type -->
     <xsl:choose>
       <xsl:when test="cgn:is-primitive-type($field-type)">
@@ -148,8 +151,7 @@
           <xsl:when test="$field-type='date'">
             <!-- verify if joda time -->
             <xsl:choose>
-              <xsl:when test="not($date-type = '') and $date-type = 'org.joda.time.DateTime'">
-                
+              <xsl:when test="$jtype = 'org.joda.time.DateTime'">
                 <xsl:value-of select="concat(cgn:indent($indent),
                                       'if (',
                                       $field-value,
@@ -161,7 +163,7 @@
                                       $field-value,
                                       '));&#10;')"/>
               </xsl:when>
-              <xsl:otherwise>
+              <xsl:when test="$jtype = 'java.util.Date'">
                 <xsl:value-of select="concat(cgn:indent($indent),
                                       'if (',
                                       $field-value,
@@ -172,6 +174,9 @@
                                       '&quot;, ISO8601_JAVA_DATE_FORMAT.format(',
                                       $field-value,
                                       '));&#10;')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:message terminate="yes"><xsl:value-of select="concat('Unknown date type: ', $jtype)"/></xsl:message>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:when>
@@ -221,7 +226,7 @@
     <xsl:param name="indent" select="1"/>
     <xsl:param name="gen-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
-    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
+    <xsl:variable name="jtype" select="./@jcgn:type"/>
 
     <!-- generate 2 args method first -->
     <xsl:call-template name="this:generate-2args-generator">
@@ -278,7 +283,7 @@
               $getter-name,
               '()')"/>
             <xsl:with-param name="field-type" select="$type"/>
-            <xsl:with-param name="date-type" select="$date-type"/>
+            <xsl:with-param name="jtype" select="$jtype"/>
           </xsl:call-template>
         </xsl:when>
         <!-- not an array -->
@@ -291,7 +296,7 @@
               $getter-name,
               '()')"/>
             <xsl:with-param name="field-type" select="$type"/>
-            <xsl:with-param name="date-type" select="$date-type"/>
+            <xsl:with-param name="jtype" select="$jtype"/>
           </xsl:call-template>
         </xsl:otherwise>
       </xsl:choose>
@@ -360,6 +365,7 @@
       </xsl:call-template>
 
       <!-- if necessary, generate Joda DateTime formatter -->
+      <!-- TODO: fix this -->
       <xsl:if test="//cgn:object[@cgn:json='true' and @jcgn:date-type='org.joda.time.DateTime']">
         <xsl:call-template name="this:generate-iso-date-formatter"/>
       </xsl:if>

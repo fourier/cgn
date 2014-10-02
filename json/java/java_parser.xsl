@@ -102,7 +102,7 @@
 
   <xsl:function name="this:json-node-getter-for-type">
     <xsl:param name="type"/>
-    <xsl:param name="date-type"/>
+    <xsl:param name="jtype"/>
     <xsl:param name="json-node-var"/>
     <xsl:param name="parser-class"/>
     <xsl:variable name="primitive-type-to-getter">
@@ -120,10 +120,10 @@
     </xsl:if>
 
     <xsl:choose>
-      <xsl:when test="$type='date' and $date-type='java.util.Date'">
+      <xsl:when test="$type='date' and $jtype='java.util.Date'">
         <xsl:text>parseDate(</xsl:text>
       </xsl:when>
-      <xsl:when test="$type='date' and $date-type='org.joda.time.DateTime'">
+      <xsl:when test="$type='date' and $jtype='org.joda.time.DateTime'">
         <xsl:text>parseISODate(</xsl:text>
       </xsl:when>
     </xsl:choose>
@@ -141,11 +141,11 @@
     <xsl:param name="parser-class"/>
     
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="date-type" select="../@cgn:date-type"/>
+    <xsl:variable name="jtype" select="./@jcgn:type"/>
     <xsl:choose>
       <!-- primitive type - use a table above -->
       <xsl:when test="cgn:is-primitive-type($type)">
-        <xsl:value-of select="this:json-node-getter-for-type($type,../@jcgn:date-type, $parser-var,$parser-class)"/>
+        <xsl:value-of select="this:json-node-getter-for-type($type,./@jcgn:type, $parser-var,$parser-class)"/>
       </xsl:when>
       <!-- array - use special helper -->
       <xsl:when test="cgn:is-array($type)">
@@ -174,7 +174,7 @@
     <xsl:param name="indent" select="1"/>
     <xsl:param name="parser-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
-    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
+    <xsl:variable name="jtype" select="./@jcgn:type"/>
     <xsl:value-of select="concat(cgn:indent($indent),
       'public static ',
       $pojo,
@@ -206,6 +206,7 @@
     <xsl:for-each select="cgn:field">
       <xsl:variable name="name" select="./@cgn:name"/>
       <xsl:variable name="type" select="./@cgn:type"/>
+      <xsl:variable name="jtype" select="./@jcgn:type"/>
       <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
       <!-- generate if switch -->
       <xsl:value-of select="cgn:indent($indent+2)"/>
@@ -224,7 +225,7 @@
       <!-- if array - special processing -->
       <xsl:if test="cgn:is-array($type)">
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
-        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $date-type), '&gt;')"/>
+        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $jtype), '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
           $java-array-type,
           ' array = new ',
@@ -238,9 +239,9 @@
                               'array.add(')"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
-            <xsl:value-of select="concat(jcgn:array-to-java-type($type, $date-type),
+            <xsl:value-of select="concat(jcgn:array-to-java-type($type, $jtype),
                                   '.valueOf(',
-                                  this:json-node-getter-for-type($array-type, $date-type, 'parser', $parser-class),
+                                  this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class),
                                   ')')"/>
           </xsl:when>
           <xsl:otherwise> <!-- for classes -->
@@ -388,6 +389,7 @@
       <xsl:call-template name="this:generate-date-parser"/>
 
       <!-- if necessary, generate Joda DateTime parser -->
+      <!-- TODO: fix this -->
       <xsl:if test="//cgn:object[@cgn:json='true' and @jcgn:date-type='org.joda.time.DateTime']">
         <xsl:call-template name="this:generate-iso-date-parser"/>
       </xsl:if>
