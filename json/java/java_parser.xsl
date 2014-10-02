@@ -5,6 +5,10 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
   <xsl:template name="this:generate-date-parser">
+    <xsl:text>    /**
+     * List of regular expressions used in parsing date/time for java.util.Date
+     * time class
+     */&#10;</xsl:text>
     <xsl:text>    private static final Map&lt;String, String&gt; DATE_FORMAT_REGEXPS = new HashMap&lt;String, String&gt;() {{
         put("^\\d{8}$", "yyyyMMdd");
         put("^\\d{1,2}-\\d{1,2}-\\d{4}$", "dd-MM-yyyy");
@@ -45,9 +49,14 @@
                 return DATE_FORMAT_REGEXPS.get(regexp);
             }
         }
-        return null; // Unknown format.
+        return null; /* Unknown format. */
     }
-
+    /**
+     * Parses the date string to the java.util.Date class using one of
+     * formats from DATE_FORMAT_REGEXPS mapping
+     * @param dateString the string containing the date/time to parse
+     * @return java.util.Date object with the parsed date/time
+     */
     public static Date parseDate(String dateString) throws IOException {
         String dateFormat = determineDateFormat(dateString);
         SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat) : new SimpleDateFormat();
@@ -62,6 +71,11 @@
   </xsl:template>
 
   <xsl:template name="this:generate-iso-date-parser">
+    <xsl:text>    /**
+     * Parses the date/time string into the Joda DateTime object.
+     * @param dateString the string containing the date/time to parse
+     * @return org.joda.time.DateTime object with the parsed date/time
+     */&#10;</xsl:text>
     <xsl:text>    private static org.joda.time.DateTime parseISODate(String dateString) throws IOException {
         org.joda.time.DateTime date = null;
         try {
@@ -187,10 +201,14 @@
       $pojo,
       ' is not a Json Object')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),
+      '/* object should start with the START_OBJECT token */&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1),
       'if (parser.getCurrentToken() != JsonToken.START_OBJECT) ',
       this:java-exception($exception-string),
       '&#10;&#10;')"/>
     <!-- starting the while loop -->
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+      '/* loop through all fields of the object */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),
       'while(parser.nextValue() != JsonToken.END_OBJECT) {&#10;')"/>
     <!-- has token guard -->
@@ -216,10 +234,22 @@
       <xsl:value-of select="concat(
         'if (&quot;',
         $name,
-        '&quot;.equals(currentName)) {&#10;')"/>
+        '&quot;.equals(currentName)) ',
+        '/* parse &quot;',
+        $name,
+        '&quot; of type ',
+        cgn:type-to-java-type($type, $jtype),
+        ' */ ',
+        '{&#10;')"/>
       <!-- generate assert -->
+      <xsl:value-of select="concat(cgn:indent($indent+3),
+                            '/* type verification, either NULL or ',
+                            this:type-to-json-type($type),
+                            ' */&#10;')"/>
       <xsl:value-of select="concat(cgn:indent($indent+3), this:generate-type-assert('parser.getCurrentToken()', $type, $name, $pojo))"/>
       <!-- add if !null statement -->
+      <xsl:value-of select="concat(cgn:indent($indent+3),
+                            '/* if not NULL try to parse */&#10;')"/>
       <xsl:value-of select="concat(cgn:indent($indent+3),
         'if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {&#10;')"/>
       <!-- if array - special processing -->
@@ -227,12 +257,18 @@
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
         <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $jtype), '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
+                              '/* Create the array */&#10;')"/>
+        <xsl:value-of select="concat(cgn:indent($indent+4),
           $java-array-type,
           ' array = new ',
           $java-array-type,
           '();&#10;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
+                              '/* Loop until the end of the array */&#10;')"/>
+        <xsl:value-of select="concat(cgn:indent($indent+4),
           'while (parser.nextToken() != JsonToken.END_ARRAY) {&#10;')"/>
+        <xsl:value-of select="concat(cgn:indent($indent+5),
+                              '/* We expect not null elements of correct type */&#10;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+5),
           this:generate-type-assert('parser.getCurrentToken()', $array-type, concat($name,'[i]'), $pojo))"/>
         <xsl:value-of select="concat(cgn:indent($indent+5),
@@ -262,6 +298,8 @@
       </xsl:if>
       <!-- call setter -->
       <xsl:value-of select="concat(cgn:indent($indent+4),
+        '/* call the setter and set field value */&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+4),
       'builder.',
       $setter-name,
       '(')"/>
@@ -282,6 +320,8 @@
     <xsl:value-of select="concat(cgn:indent($indent+2),
       'else {&#10;',
       cgn:indent($indent+3),
+      '/* unknown element. Call skipChildren() if the element is an array or object */&#10;',
+      cgn:indent($indent+3),
       'parser.skipChildren();&#10;',
       cgn:indent($indent+2),
       '}&#10;')"/>
@@ -295,6 +335,33 @@
     <xsl:value-of select="concat(cgn:indent($indent), '}&#10;&#10;')"/>
   </xsl:template>
 
+  <xsl:function name="this:type-to-json-type">
+    <xsl:param name="type"/>
+    <xsl:variable name="type-to-predicate-map">
+      <entry key="string">JsonToken.VALUE_STRING</entry>
+      <entry key="date">JsonToken.VALUE_STRING</entry>
+      <entry key="int">JsonToken.VALUE_NUMBER_INT</entry>
+      <entry key="double">JsonToken.VALUE_NUMBER_FLOAT || JsonToken.VALUE_NUMBER_INT</entry>
+      <entry key="long">JsonToken.VALUE_NUMBER_INT</entry>
+      <entry key="boolean">JsonToken.VALUE_FALSE || JsonToken.VALUE_TRUE</entry>
+      <entry key="byte">JsonToken.VALUE_NUMBER_INT</entry>
+    </xsl:variable>
+    <xsl:variable name="statement">
+    <xsl:choose>
+      <xsl:when test="cgn:is-primitive-type($type)">
+        <xsl:value-of select="$type-to-predicate-map/entry[@key=$type]"/>
+      </xsl:when>
+      <xsl:when test="cgn:is-array($type)">
+        <xsl:value-of select="'JsonToken.START_ARRAY'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="'JsonToken.START_OBJECT'"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    </xsl:variable>
+    <xsl:value-of select="$statement"/>
+  </xsl:function>
+    
 
   <xsl:function name="this:type-to-predicate">
     <xsl:param name="type"/>
