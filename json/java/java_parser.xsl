@@ -396,8 +396,7 @@
       <xsl:call-template name="this:generate-date-parser"/>
 
       <!-- if necessary, generate Joda DateTime parser -->
-      <!-- TODO: fix this -->
-      <xsl:if test="//cgn:object[@cgn:json='true' and @jcgn:date-type='org.joda.time.DateTime']">
+      <xsl:if test="//cgn:object[@cgn:json='true']/cgn:field[@jcgn:type='org.joda.time.DateTime']">
         <xsl:call-template name="this:generate-iso-date-parser"/>
       </xsl:if>
 
