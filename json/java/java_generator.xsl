@@ -263,6 +263,7 @@
     <xsl:for-each select="cgn:field">
       <xsl:variable name="name" select="./@cgn:name"/>
       <xsl:variable name="type" select="./@cgn:type"/>
+      <xsl:variable name="jtype" select="./@jcgn:type"/>
       <xsl:variable name="getter-name" select="jcgn:create-getter-name(./@cgn:name)"/>
 
       <xsl:value-of select="concat('&#10;',

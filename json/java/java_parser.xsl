@@ -239,10 +239,17 @@
                               'array.add(')"/>
         <xsl:choose>
           <xsl:when test="cgn:is-primitive-type($array-type)">
-            <xsl:value-of select="concat(jcgn:array-to-java-type($type, $jtype),
-                                  '.valueOf(',
-                                  this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class),
-                                  ')')"/>
+            <xsl:choose>
+              <xsl:when test="($array-type = 'string') or ($array-type = 'date')">
+                <xsl:value-of select="this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(jcgn:array-to-java-type($type, $jtype),
+                                      '.valueOf(',
+                                      this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class),
+                                      ')')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:when>
           <xsl:otherwise> <!-- for classes -->
             <xsl:value-of select="concat($parser-class, '.parse(parser, new ',

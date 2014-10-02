@@ -107,10 +107,9 @@ This file and its contents are Confidential.</copyright>
       <field cgn:name="date" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
       <field cgn:name="conversanions" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
-      <field cgn:name="joda-dates" cgn:type="[date]"/>
-      <field cgn:name="normal-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
-      
-    </object>
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>/>
+      <field cgn:name="normal-dates" cgn:type="[date]"/>
+     </object>
 
     <object cgn:name="Entry" cgn:read-only="false">
       <field cgn:name="date" cgn:type="date"/>
