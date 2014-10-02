@@ -73,6 +73,12 @@
       <!-- generate fields of the class from the list of param elements, like
            "private String iDate;"
       -->
+      <xsl:value-of select="concat(cgn:indent(1),
+                            '/*&#10;',
+                            cgn:indent(1),
+                            ' * private fields &#10;',
+                            cgn:indent(1),
+                            ' */&#10;')"/>      
       <xsl:for-each select="cgn:field">
         <xsl:apply-templates select="." mode="jcgn:generate-field"/>
       </xsl:for-each>
@@ -80,6 +86,12 @@
 
       <!-- create a builder if necessary -->
       <xsl:if test="$builder='true'">
+        <xsl:value-of select="concat(cgn:indent(1),
+                              '/*&#10;',
+                              cgn:indent(1),
+                              ' * Internal Builder class&#10;',
+                              cgn:indent(1),
+                              ' */&#10;')"/>
         <xsl:apply-templates select="." mode="jcgn:builder">
           <xsl:with-param name="class-name" select="$class-name"/>
           <xsl:with-param name="indent" select="1"/>
@@ -106,12 +118,24 @@
       
 
       <!-- now generate a list of getters for params -->
+      <xsl:value-of select="concat(cgn:indent(1),
+                            '/*&#10;',
+                            cgn:indent(1),
+                            ' * Getters &#10;',
+                            cgn:indent(1),
+                            ' */&#10;')"/>
       <xsl:for-each select="cgn:field">
         <xsl:apply-templates select="." mode="jcgn:generate-getter"/>
       </xsl:for-each>
 
       <!-- verify if class is not read-only, generate setters -->
       <xsl:if test="$read-only='false'">
+        <xsl:value-of select="concat(cgn:indent(1),
+                              '/*&#10;',
+                              cgn:indent(1),
+                              ' * Setters &#10;',
+                              cgn:indent(1),
+                              ' */&#10;')"/>
         <xsl:for-each select="cgn:field">
           <xsl:apply-templates select="." mode="jcgn:generate-setter">
             <xsl:with-param name="class-name" select="$class-name"/>
