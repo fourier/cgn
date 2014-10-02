@@ -116,6 +116,13 @@
       cgn:pascalize-string($name))"/>
   </xsl:function>
 
+  <xsl:function name="jcgn:create-is-set-name">
+    <xsl:param name="name"/>
+    <xsl:value-of select="concat('isSet',
+      cgn:pascalize-string($name))"/>
+  </xsl:function>
+
+  
   <xsl:function name="jcgn:create-getter-name">
     <xsl:param name="name"/>
     <xsl:value-of select="concat('get',
@@ -143,12 +150,22 @@
     -->
     <xsl:param name="field"/>
     <xsl:value-of select="concat(
-                          cgn:generate-field-name($field),
+                          jcgn:generate-field-name($field),
                           ' = ',
                           jcgn:create-function-argument($field),
                           ';&#10;')"/>
   </xsl:function>
 
+  <xsl:function name="jcgn:generate-field-name">
+    <!--
+        convert a parameter to the field name. Example:
+        jcgn:generate-field-name("user-name")
+        returns iUserName
+    -->
+    <xsl:param name="field"/>
+    <xsl:value-of select="concat('m', cgn:pascalize-string($field))"/>
+  </xsl:function>
   
   
+
 </xsl:stylesheet>
