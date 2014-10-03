@@ -82,6 +82,9 @@ This file and its contents are Confidential.</copyright>
       <field cgn:name="message" cgn:type="[byte]"/>
       <field cgn:name="dates" cgn:type="[date]"/>
       <field cgn:name="date" cgn:type="date" />
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="joda-date" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="strings" cgn:type="[string]"/>
     </object>
 
     <object cgn:name="UserName" cgn:read-only="true" jcgn:builder="true">
