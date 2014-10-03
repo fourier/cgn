@@ -76,14 +76,20 @@ package com.mycompany.example;
 
 
 /**
- * Generated from example.xml on 30/9/2014
+ * Generated from example.xml on 3/10/2014
  */
 public class WorkPackage implements android.os.Parcelable {
 
+    /*
+     * private fields 
+     */
     private long mCustomerId;
     private long mWorkcodeId;
     private long mProjectId;
 
+    /*
+     * Internal Builder class
+     */
     public static class Builder {
 
         private long mCustomerId;
@@ -123,9 +129,13 @@ public class WorkPackage implements android.os.Parcelable {
      * Implementing Parcelable interface 
      */
     public WorkPackage(android.os.Parcel in) {
-        this.mCustomerId = in.readLong();
-        this.mWorkcodeId = in.readLong();
-        this.mProjectId = in.readLong();
+        try {
+            this.mCustomerId = in.readLong();
+            this.mWorkcodeId = in.readLong();
+            this.mProjectId = in.readLong();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -153,6 +163,9 @@ public class WorkPackage implements android.os.Parcelable {
      * Parcelable interface implementation done 
      */
 
+    /*
+     * Getters 
+     */
     public long getCustomerId() {
         return this.mCustomerId;
     }
@@ -165,6 +178,9 @@ public class WorkPackage implements android.os.Parcelable {
         return this.mProjectId;
     }
 
+    /*
+     * Setters 
+     */
     public WorkPackage setCustomerId(long customerId) {
         this.mCustomerId = customerId;
         return this;
@@ -191,13 +207,19 @@ package com.mycompany.example;
 
 
 /**
- * Generated from example.xml on 30/9/2014
+ * Generated from example.xml on 3/10/2014
  */
 public class Model implements android.os.Parcelable {
 
+    /*
+     * private fields 
+     */
     private java.util.ArrayList<WorkPackage> mUsedWorkPackages;
     private java.util.Date mTime;
 
+    /*
+     * Internal Builder class
+     */
     public static class Builder {
 
         private java.util.ArrayList<WorkPackage> mUsedWorkPackages;
@@ -230,14 +252,20 @@ public class Model implements android.os.Parcelable {
      * Implementing Parcelable interface 
      */
     public Model(android.os.Parcel in) {
-        this.mUsedWorkPackages = new java.util.ArrayList<WorkPackage>();  in.readTypedList(mUsedWorkPackages, WorkPackage.CREATOR);
-        this.mTime = (java.util.Date)in.readSerializable();
+        final java.text.SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+        try {
+            this.mUsedWorkPackages = new java.util.ArrayList<WorkPackage>();  in.readTypedList(mUsedWorkPackages, WorkPackage.CREATOR);
+            this.mTime = ISO8601_JAVA_DATE_FORMAT.parse(in.readString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void writeToParcel(android.os.Parcel out, int flags) {
+        final java.text.SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         out.writeTypedList(mUsedWorkPackages);
-        out.writeSerializable(mTime);
+        out.writeString(ISO8601_JAVA_DATE_FORMAT.format(mTime));
     }
 
     @Override
@@ -258,6 +286,9 @@ public class Model implements android.os.Parcelable {
      * Parcelable interface implementation done 
      */
 
+    /*
+     * Getters 
+     */
     public java.util.ArrayList<WorkPackage> getUsedWorkPackages() {
         return this.mUsedWorkPackages;
     }
@@ -266,6 +297,9 @@ public class Model implements android.os.Parcelable {
         return this.mTime;
     }
 
+    /*
+     * Setters 
+     */
     public Model setUsedWorkPackages(java.util.ArrayList<WorkPackage> usedWorkPackages) {
         this.mUsedWorkPackages = usedWorkPackages;
         return this;
