@@ -57,13 +57,13 @@
         <xsl:choose>
           <!-- if jcgn:type is defined and it is a date -->
           <xsl:when test="$array-type = 'date' and $jtype = 'org.joda.time.DateTime'">
-            <xsl:value-of select="concat('new ArrayList&lt;',
+            <xsl:value-of select="concat('new java.util.ArrayList&lt;',
                                   $jtype,
                                   '&gt;();&#10;',
                                   cgn:indent($indent+1))"/>
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
-                                  'ArrayList&lt;String&gt; tmpArray = new ArrayList&lt;String&gt;();&#10;',
+                                  'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'in.readStringList(tmpArray);&#10;',
                                   cgn:indent($indent+2),
@@ -76,13 +76,13 @@
                                   '}')"/>
           </xsl:when>
           <xsl:when test="$array-type = 'date' and $jtype = 'java.util.Date'">
-            <xsl:value-of select="concat('new ArrayList&lt;',
+            <xsl:value-of select="concat('new java.util.ArrayList&lt;',
                                   $jtype,
                                   '&gt;();&#10;',
                                   cgn:indent($indent+1))"/>
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
-                                  'ArrayList&lt;String&gt; tmpArray = new ArrayList&lt;String&gt;();&#10;',
+                                  'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'in.readStringList(tmpArray);&#10;',
                                   cgn:indent($indent+2),
@@ -95,7 +95,7 @@
                                   '}')"/>
           </xsl:when>
           <xsl:when test="$array-type = 'string'">
-            <xsl:text>new ArrayList&lt;String&gt;();</xsl:text>
+            <xsl:text>new java.util.ArrayList&lt;String&gt;();</xsl:text>
             <xsl:value-of select="concat('in.readStringList(this.',
                                   $name,
                                   ')')"/>
@@ -184,7 +184,7 @@
           <xsl:when test="$array-type = 'date' and $jtype = 'org.joda.time.DateTime'">
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
-                                  'ArrayList&lt;String&gt; tmpArray = new ArrayList&lt;String&gt;();&#10;',
+                                  'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'for (',
                                   $jtype,
@@ -201,7 +201,7 @@
           <xsl:when test="$array-type = 'date' and $jtype = 'java.util.Date'">
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
-                                  'ArrayList&lt;String&gt; tmpArray = new ArrayList&lt;String&gt;();&#10;',
+                                  'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'for (',
                                   $jtype,
@@ -284,7 +284,7 @@
   <xsl:template name="this:generate-java-datetime-formatter">
     <xsl:param name="indent" select="1"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-                          'final SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;);&#10;')"/>
+                          'final java.text.SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new java.text.SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;);&#10;')"/>
   </xsl:template>
 
   <xsl:template name="this:generate-joda-datetime-formatter">
