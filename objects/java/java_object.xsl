@@ -77,9 +77,12 @@
                             cgn:indent(1),
                             ' * private fields &#10;',
                             cgn:indent(1),
-                            ' */&#10;')"/>      
+                            ' */&#10;')"/>
+      <xsl:variable name="final" select="@cgn:read-only='true'"/>
       <xsl:for-each select="cgn:field">
-        <xsl:apply-templates select="." mode="jcgn:generate-field"/>
+        <xsl:apply-templates select="." mode="jcgn:generate-field">
+          <xsl:with-param name="final" select="$final"/>
+        </xsl:apply-templates>
       </xsl:for-each>
       <xsl:text>&#10;</xsl:text>
 
