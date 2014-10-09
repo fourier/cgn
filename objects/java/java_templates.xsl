@@ -109,6 +109,8 @@
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
     <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
+    <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
+    <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
                           jcgn:create-setter-name(./@cgn:name),
@@ -119,13 +121,48 @@
                           ') {&#10;',
                           cgn:indent($indent+2),
                           'this.',
-                          jcgn:generate-field-assignment($name),
-                          cgn:indent($indent+2),
+                          jcgn:generate-field-assignment($name))"/>
+    <xsl:value-of select="concat(cgn:indent($indent+2),
                           'return this;&#10;',
                           cgn:indent($indent+1),
                           '}&#10;&#10;')"/>
   </xsl:template>
 
+  <xsl:template match="cgn:field" mode="jcgn:generate-bitfield-setter">
+    <!--
+        Generate a setter for a field.
+    -->
+    <xsl:param name="class-name"/>
+    <xsl:param name="indent" select="0" />
+    <xsl:variable name="name" select="./@cgn:name"/>
+    <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+    <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
+    <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
+    <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
+    <xsl:value-of select="concat(
+                          jcgn:create-setter-name(./@cgn:name),
+                          '(',
+                          $type,
+                          ' ',
+                          jcgn:create-function-argument($name),
+                          ') {&#10;',
+                          cgn:indent($indent+2),
+                          'this.',
+                          jcgn:generate-field-assignment($name))"/>
+    <xsl:value-of select="concat(cgn:indent($indent+2),
+                          'this.',
+                          $bitfield-var-name,
+                          ' |= ',
+                          $bitfield-name,
+                          ';&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+2),
+                          'return this;&#10;',
+                          cgn:indent($indent+1),
+                          '}&#10;&#10;')"/>
+  </xsl:template>
+
+  
   <xsl:template name="jcgn:generate-arguments">
     <!-- arguments list -->
     <xsl:for-each select="cgn:field">
@@ -162,6 +199,14 @@
     <xsl:call-template name="jcgn:generate-assignments">
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:call-template>
+    <!-- set fields in case of is-set flag -->
+    <xsl:if test="@cgn:is-set='true'">
+      <xsl:value-of select="concat(cgn:indent($indent+2),
+                            jcgn:bitfields-var-name($class-name),
+                            ' = (1 &lt;&lt; ',
+                            count(cgn:field),
+                            ') - 1;&#10;')"/>
+    </xsl:if>
     <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
   </xsl:template>
 
@@ -181,6 +226,21 @@
     <xsl:if test="./@jcgn:builder and not(./@jcgn:builder = 'true') and not(./@jcgn:builder = 'false')">
       <xsl:message terminate="yes">
         <xsl:text>jcgn:builder attribute can have either 'false' or 'true' values, or absent(false by default)</xsl:text>
+      </xsl:message>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="jcgn:test-isset-applicable">
+    <!-- determine correctness of the builder value -->
+    <xsl:if test="@cgn:is-set = 'true' and count(cgn:field)>31">
+      <xsl:message terminate="yes">
+        <xsl:value-of select="concat('Object ',
+                              @cgn:package,
+                              '.',
+                              @cgn:name,
+                              ' has ',
+                              count(cgn:field),
+                              ' fields, but only 31 supported for now in order to generate isSet-family of methods')"/>
       </xsl:message>
     </xsl:if>
   </xsl:template>

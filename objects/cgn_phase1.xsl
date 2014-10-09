@@ -40,6 +40,16 @@
         </xsl:otherwise>
       </xsl:choose>
 
+      <!-- 4. isset attribute -->
+      <xsl:choose>
+        <xsl:when test="not(@cgn:is-set)">
+          <xsl:attribute name="cgn:is-set" select="$cgn:default-is-set"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="@cgn:is-set"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      
       
       <!-- copy the rest -->
       <xsl:copy-of select="@*|node()" />

@@ -427,6 +427,15 @@
         'e.printStackTrace();&#10;',
         cgn:indent($indent+1),
         '}&#10;')"/-->
+
+    <!-- set fields in case of is-set flag -->
+    <xsl:if test="@cgn:is-set='true'">
+      <xsl:value-of select="concat(cgn:indent($indent+1),
+                            jcgn:bitfields-var-name($class-name),
+                            ' = (1 &lt;&lt; ',
+                            count(cgn:field),
+                            ') - 1;&#10;')"/>
+    </xsl:if>
     
     <xsl:value-of select="concat(cgn:indent($indent),'}&#10;&#10;')"/>
     

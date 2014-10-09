@@ -168,5 +168,15 @@
   </xsl:function>
   
   
+  <xsl:function name="jcgn:bitfields-var-name">
+    <xsl:param name="class-name"/>
+    <xsl:value-of select="concat('m',$class-name,'FieldsSetBitMask')"/>
+  </xsl:function>
+  
+  <xsl:function name="jcgn:bitfield-name">
+    <xsl:param name="name"/>
+    <xsl:value-of select="concat(upper-case(replace($name, '-', '_')), '_FIELD_MASK')"/>
+  </xsl:function>
 
+  
 </xsl:stylesheet>

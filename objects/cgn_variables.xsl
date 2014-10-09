@@ -11,6 +11,7 @@
   <xsl:variable name="cgn:primitive-types-list" select="tokenize($cgn:primitive-types, ',')"/>
   <xsl:variable name="cgn:indent-size" select="4"/>
   <xsl:variable name="cgn:default-json">false</xsl:variable>
+  <xsl:variable name="cgn:default-is-set">false</xsl:variable>
     
 </xsl:stylesheet>
 
