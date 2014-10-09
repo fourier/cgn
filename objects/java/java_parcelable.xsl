@@ -325,20 +325,20 @@
     </xsl:if>
 
     <!-- add try statement -->
-    <xsl:value-of select="concat(cgn:indent($indent+1),'try {&#10;')"/>
+    <!--xsl:value-of select="concat(cgn:indent($indent+1),'try {&#10;')"/-->
 
     <xsl:for-each select="cgn:field">
       <xsl:apply-templates select="." mode="this:parcel-reader">
-        <xsl:with-param name="indent" select="$indent+1"/>
+        <xsl:with-param name="indent" select="$indent"/>
       </xsl:apply-templates>
     </xsl:for-each>
 
     <!-- add catch statement -->
-    <xsl:value-of select="concat(cgn:indent($indent+1),'} catch (Exception e) {&#10;',
+    <!--xsl:value-of select="concat(cgn:indent($indent+1),'} catch (Exception e) {&#10;',
                           cgn:indent($indent+2),
                           'e.printStackTrace();&#10;',
                           cgn:indent($indent+1),
-                          '}&#10;')"/>
+                          '}&#10;')"/-->
     
     <xsl:value-of select="concat(cgn:indent($indent),'}&#10;&#10;')"/>
     
