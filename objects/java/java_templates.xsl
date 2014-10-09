@@ -78,7 +78,8 @@
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
-    <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $type, ' ', $name, ';&#10;')"/>
+    <xsl:variable name="final" select="if (../@cgn:read-only='true') then 'final ' else ''"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $final ,$type, ' ', $name, ';&#10;')"/>
   </xsl:template>
   
   <xsl:template match="cgn:field" mode="jcgn:generate-getter">
