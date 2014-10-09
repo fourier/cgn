@@ -3,6 +3,78 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
                 xmlns:this="https://github.com/fourier/cgn/java/parcelable">
+
+  <xsl:template name="this:generate-joda-date-parser-method">
+    <xsl:param name="indent"/>
+    <xsl:value-of select="concat(cgn:indent($indent),
+                          '/**&#10;',
+                          cgn:indent($indent),
+                          ' * Parses the string specified using supplied formatter&#10;',
+                          cgn:indent($indent),
+                          ' *&#10;',
+                          cgn:indent($indent),
+                          ' * @param dateString   string to parse&#10;',
+                          cgn:indent($indent),
+                          ' * @param format       formatter used to parse the date string&#10;',
+                          cgn:indent($indent),
+                          ' * @return             parsed DateTime object or DateTime epoch object in case of error&#10;',
+                          cgn:indent($indent),
+                          ' */&#10;',
+                          cgn:indent($indent),
+                          'private static org.joda.time.DateTime parseDate(String dateString, org.joda.time.format.DateTimeFormatter format) {&#10;',
+                          cgn:indent($indent+1),
+                          'org.joda.time.DateTime result = new org.joda.time.DateTime(0);&#10;',
+                          cgn:indent($indent+1),
+                          'try {&#10;',
+                          cgn:indent($indent+2),
+                          'result = format.parseDateTime(dateString);&#10;',
+                          cgn:indent($indent+1),
+                          '} catch (Exception e) {&#10;',
+                          cgn:indent($indent+2),
+                          'e.printStackTrace();&#10;',
+                          cgn:indent($indent+1),
+                          '}&#10;',
+                          cgn:indent($indent+1),
+                          'return result;&#10;',
+                          cgn:indent($indent),
+                          '}&#10;&#10;')"/>
+  </xsl:template>
+
+  <xsl:template name="this:generate-java-date-parser-method">
+    <xsl:param name="indent"/>
+    <xsl:value-of select="concat(cgn:indent($indent),
+                          '/**&#10;',
+                          cgn:indent($indent),
+                          ' * Parses the string specified using supplied formatter&#10;',
+                          cgn:indent($indent),
+                          ' *&#10;',
+                          cgn:indent($indent),
+                          ' * @param dateString   string to parse&#10;',
+                          cgn:indent($indent),
+                          ' * @param format       formatter used to parse the date string&#10;',
+                          cgn:indent($indent),
+                          ' * @return             parsed Date object or Date epoch object in case of error&#10;',
+                          cgn:indent($indent),
+                          ' */&#10;',
+                          cgn:indent($indent),
+                          'private static java.util.Date parseDate(String dateString, java.text.SimpleDateFormat format) {&#10;',
+                          cgn:indent($indent+1),
+                          'java.util.Date result = new java.util.Date(0);&#10;',
+                          cgn:indent($indent+1),
+                          'try {&#10;',
+                          cgn:indent($indent+2),
+                          'result = format.parse(dateString);&#10;',
+                          cgn:indent($indent+1),
+                          '} catch (Exception e) {&#10;',
+                          cgn:indent($indent+2),
+                          'e.printStackTrace();&#10;',
+                          cgn:indent($indent+1),
+                          '}&#10;',
+                          cgn:indent($indent+1),
+                          'return result;&#10;',
+                          cgn:indent($indent),
+                          '}&#10;&#10;')"/>
+  </xsl:template>
   
   <xsl:template match="cgn:field" mode="this:parcel-reader">
     <xsl:param name="indent"/>
@@ -32,10 +104,10 @@
         <xsl:choose>
           <!-- if jcgn:type is defined and it is a date -->
           <xsl:when test="$type = 'date' and $jtype = 'org.joda.time.DateTime'">
-            <xsl:text>ISO8601_JODA_DATE_FORMAT.parseDateTime(in.readString())</xsl:text>
+            <xsl:text>parseDate(in.readString(), ISO8601_JODA_DATE_FORMAT)</xsl:text>
           </xsl:when>
           <xsl:when test="$type = 'date' and $jtype = 'java.util.Date'">
-            <xsl:text>ISO8601_JAVA_DATE_FORMAT.parse(in.readString())</xsl:text>
+            <xsl:text>parseDate(in.readString(), ISO8601_JAVA_DATE_FORMAT)</xsl:text>
           </xsl:when>
           <!-- if primitive type, use the map above -->
           <xsl:when test="cgn:is-primitive-type($type)">
@@ -71,7 +143,7 @@
                                   cgn:indent($indent+3),
                                   'this.',
                                   $name,
-                                  '.add(ISO8601_JODA_DATE_FORMAT.parseDateTime(date));&#10;',
+                                  '.add(parseDate(date, ISO8601_JODA_DATE_FORMAT));&#10;',
                                   cgn:indent($indent+1),
                                   '}')"/>
           </xsl:when>
@@ -90,7 +162,7 @@
                                   cgn:indent($indent+3),
                                   'this.',
                                   $name,
-                                  '.add(ISO8601_JAVA_DATE_FORMAT.parse(date));&#10;',
+                                  '.add(parseDate(date, ISO8601_JAVA_DATE_FORMAT));&#10;',
                                   cgn:indent($indent+1),
                                   '}')"/>
           </xsl:when>
@@ -304,7 +376,23 @@
     <xsl:value-of select="cgn:indent($indent)"/>
     <xsl:text> * Implementing Parcelable interface &#10;</xsl:text>
     <xsl:value-of select="cgn:indent($indent)"/>
-    <xsl:text> */&#10;</xsl:text>
+    <xsl:text> */&#10;&#10;</xsl:text>
+
+    <!-- if necessary, generate no throwing parser for the Joda DateTime -->
+    <xsl:if test="cgn:field[@jcgn:type='org.joda.time.DateTime']">
+      <xsl:call-template name="this:generate-joda-date-parser-method">
+        <xsl:with-param name="indent" select="$indent"/>
+      </xsl:call-template>
+    </xsl:if>
+
+    <!-- if necessary, generate no throwing parser for the java.util.date -->
+    <xsl:if test="cgn:field[@jcgn:type='java.util.Date']">
+      <xsl:call-template name="this:generate-java-date-parser-method">
+        <xsl:with-param name="indent" select="$indent"/>
+      </xsl:call-template>
+    </xsl:if>
+
+    
     <!-- create contsructor -->
     <xsl:value-of select="concat(cgn:indent($indent),
                           'public ',
@@ -335,10 +423,10 @@
 
     <!-- add catch statement -->
     <!--xsl:value-of select="concat(cgn:indent($indent+1),'} catch (Exception e) {&#10;',
-                          cgn:indent($indent+2),
-                          'e.printStackTrace();&#10;',
-                          cgn:indent($indent+1),
-                          '}&#10;')"/-->
+        cgn:indent($indent+2),
+        'e.printStackTrace();&#10;',
+        cgn:indent($indent+1),
+        '}&#10;')"/-->
     
     <xsl:value-of select="concat(cgn:indent($indent),'}&#10;&#10;')"/>
     
