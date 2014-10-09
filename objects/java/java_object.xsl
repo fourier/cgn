@@ -68,7 +68,6 @@
           </xsl:call-template>
         </xsl:otherwise>
       </xsl:choose>
-      <xsl:text>&#10;</xsl:text>
 
       <!-- generate fields of the class from the list of param elements, like
            "private String iDate;"
@@ -101,12 +100,22 @@
         </xsl:apply-templates>
       </xsl:if>
 
+      <!-- if class is not read only and has no builder
+           need to add an empty contstructor
+      -->
+      <xsl:if test="$read-only='false' and $builder='false'">
+        <xsl:call-template name="java-constructor-empty">
+          <xsl:with-param name="class-name" select="$class-name"/>
+        </xsl:call-template>
+      </xsl:if>
+
       <!-- if class is read-only or builder defined, generate constructor -->
       <xsl:if test="$read-only='true' or $builder='true'">
         <xsl:call-template name="java-constructor">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
       </xsl:if>
+
 
       <!-- if class is parcellable, generate appropriate methods -->
       <xsl:if test="$parcelable='true'">
