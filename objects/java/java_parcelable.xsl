@@ -372,7 +372,7 @@
     <!-- supposedly call this template for inner classes -->
     <xsl:param name="indent" select="1"/>
     <xsl:value-of select="cgn:indent($indent)"/>
-    <xsl:text>/*&#10;</xsl:text>
+    <xsl:text>/**&#10;</xsl:text>
     <xsl:value-of select="cgn:indent($indent)"/>
     <xsl:text> * Implementing Parcelable interface &#10;</xsl:text>
     <xsl:value-of select="cgn:indent($indent)"/>
@@ -477,7 +477,7 @@
     </xsl:call-template>
 
     <xsl:value-of select="cgn:indent($indent)"/>
-    <xsl:text>/*&#10;</xsl:text>
+    <xsl:text>/**&#10;</xsl:text>
     <xsl:value-of select="cgn:indent($indent)"/>
     <xsl:text> * Parcelable interface implementation done &#10;</xsl:text>
     <xsl:value-of select="cgn:indent($indent)"/>

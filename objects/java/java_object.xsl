@@ -143,7 +143,7 @@
            "private String iDate;"
       -->
       <xsl:value-of select="concat(cgn:indent(1),
-                            '/*&#10;',
+                            '/**&#10;',
                             cgn:indent(1),
                             ' * private fields &#10;',
                             cgn:indent(1),
@@ -159,9 +159,11 @@
       <!-- create a builder if necessary -->
       <xsl:if test="$builder='true'">
         <xsl:value-of select="concat(cgn:indent(1),
-                              '/*&#10;',
+                              '/**&#10;',
                               cgn:indent(1),
-                              ' * Internal Builder class&#10;',
+                              ' * Internal Builder class for the ',
+                              $class-name,
+                              '&#10;',
                               cgn:indent(1),
                               ' */&#10;')"/>
         <xsl:apply-templates select="." mode="jcgn:builder">
@@ -201,7 +203,7 @@
 
       <!-- now generate a list of getters for params -->
       <xsl:value-of select="concat(cgn:indent(1),
-                            '/*&#10;',
+                            '/**&#10;',
                             cgn:indent(1),
                             ' * Getters &#10;',
                             cgn:indent(1),
@@ -213,7 +215,7 @@
       <!-- verify if class is not read-only, generate setters -->
       <xsl:if test="$read-only='false'">
         <xsl:value-of select="concat(cgn:indent(1),
-                              '/*&#10;',
+                              '/**&#10;',
                               cgn:indent(1),
                               ' * Setters &#10;',
                               cgn:indent(1),
@@ -236,6 +238,12 @@
 
       <!-- generate a list of isSet functions for params -->
       <xsl:if test="$is-set='true'">
+        <xsl:value-of select="concat(cgn:indent(1),
+                              '/**&#10;',
+                              cgn:indent(1),
+                              ' * Set of methods determining if the field is set &#10;',
+                              cgn:indent(1),
+                              ' */&#10;')"/>
         <xsl:for-each select="cgn:field">
           <xsl:apply-templates select="." mode="this:generate-is-set">
             <xsl:with-param name="class-name" select="$class-name"/>
