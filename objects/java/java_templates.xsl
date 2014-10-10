@@ -88,6 +88,11 @@
         Generate a getter for a field.
     -->
     <xsl:param name="indent" select="0" />
+    <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
+                          cgn:indent($indent+1), ' * Returns the value of the &quot;', @cgn:name, '&quot; field&#10;',
+                          cgn:indent($indent+1), ' * &#10;',
+                          cgn:indent($indent+1), ' * @return the value of the &quot;', @cgn:name, '&quot; field&#10;',
+                          cgn:indent($indent+1), ' */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type, ./@jcgn:type))"/>
     <xsl:text> </xsl:text>
     <xsl:value-of select="concat(jcgn:create-getter-name(./@cgn:name),
@@ -111,6 +116,12 @@
     <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
     <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
+                          cgn:indent($indent+1), ' * Sets the &quot;', @cgn:name, '&quot; field to the value supplied &#10;',
+                          cgn:indent($indent+1), ' * &#10;',
+                          cgn:indent($indent+1), ' * @param ', jcgn:create-function-argument($name), ' the value to the set into the &quot;', @cgn:name, '&quot; field&#10;',
+                          cgn:indent($indent+1), ' * @return reference to this object instance&#10;',
+                          cgn:indent($indent+1), ' */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
                           jcgn:create-setter-name(./@cgn:name),
@@ -139,6 +150,13 @@
     <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
     <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
+                          cgn:indent($indent+1), ' * Sets the &quot;', @cgn:name, '&quot; field to the value supplied &#10;',
+                          cgn:indent($indent+1), ' * &#10;',
+                          cgn:indent($indent+1), ' * @param ', jcgn:create-function-argument($name), ' the value to the set into the &quot;', @cgn:name, '&quot; field&#10;',
+                          cgn:indent($indent+1), ' * @return reference to this object instance&#10;',
+                          cgn:indent($indent+1), ' */&#10;')"/>
+
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name, ' ')"/>   
     <xsl:value-of select="concat(
                           jcgn:create-setter-name(./@cgn:name),

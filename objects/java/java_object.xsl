@@ -49,6 +49,11 @@
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
+    <xsl:value-of select="concat(cgn:indent($indent), '/**&#10;',
+                          cgn:indent($indent), ' * Returns &lt;code&gt;true&lt;/code&gt; if the value of the &quot;', @cgn:name, '&quot; field is set&#10;',
+                          cgn:indent($indent), ' * &#10;',
+                          cgn:indent($indent), ' * @return &lt;code&gt;true&lt;/code&gt; if the value of the &quot;', @cgn:name, '&quot; field is set&#10;',
+                          cgn:indent($indent), ' */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent),'public boolean ',
                           jcgn:create-is-set-name(./@cgn:name),
                           '() {&#10;',
@@ -207,7 +212,7 @@
                             cgn:indent(1),
                             ' * Getters &#10;',
                             cgn:indent(1),
-                            ' */&#10;')"/>
+                            ' */&#10;&#10;')"/>
       <xsl:for-each select="cgn:field">
         <xsl:apply-templates select="." mode="jcgn:generate-getter"/>
       </xsl:for-each>
@@ -219,7 +224,7 @@
                               cgn:indent(1),
                               ' * Setters &#10;',
                               cgn:indent(1),
-                              ' */&#10;')"/>
+                              ' */&#10;&#10;')"/>
         <xsl:for-each select="cgn:field">
           <xsl:choose>
             <xsl:when test="$is-set='true'">
@@ -238,12 +243,9 @@
 
       <!-- generate a list of isSet functions for params -->
       <xsl:if test="$is-set='true'">
-        <xsl:value-of select="concat(cgn:indent(1),
-                              '/**&#10;',
-                              cgn:indent(1),
-                              ' * Set of methods determining if the field is set &#10;',
-                              cgn:indent(1),
-                              ' */&#10;')"/>
+        <xsl:value-of select="concat(cgn:indent(1), '/**&#10;',
+                              cgn:indent(1), ' * Set of methods determining if the field is set &#10;',
+                              cgn:indent(1), ' */&#10;&#10;')"/>
         <xsl:for-each select="cgn:field">
           <xsl:apply-templates select="." mode="this:generate-is-set">
             <xsl:with-param name="class-name" select="$class-name"/>
