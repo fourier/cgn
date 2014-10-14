@@ -8,27 +8,31 @@
     <xsl:param name="class-name"/>
     <xsl:param name="indent" select="1"/>
     <xsl:param name="funcname" select="'create'"/>
+    <!-- comment -->
+    <xsl:value-of select="concat(cgn:indent($indent),
+                          '/**&#10;',
+                          cgn:indent($indent),
+                          ' * Creates the object instance &#10;',
+                          cgn:indent($indent),
+                          ' * @return created instance of the &lt;code&gt;',
+                          $class-name,
+                          '&lt;/code&gt;&#10;',
+                          cgn:indent($indent),
+                          ' */&#10;')"/>
+    <!-- function body -->
     <xsl:value-of select="concat(
-                          cgn:indent($indent+1),
+                          cgn:indent($indent),
                           'public',
                           ' ',
                           $class-name,
                           ' ',
                           $funcname,
                           '() {&#10;',
-                          cgn:indent($indent+2),
+                          cgn:indent($indent+1),
                           'return new ',
                           $class-name,
-                          '(')"/>
-    <xsl:for-each select="cgn:field">
-      <xsl:value-of select="jcgn:generate-field-name(./@cgn:name)"/>
-      <xsl:if test="position() != last()">
-        <xsl:text>, </xsl:text>
-      </xsl:if>
-    </xsl:for-each>
-    <xsl:value-of select="concat(
-                          ');&#10;',
-                          cgn:indent($indent+1),
+                          '(this);&#10;',
+                          cgn:indent($indent),
                           '}&#10;')"/>
   </xsl:template>
   
@@ -52,6 +56,14 @@
     </xsl:call-template>
     <xsl:text>&#10;</xsl:text>
 
+    <!-- add bitfield if is-set is true -->
+    <xsl:if test="@cgn:is-set = 'true'">
+      <xsl:value-of select="concat(cgn:indent($indent+1),
+                            'private long ',
+                            jcgn:bitfields-var-name($builder),
+                            ' = 0;&#10;')"/>
+    </xsl:if>
+    
     <!-- generate fields of the class from the list of param elements, like
          "private String iDate;"
     -->
@@ -67,17 +79,27 @@
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:call-template>
 
-    <!-- verify if class is not read-only, generate setters -->
+    <!-- generate setters -->
     <xsl:for-each select="cgn:field">
-      <xsl:apply-templates select="." mode="jcgn:generate-setter">
-        <xsl:with-param name="class-name" select="$builder-class-name"/>
-        <xsl:with-param name="indent" select="$indent"/>
-      </xsl:apply-templates>
+      <xsl:choose>
+        <xsl:when test="../@cgn:is-set = 'true'">
+          <xsl:apply-templates select="." mode="jcgn:generate-bitfield-setter">
+            <xsl:with-param name="class-name" select="$builder-class-name"/>
+            <xsl:with-param name="indent" select="$indent"/>
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="." mode="jcgn:generate-setter">
+            <xsl:with-param name="class-name" select="$builder-class-name"/>
+            <xsl:with-param name="indent" select="$indent"/>
+          </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:for-each>
 
     <xsl:call-template name="this:builderMainFunction">
       <xsl:with-param name="class-name" select="$class-name"/>
-      <xsl:with-param name="indent" select="$indent"/>
+      <xsl:with-param name="indent" select="$indent+1"/>
       <xsl:with-param name="funcname" select="$create-func-name"/>
     </xsl:call-template>
     

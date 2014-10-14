@@ -228,6 +228,44 @@
     <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
   </xsl:template>
 
+  <xsl:template name="java-constructor-from-builder">
+    <!-- called from cgn:object, generates a constructor from builder:
+         protected UserName(UserNameBuilder builder) {
+             iDate = builder.iDate;
+         }
+         protected to allow to use in derived classes as well
+    -->
+    <xsl:param name="class-name"/>
+    <xsl:param name="indent" select="0" />
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+                          '/**&#10;',
+                          cgn:indent($indent+1),
+                          ' * Constructor from the Builder &#10;',
+                          cgn:indent($indent+1),
+                          ' */&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+                          'protected ',
+                          $class-name,'(Builder builder) {&#10;')"/>
+    <!-- body of constructor : list of field assignments -->
+    <xsl:for-each select="cgn:field">
+      <xsl:value-of select="concat(cgn:indent($indent+2),
+                            jcgn:generate-field-name(@cgn:name),
+                            ' = builder.',
+                            jcgn:generate-field-name(@cgn:name),
+                            ';&#10;')"/>
+    </xsl:for-each>
+    <!-- set fields in case of is-set flag -->
+    <xsl:if test="@cgn:is-set='true'">
+      <xsl:value-of select="concat(cgn:indent($indent+2),
+                            jcgn:bitfields-var-name($class-name),
+                            ' = builder.',
+                            jcgn:bitfields-var-name('Builder'),
+                            ';&#10;')"/>
+    </xsl:if>
+    <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
+  </xsl:template>
+
+  
   <xsl:template name="java-constructor-empty">
     <!-- called from cgn:object, generates an empty constructor, like:
          public UserName() {

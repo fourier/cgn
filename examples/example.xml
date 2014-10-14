@@ -134,7 +134,21 @@
       <field cgn:name="normal-dates" cgn:type="[date]"/>
     </object>
 
-    <object cgn:name="Entry" cgn:read-only="false" cgn:is-set="true" jcgn:parcelable="true">
+    <object cgn:name="EntryNotIsSet" cgn:read-only="false" cgn:is-set="false" jcgn:parcelable="true">
+      <field cgn:name="date" cgn:type="date"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
+      <field cgn:name="doubleValue" cgn:type="double"/>
+      <field cgn:name="stringValue" cgn:type="string"/>
+      <field cgn:name="boolValue" cgn:type="boolean"/>
+      <field cgn:name="intValue" cgn:type="int"/>
+      <field cgn:name="longValue" cgn:type="long"/>
+      <field cgn:name="byteValue" cgn:type="byte"/>
+      <field cgn:name="longArray" cgn:type="[long]"/>
+      <field cgn:name="lat" cgn:type="double"/>
+      <field cgn:name="long" cgn:type="double"/>
+    </object>
+
+    <object cgn:name="EntryIsSet" cgn:read-only="false" cgn:is-set="true" jcgn:parcelable="true">
       <field cgn:name="date" cgn:type="date"/>
       <field cgn:name="dates" cgn:type="[date]"/>
       <field cgn:name="doubleValue" cgn:type="double"/>

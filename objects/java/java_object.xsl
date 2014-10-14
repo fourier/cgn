@@ -189,13 +189,21 @@
         </xsl:call-template>
       </xsl:if>
 
-      <!-- if class is read-only or builder defined, generate constructor -->
-      <xsl:if test="$read-only='true' or $builder='true'">
+      <!-- if class is read-only and builder not defined,
+           generate fields constructor
+      -->
+      <xsl:if test="$read-only='true' and $builder = 'false'">
         <xsl:call-template name="java-constructor">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
       </xsl:if>
 
+      <!-- if builder created, generate constructor from builder -->
+      <xsl:if test="$builder = 'true'">
+        <xsl:call-template name="java-constructor-from-builder">
+          <xsl:with-param name="class-name" select="$class-name"/>
+        </xsl:call-template>
+      </xsl:if>
 
       <!-- if class is parcellable, generate appropriate methods -->
       <xsl:if test="$parcelable='true'">
