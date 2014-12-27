@@ -66,6 +66,12 @@
       <cgn:field cgn:name="customer-id" cgn:type="long" />
       <cgn:field cgn:name="workcode-id" cgn:type="long"/>
       <cgn:field cgn:name="project-id" cgn:type="long"/>
+      <jcgn:source>
+        aoeau
+      </jcgn:source>
+      <jcgn:source>
+        bbabaoeu
+      </jcgn:source>
     </cgn:object>
 
     <cgn:object cgn:name="Model">

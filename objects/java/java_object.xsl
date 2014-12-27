@@ -259,7 +259,13 @@
           </xsl:apply-templates>
         </xsl:for-each>
       </xsl:if>
-      
+
+      <!-- generate a set of user-defined source code injections -->
+      <!--
+      <xsl:for-each select="jcgn:source">
+        <xsl:value-of select="'source'"/>
+      </xsl:for-each>
+      -->
       <!-- closing class -->
       <xsl:call-template name="java-class-footer"/>
     </xsl:result-document>

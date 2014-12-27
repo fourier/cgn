@@ -6,13 +6,15 @@
   <xsl:template name="jcgn:file-header">
     <!-- arguments: (optional)package - package name -->
     <xsl:param name="package"/>
+    <!--
     <xsl:if test="$cgn:copyright-var != ''">
       <xsl:text>/**&#10;</xsl:text>
       <xsl:for-each select="tokenize($cgn:copyright-var, '\n\r?')">
         <xsl:value-of select="concat(' * ', ., '&#10;')"/>
       </xsl:for-each>
       <xsl:text> */&#10;</xsl:text>
-    </xsl:if>
+      </xsl:if>
+      -->
     <xsl:if test="$package">
       <xsl:value-of select="concat('package ', $package, ';&#10;&#10;')"/>
     </xsl:if>
