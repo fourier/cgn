@@ -432,6 +432,7 @@
   <xsl:template name="cgn:generate-json-parser">
     <xsl:param name="parser-package" />
     <xsl:param name="parser-class" />
+    <xsl:param name="copyright" select="$cgn:default-copyright"/>
     <xsl:variable name="class-name" select="$parser-class"/>
     <xsl:variable name="file-name" select="cgn:create-java-file-name($parser-package, concat($class-name, '.java'))"/>
 
@@ -448,6 +449,7 @@
       <!-- header -->
       <xsl:call-template name="jcgn:file-header">
         <xsl:with-param name="package" select="$parser-package"/>
+        <xsl:with-param name="copyright" select="$copyright"/>
       </xsl:call-template>
       
       <!-- generate imports -->

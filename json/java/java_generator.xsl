@@ -333,6 +333,7 @@
   <xsl:template name="cgn:generate-json-generator">
     <xsl:param name="gen-package" />
     <xsl:param name="gen-class" />
+    <xsl:param name="copyright" select="$cgn:default-copyright"/>
     <xsl:variable name="class-name" select="$gen-class"/>
     <xsl:variable name="file-name" select="cgn:create-java-file-name($gen-package, concat($class-name, '.java'))"/>
 
@@ -349,6 +350,7 @@
       <!-- header -->
       <xsl:call-template name="jcgn:file-header">
         <xsl:with-param name="package" select="$gen-package"/>
+        <xsl:with-param name="copyright" select="$copyright"/>
       </xsl:call-template>
       
       <!-- generate imports -->
