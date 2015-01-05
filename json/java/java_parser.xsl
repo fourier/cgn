@@ -76,7 +76,7 @@
      * @param dateString the string containing the date/time to parse
      * @return org.joda.time.DateTime object with the parsed date/time
      */&#10;</xsl:text>
-    <xsl:text>    private static org.joda.time.DateTime parseISODate(String dateString) throws IOException {
+    <xsl:text>    public static org.joda.time.DateTime parseISODate(String dateString) throws IOException {
         org.joda.time.DateTime date = null;
         try {
            date = org.joda.time.format.ISODateTimeFormat.dateTimeParser().parseDateTime(dateString);
