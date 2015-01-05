@@ -6,13 +6,6 @@
 
   <xsl:variable name="cgn:xml-name" select="base-uri()" as="xs:string"/>
 
-  <!--
-  <xsl:variable name="cgn:copyright-var">
-    <xsl:apply-templates mode="cgn:create-copyright-sequence"/>
-  </xsl:variable>-->
-
-  
-
   <xsl:include href="java_prepobjects.xsl"/>
 
   <xsl:include href="java_object.xsl"/>

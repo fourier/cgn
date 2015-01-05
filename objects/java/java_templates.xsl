@@ -6,15 +6,16 @@
   <xsl:template name="jcgn:file-header">
     <!-- arguments: (optional)package - package name -->
     <xsl:param name="package"/>
-    <!--
-    <xsl:if test="$cgn:copyright-var != ''">
+    <xsl:param name="copyright" select="$cgn:default-copyright"/>
+    <xsl:if test="$copyright != ''">
       <xsl:text>/**&#10;</xsl:text>
-      <xsl:for-each select="tokenize($cgn:copyright-var, '\n\r?')">
-        <xsl:value-of select="concat(' * ', ., '&#10;')"/>
+      <xsl:for-each select="tokenize($copyright, '\n\r?')">
+        <xsl:if test="not((position() = 1 or position() = last()) and string-length(normalize-space(.)) = 0)">
+          <xsl:value-of select="concat(' * ', cgn:left-trim(.), '&#10;')"/>
+        </xsl:if>
       </xsl:for-each>
       <xsl:text> */&#10;</xsl:text>
-      </xsl:if>
-      -->
+    </xsl:if>
     <xsl:if test="$package">
       <xsl:value-of select="concat('package ', $package, ';&#10;&#10;')"/>
     </xsl:if>
@@ -201,7 +202,7 @@
                             jcgn:generate-field-assignment(./@cgn:name))"/>
     </xsl:for-each>
   </xsl:template>
-    
+  
 
   <xsl:template name="java-constructor">
     <!-- called from cgn:object, generates a constructor from fields, like:

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-                xmlns:cgn="https://github.com/fourier/cgn">
-
+                xmlns:cgn="https://github.com/fourier/cgn"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xsl:function name="cgn:camelize-string">
     <!--
@@ -96,5 +96,9 @@
     <xsl:value-of select="$result"/>
   </xsl:function>
 
+  <xsl:function name="cgn:left-trim" as="xs:string">
+    <xsl:param name="arg" as="xs:string?"/>
+    <xsl:sequence select="replace($arg,'^\s+','')"/>
+  </xsl:function>
   
 </xsl:stylesheet>

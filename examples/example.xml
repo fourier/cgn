@@ -35,8 +35,10 @@
        can be specifiend globally in cgn:objects element level
   -->
 
-  <copyright>Copyright (c) 2014 by Veroveli AB
-  This file and its contents are Confidential.</copyright>
+  <cgn:copyright>
+    Copyright (c) 2014 by Veroveli AB
+    This file and its contents are Confidential.
+  </cgn:copyright>
 
   <objects cgn:package="com.github.fourier.ctt"
            cgn:read-only="false">
@@ -66,12 +68,12 @@
       <cgn:field cgn:name="customer-id" cgn:type="long" />
       <cgn:field cgn:name="workcode-id" cgn:type="long"/>
       <cgn:field cgn:name="project-id" cgn:type="long"/>
-      <jcgn:source>
-        aoeau
-      </jcgn:source>
-      <jcgn:source>
-        bbabaoeu
-      </jcgn:source>
+      <!--jcgn:source>
+          aoeau
+          </jcgn:source>
+          <jcgn:source>
+          bbabaoeu
+          </jcgn:source-->
     </cgn:object>
 
     <cgn:object cgn:name="Model">

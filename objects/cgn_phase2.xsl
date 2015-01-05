@@ -8,7 +8,17 @@
           parent attributes (in cgn:objects) already specified by
           the first phase of transformation
       -->
-      <!-- 1. package attribute: from parent (cgn:objects) or own -->
+      <!-- 1. copyright attribute: from parent (cgn:objects) or own -->
+      <xsl:choose>
+        <xsl:when test="not(@cgn:copyright)">
+          <xsl:attribute name="cgn:copyright" select="../@cgn:copyright"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="@cgn:copyright"/>
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <!-- 2. package attribute: from parent (cgn:objects) or own -->
       <xsl:choose>
         <xsl:when test="not(@cgn:package)">
           <xsl:attribute name="cgn:package" select="../@cgn:package"/>
@@ -18,7 +28,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- 2. read-only attribute: from parent (cgn:objects) or own -->
+      <!-- 3. read-only attribute: from parent (cgn:objects) or own -->
       <xsl:choose>
         <xsl:when test="not(@cgn:read-only)">
           <xsl:attribute name="cgn:read-only" select="../@cgn:read-only"/>
@@ -28,7 +38,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- 3. json attribute: from parent (cgn:objects) or own -->
+      <!-- 4. json attribute: from parent (cgn:objects) or own -->
       <xsl:choose>
         <xsl:when test="not(@cgn:json)">
           <xsl:attribute name="cgn:json" select="../@cgn:json"/>
@@ -38,7 +48,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- 4. is-set attribute: from parent (cgn:objects) or own -->
+      <!-- 5. is-set attribute: from parent (cgn:objects) or own -->
       <xsl:choose>
         <xsl:when test="not(@cgn:is-set)">
           <xsl:attribute name="cgn:is-set" select="../@cgn:is-set"/>

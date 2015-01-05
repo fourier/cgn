@@ -114,6 +114,7 @@
       <!-- header -->
       <xsl:call-template name="jcgn:file-header">
         <xsl:with-param name="package" select="$package"/>
+        <xsl:with-param name="copyright" select="./@cgn:copyright"/>
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
       <!-- imports should be here if necessary-->

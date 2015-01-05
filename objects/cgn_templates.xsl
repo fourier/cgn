@@ -12,11 +12,5 @@
       </xsl:message>
     </xsl:if>
   </xsl:template>
-
-
-  <xsl:template match="cgn:copyright" mode="cgn:create-copyright-sequence">
-    <xsl:value-of select="." />
-    <!---xsl:value-of select="tokenize($copyright-val, '\n\r?')"/-->
-  </xsl:template>
   
 </xsl:stylesheet>

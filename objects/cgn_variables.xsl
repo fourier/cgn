@@ -3,6 +3,7 @@
                 xmlns:cgn="https://github.com/fourier/cgn">
 
   <!-- defaults -->
+  <xsl:variable name="cgn:default-copyright"></xsl:variable>
   <xsl:variable name="cgn:default-package">com.example.cgn</xsl:variable>
   <xsl:variable name="cgn:default-read-only">false</xsl:variable>
   
