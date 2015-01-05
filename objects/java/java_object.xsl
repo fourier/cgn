@@ -262,11 +262,13 @@
       </xsl:if>
 
       <!-- generate a set of user-defined source code injections -->
-      <!--
-      <xsl:for-each select="jcgn:source">
-        <xsl:value-of select="'source'"/>
-      </xsl:for-each>
-      -->
+      <xsl:if test="count(jcgn:source) != 0">
+        <xsl:for-each select="jcgn:source">
+          <xsl:value-of select="."/>
+        </xsl:for-each>
+        <xsl:value-of select="'&#10;'"/>
+      </xsl:if>
+      
       <!-- closing class -->
       <xsl:call-template name="java-class-footer"/>
     </xsl:result-document>
