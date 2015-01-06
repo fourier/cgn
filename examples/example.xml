@@ -99,6 +99,11 @@
       <field cgn:name="data" cgn:type="PersonalUserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
       <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <jcgn:source>
+    public void dumpEmployee() {
+        System.out.println("Employee " + mData.getName() + " started at " + org.joda.time.format.DateTimeFormat.shortDate().print(mStarted));        
+    }        
+      </jcgn:source>
     </object>
   </objects>
 

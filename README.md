@@ -23,9 +23,10 @@ The user can set the following properties for the generated objects:
 * the type of fields: string, date, int, double, long, boolean, byte or user-defined from one of the generated objects only
 
 Java specific properties which could be set:
-* if generate the [Builder](http://www.javaworld.com/article/2074938/core-java/too-many-parameters-in-java-methods-part-3-builder-pattern.html) for the object
-* if generate the (Parcelable)(http://developer.android.com/reference/android/os/Parcelable.html) support for the object
+* if generate the [Builder](http://www.javaworld.com/article/2074938/core-java/too-many-parameters-in-java-methods-part-3-builder-pattern.html) for the class
+* if generate the (Parcelable)(http://developer.android.com/reference/android/os/Parcelable.html) support for the class
 * Joda DateTime type for date(*java.util.Date* is the default): if the *jcgn:type* attribute is set to *org.joda.time.DateTime* on a *cgn:date* field, this type will be used instead of *java.util.Date*. Other types not supported for now.
+* Inject user's code into the generated class
 
 Directory structure
 ===================
@@ -41,7 +42,7 @@ Directory structure
 
 Usage
 ========
-The user should specify the objects he is willing to generate using XML description. The **cgn** designed to be extensible with generation for other languages, not only java, therefore its elements defined in 2 namespaces for now: *xmlns:cgn="https://github.com/fourier/cgn"* and *xmlns:jcgn="https://github.com/fourier/cgn/java">*. The object fields specific for all output languages (currently Java only) should be declared in **cgn** namespace, the Java-specific should be declared in **jcgn** namespace.
+The user should specify the objects he is willing to generate using XML description. The **cgn** designed to be extensible with generation for other languages, not only java, therefore its elements defined in 2 namespaces for now: *xmlns:cgn="https://github.com/fourier/cgn"* and *xmlns:jcgn="https://github.com/fourier/cgn/java"*. The object fields specific for all output languages (currently Java only) should be declared in **cgn** namespace, the Java-specific should be declared in **jcgn** namespace.
 
 Examples
 ========
@@ -69,6 +70,11 @@ Example how to specify simple objects:
       <field cgn:name="data" cgn:type="PersonalUserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
       <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <jcgn:source>
+    public void dumpEmployee() {
+        System.out.println("Employee " + mData.getName() + " started at " + org.joda.time.format.DateTimeFormat.shortDate().print(mStarted));        
+    }        
+      </jcgn:source>
     </object>
   </objects>
 ```
@@ -77,7 +83,7 @@ Here we create a package and 2 objects in a package. We also include the copyrig
 
 The first object, ***PersonalUserData***, will have setters and will have a JSON-parser/generator created. It will also implements the [Parcelable](http://developer.android.com/reference/android/os/Parcelable.html) interface. If the field doesn't have a type, the **string** type assumed. One can see how to define arrays as types as well - using square brackets as in **visits** field. 
 
-The second object will not have any setters, however the [Builder](http://en.wikipedia.org/wiki/Builder_pattern) inner class will be generated. The object as well will implement Android's [Parcelable](http://developer.android.com/reference/android/os/Parcelable.html) interface. One can see how the previously defined object can be used as a field type. The *started* field will have a *org.joda.time.DateTime* type.
+The second object, ***Employee** will not have any setters, however the [Builder](http://en.wikipedia.org/wiki/Builder_pattern) inner class will be generated. The object as well will implement Android's [Parcelable](http://developer.android.com/reference/android/os/Parcelable.html) interface. One can see how the previously defined object can be used as a field type. The *started* field will have a *org.joda.time.DateTime* type. It will also include user-specified function *dumpEmployee*.
 
 The generated code is:
 
@@ -458,6 +464,10 @@ public class Employee implements android.os.Parcelable {
         return this.mStarted;
     }
 
-}
 
+    public void dumpEmployee() {
+        System.out.println("Employee " + mData.getName() + " started at " + org.joda.time.format.DateTimeFormat.shortDate().print(mStarted));
+    }        
+      
+}
 ```
