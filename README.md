@@ -9,9 +9,9 @@ The aim of the project is to automate as much as possible with generated objects
 Features
 ========
 The **cgn** allows to generate:
-1. Java POJOs and alike
-2. JSON parser for the generated POJOs 
-3. JSON generator for generated POJOs
+* Java POJOs and alike
+* JSON parser for the generated POJOs 
+* JSON generator for generated POJOs
 
 The user can set the following properties for the generated objects:
 * names
