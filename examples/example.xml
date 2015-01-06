@@ -36,7 +36,7 @@
   -->
 
   <cgn:copyright>
-    Copyright (c) 2014 by Veroveli AB
+    Copyright (c) 2014 by My Company
     This file and its contents are Confidential.
   </cgn:copyright>
 
@@ -84,21 +84,38 @@
     </cgn:object>
   </objects>
 
-  <objects cgn:package="com.veroveli.example">
 
-    <object cgn:name="PersonalUserData" cgn:read-only="false" jcgn:parcelable="true">
+  
+  <objects cgn:package="com.mycompany.users" cgn:copyright="Copyright (c) 2014 by My Company&#10;This file and its contents are Confidential." >
+    <object cgn:name="PersonalUserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
       <field cgn:name="name"/>
       <field cgn:name="occupation"/>
       <field cgn:name="age" cgn:type="int"/>
-      <field cgn:name="completed-at" cgn:type="date"/>
-      <field cgn:name="userId" cgn:type="int"/>
-      <field cgn:name="visits" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="visits" cgn:type="[date]"/>
     </object>
 
     <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
       <field cgn:name="id" cgn:type="int"/>
-      <field cgn:name="personalUserData" cgn:type="PersonalUserData"/>
-      <field cgn:name="vacation" cgn:type="boolean"/>
+      <field cgn:name="data" cgn:type="PersonalUserData"/>
+      <field cgn:name="probation" cgn:type="boolean" />
+      <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+    </object>
+  </objects>
+
+  <objects cgn:package="com.mycompany.example">
+
+    <object cgn:name="PersonalUserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
+      <field cgn:name="name"/>
+      <field cgn:name="occupation"/>
+      <field cgn:name="age" cgn:type="int"/>
+      <field cgn:name="visits" cgn:type="[date]"/>
+    </object>
+
+    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
+      <field cgn:name="id" cgn:type="int"/>
+      <field cgn:name="data" cgn:type="PersonalUserData"/>
+      <field cgn:name="probation" cgn:type="boolean" />
+      <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
     </object>
 
     <object cgn:name="Company" cgn:package="com.veroveli.protocol" jcgn:parcelable="true">

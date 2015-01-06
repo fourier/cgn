@@ -92,8 +92,6 @@
     -->
     <xsl:param name="indent" select="0" />
     <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
-                          cgn:indent($indent+1), ' * Returns the value of the &quot;', @cgn:name, '&quot; field&#10;',
-                          cgn:indent($indent+1), ' * &#10;',
                           cgn:indent($indent+1), ' * @return the value of the &quot;', @cgn:name, '&quot; field&#10;',
                           cgn:indent($indent+1), ' */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', cgn:type-to-java-type(./@cgn:type, ./@jcgn:type))"/>
