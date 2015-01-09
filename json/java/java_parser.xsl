@@ -45,7 +45,7 @@
      */
     private static String determineDateFormat(String dateString) {
         for (String regexp : DATE_FORMAT_REGEXPS.keySet()) {
-            if (dateString.toLowerCase().matches(regexp)) {
+            if (dateString.toLowerCase(Locale.US).matches(regexp)) {
                 return DATE_FORMAT_REGEXPS.get(regexp);
             }
         }
@@ -59,7 +59,7 @@
      */
     public static Date parseDate(String dateString) throws IOException {
         String dateFormat = determineDateFormat(dateString);
-        final DateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, java.util.Locale.US) : SimpleDateFormat.getDateTimeInstance();
+        final DateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, Locale.US) : SimpleDateFormat.getDateTimeInstance();
         Date result = null;
         try {
             result = fmt.parse(dateString);
@@ -93,6 +93,7 @@
     <xsl:text>import java.text.ParseException;&#10;</xsl:text>
     <xsl:text>import java.text.DateFormat;&#10;</xsl:text>
     <xsl:text>import java.text.SimpleDateFormat;&#10;</xsl:text>
+    <xsl:text>import java.util.Locale;&#10;</xsl:text>
     <xsl:text>import java.util.Date;&#10;</xsl:text>
     <xsl:text>import java.util.Map;&#10;</xsl:text>
     <xsl:text>import java.util.HashMap;&#10;</xsl:text>
