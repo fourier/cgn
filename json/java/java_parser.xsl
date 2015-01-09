@@ -59,7 +59,7 @@
      */
     public static Date parseDate(String dateString) throws IOException {
         String dateFormat = determineDateFormat(dateString);
-        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, java.util.Locale.US) : new SimpleDateFormat();
+        final DateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, java.util.Locale.US) : SimpleDateFormat.getDateTimeInstance();
         Date result = null;
         try {
             result = fmt.parse(dateString);
@@ -91,6 +91,7 @@
 
   <xsl:template name="this:parser-generate-imports">
     <xsl:text>import java.text.ParseException;&#10;</xsl:text>
+    <xsl:text>import java.text.DateFormat;&#10;</xsl:text>
     <xsl:text>import java.text.SimpleDateFormat;&#10;</xsl:text>
     <xsl:text>import java.util.Date;&#10;</xsl:text>
     <xsl:text>import java.util.Map;&#10;</xsl:text>
