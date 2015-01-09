@@ -6,9 +6,6 @@
   <xsl:include href="java_builder.xsl"/>
   <xsl:include href="java_parcelable.xsl"/>
 
-  <!--xsl:template match="cgn:object" mode="builderJava"-->
-
-  
   <xsl:template match="cgn:field" mode="this:generate-bitfield-const">
     <xsl:param name="pos"/>
     <xsl:param name="indent"/>
@@ -16,8 +13,10 @@
     <xsl:value-of select="concat(cgn:indent($indent),
                           'private static long ',
                           $name,
-                          ' = 1 &lt;&lt; ',
-                          ($pos)-1,
+                          ' = 1',
+                          if ($pos != 1) then
+                          concat(' &lt;&lt; ', ($pos)-1)
+                          else '',
                           ';&#10;')"/>
   </xsl:template>
 
