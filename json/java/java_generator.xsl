@@ -27,7 +27,7 @@
   <xsl:template name="this:generate-datetime-field">
     <xsl:param name="indent" select="1"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-                          'private static SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;);&#10;&#10;')"/>
+                          'private static SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;, Locale.US);&#10;&#10;')"/>
   </xsl:template>
 
   <xsl:template name="this:generate-iso-date-formatter">
