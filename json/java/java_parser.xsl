@@ -59,7 +59,7 @@
      */
     public static Date parseDate(String dateString) throws IOException {
         String dateFormat = determineDateFormat(dateString);
-        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, Locale.US) : new SimpleDateFormat();
+        SimpleDateFormat fmt = dateFormat != null ? new SimpleDateFormat(dateFormat, java.util.Locale.US) : new SimpleDateFormat();
         Date result = null;
         try {
             result = fmt.parse(dateString);
