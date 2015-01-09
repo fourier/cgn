@@ -87,7 +87,7 @@
       <entry key="int">in.readInt()</entry>
       <entry key="double">in.readDouble()</entry>
       <entry key="long">in.readLong()</entry>
-      <entry key="boolean">in.readByte() == 0 ? false : true</entry>
+      <entry key="boolean">in.readByte() != 0</entry>
       <entry key="byte">in.readByte()</entry>
       <entry key="date"><xsl:value-of select="concat('(',
       ./@jcgn:type,
@@ -392,9 +392,10 @@
       </xsl:call-template>
     </xsl:if>
 
-    
     <!-- create contsructor -->
     <xsl:value-of select="concat(cgn:indent($indent),
+                          '@SuppressWarnings(&quot;unchecked&quot;)&#10;',
+                          cgn:indent($indent),
                           'public ',
                           $class-name,
                           '(android.os.Parcel in) {&#10;')"/>
