@@ -129,4 +129,14 @@
 
 
   
+  <xsl:function name="cgn:create-fqdn-full-type" as="xs:string">
+    <xsl:param name="package" as="xs:string?"/>
+    <xsl:param name="type" as="xs:string?"/>
+    <xsl:variable name="class-name" select="if (cgn:type-contains-package($type)) then cgn:extract-type-name($type) else $type"/>
+    <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($type)) then cgn:extract-type-package($type) else $package"/>
+    <xsl:value-of select="concat($class-pkg,'.',$class-name)"/>
+  </xsl:function>
+
+
+  
 </xsl:stylesheet>

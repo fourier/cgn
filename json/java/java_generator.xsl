@@ -9,10 +9,6 @@
     <xsl:text>import java.util.Date;&#10;</xsl:text>
     <xsl:text>import com.fasterxml.jackson.core.JsonGenerator;&#10;</xsl:text>
     <xsl:text>import java.io.IOException;&#10;</xsl:text>
-    <!-- import all objects -->
-    <xsl:for-each select="//cgn:object[@cgn:json='true']">
-        <xsl:value-of select="jcgn:generate-import(concat(@cgn:package, '.', @cgn:name))"/>
-    </xsl:for-each>
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
@@ -40,12 +36,14 @@
   <xsl:template name="this:generate-array-field">
     <xsl:param name="indent"/>
     <xsl:param name="gen-class"/>
+    <xsl:param name="package"/>
     <xsl:param name="field-name"/>
     <xsl:param name="field-value"/>
     <xsl:param name="field-type"/>
     <xsl:param name="jtype"/>
     <xsl:variable name="type" select="cgn:array-type($field-type)"/>
-    <xsl:variable name="java-type" select="jcgn:array-to-java-type($field-type, $jtype)"/>
+    <xsl:variable name="java-type" select="if (cgn:is-primitive-type($type)) then jcgn:array-to-java-type($field-type, $jtype) else cgn:create-fqdn-full-type($package, $type)"/>
+
     <xsl:value-of select="concat(cgn:indent($indent),
                           'if (',
                           $field-value,
@@ -205,15 +203,18 @@
 
   <xsl:template name="this:generate-2args-generator">
     <xsl:param name="indent"/>
+    <xsl:param name="package"/>
     <xsl:param name="pojo"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-      'public static void generateJson(JsonGenerator gen, ',
-      $pojo,
-      ' object) throws IOException {&#10;')"/>
+                          'public static void generateJson(JsonGenerator gen, ',
+                          $package,
+                          '.',
+                          $pojo,
+                          ' object) throws IOException {&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent+1),
-      'generateJson(gen, object, null);&#10;',
-      cgn:indent($indent),
-      '}&#10;&#10;')"/>
+                          'generateJson(gen, object, null);&#10;',
+                          cgn:indent($indent),
+                          '}&#10;&#10;')"/>
   </xsl:template>
 
   <!--
@@ -226,18 +227,21 @@
     <xsl:param name="indent" select="1"/>
     <xsl:param name="gen-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
-    <xsl:variable name="jtype" select="./@jcgn:type"/>
+    <xsl:variable name="package" select="./@cgn:package"/>
 
     <!-- generate 2 args method first -->
     <xsl:call-template name="this:generate-2args-generator">
       <xsl:with-param name="indent" select="$indent"/>
+      <xsl:with-param name="package" select="$package"/>
       <xsl:with-param name="pojo" select="$pojo"/>
     </xsl:call-template>
     
     <xsl:value-of select="concat(cgn:indent($indent),
-      'private static void generateJson(JsonGenerator gen, ',
-      $pojo,
-      ' object, String fieldName) throws IOException {&#10;')"/>
+                          'private static void generateJson(JsonGenerator gen, ',
+                          $package,
+                          '.',
+                          $pojo,
+                          ' object, String fieldName) throws IOException {&#10;')"/>
     <!-- actual generation -->
     <!-- try -->
     <xsl:value-of select="concat(cgn:indent($indent+1),
@@ -279,6 +283,7 @@
           <xsl:call-template name="this:generate-array-field">
             <xsl:with-param name="indent" select="$indent+3"/>
             <xsl:with-param name="gen-class" select="$gen-class"/>
+            <xsl:with-param name="package" select="$package"/>
             <xsl:with-param name="field-name" select="$name"/>
             <xsl:with-param name="field-value" select="concat('object.',
               $getter-name,

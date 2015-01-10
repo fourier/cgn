@@ -191,15 +191,6 @@
     </xsl:choose>
   </xsl:function>
 
-  <xsl:function name="this:create-fqdn-full-type" as="xs:string">
-    <xsl:param name="package" as="xs:string?"/>
-    <xsl:param name="type" as="xs:string?"/>
-    <xsl:variable name="class-name" select="if (cgn:type-contains-package($type)) then cgn:extract-type-name($type) else $type"/>
-    <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($type)) then cgn:extract-type-package($type) else $package"/>
-    <xsl:value-of select="concat($class-pkg,'.',$class-name)"/>
-  </xsl:function>
-
-
   <xsl:function name="this:create-new-field-instance" as="xs:string">
     <!-- create a string like 'new MyClass()' or 'new MyClass.Builder() for the field -->
     <xsl:param name="objects" />   <!-- all objects -->
@@ -360,7 +351,7 @@
       <xsl:if test="cgn:is-array($type)">
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
         <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;',
-                                                     if (cgn:is-primitive-type($array-type)) then jcgn:array-to-java-type($type, $jtype) else this:create-fqdn-full-type(../@cgn:package, $array-type),
+                                                     if (cgn:is-primitive-type($array-type)) then jcgn:array-to-java-type($type, $jtype) else cgn:create-fqdn-full-type(../@cgn:package, $array-type),
                                                      '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
                               '/* Create the array */&#10;')"/>
