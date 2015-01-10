@@ -96,9 +96,37 @@
     <xsl:value-of select="$result"/>
   </xsl:function>
 
+  <!--
+      functions
+      left-trim,
+      extract-type-package,
+      extract-type-name
+      are based on http://www.xsltfunctions.com/ -->
   <xsl:function name="cgn:left-trim" as="xs:string">
     <xsl:param name="arg" as="xs:string?"/>
     <xsl:sequence select="replace($arg,'^\s+','')"/>
   </xsl:function>
+
+  <xsl:function name="cgn:type-contains-package" as="xs:boolean">
+    <xsl:param name="type" as="xs:string?"/>
+    <xsl:value-of select='contains($type, ".")'/>    
+  </xsl:function>
+
+  <xsl:function name="cgn:extract-type-name" as="xs:string">
+    <xsl:param name="type" as="xs:string?"/>
+    <xsl:value-of select="replace($type,concat('^.*','\.'),'')"/>
+  </xsl:function>
+
+  <xsl:function name="cgn:extract-type-package" as="xs:string">
+    <xsl:param name="arg" as="xs:string?"/>
+    <xsl:value-of select="
+                          if (matches($arg, '\.'))
+                          then replace($arg,
+                          concat('^(.*)', '\.','.*'),
+                          '$1')
+                          else ''"/>
+  </xsl:function>
+
+
   
 </xsl:stylesheet>

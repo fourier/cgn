@@ -40,22 +40,27 @@
     This file and its contents are Confidential.
   </cgn:copyright>
 
-  <objects cgn:package="com.github.fourier.ctt"
-           cgn:read-only="false">
-    <object cgn:name="TestFile">
-      <field cgn:name="generated"/>
-      <field cgn:name="expected"/>
-    </object>
-
-    <object cgn:name="CommandLine">
+  <objects cgn:package="com.arrays.test"
+           cgn:json="true">
+    <object cgn:name="CommandLine" cgn:read-only="false" jcgn:builder="true" >
       <field cgn:name="executable"/>
       <field cgn:name="arguments" cgn:type="[string]"/>
     </object>
 
-    <object cgn:name="TestRun">
-      <field cgn:name="name"/>
-      <field cgn:name="command-line" cgn:type="CommandLine"/>
-      <field cgn:name="output" cgn:type="[TestFile]"/>
+    <object cgn:name="CommandLineUser1" cgn:read-only="true"/>
+    <object cgn:name="CommandLineUser2" cgn:read-only="true"/>
+
+    <object cgn:name="BigTest">
+      <field cgn:name="0field00" cgn:type="CommandLineUser1"/>
+      <field cgn:name="1field01" cgn:type="CommandLineUser2"/>
+
+      <field cgn:name="field1" cgn:type="CommandLine"/>
+      <field cgn:name="field2" cgn:type="com.arrays.test.CommandLine"/>
+      <field cgn:name="field3" cgn:type="com.mycompany.example.WorkPackage"/>
+      <field cgn:name="array1" cgn:type="[CommandLine]"/>
+      <field cgn:name="array2" cgn:type="[com.arrays.test.CommandLine]"/>
+      <field cgn:name="array3" cgn:type="[com.mycompany.example.WorkPackage]"/>
+
     </object>
     
   </objects>
@@ -109,7 +114,7 @@
 
   <objects cgn:package="com.mycompany.example">
 
-    <object cgn:name="PersonalUserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
+    <object cgn:name="UserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
       <field cgn:name="name"/>
       <field cgn:name="occupation"/>
       <field cgn:name="age" cgn:type="int"/>
@@ -118,7 +123,7 @@
 
     <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
       <field cgn:name="id" cgn:type="int"/>
-      <field cgn:name="data" cgn:type="PersonalUserData"/>
+      <field cgn:name="data" cgn:type="UserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
       <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
     </object>

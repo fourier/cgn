@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:this="https://github.com/fourier/cgn/parser/java/this.xsl"
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
@@ -100,10 +101,6 @@
     <xsl:text>import com.fasterxml.jackson.core.JsonParser;&#10;</xsl:text>
     <xsl:text>import com.fasterxml.jackson.core.JsonToken;&#10;</xsl:text>
     <xsl:text>import java.io.IOException;&#10;</xsl:text>
-    <!-- import all objects -->
-    <xsl:for-each select="//cgn:object[@cgn:json='true']">
-        <xsl:value-of select="jcgn:generate-import(concat(@cgn:package, '.', @cgn:name))"/>
-    </xsl:for-each>
     <xsl:text>&#10;</xsl:text>
   </xsl:template>
 
@@ -151,7 +148,50 @@
     </xsl:variable>
     <xsl:value-of select="$result"/>
   </xsl:function>
-        
+
+  <xsl:function name="this:has-builder" as="xs:boolean">
+    <xsl:param name="objects"/>
+    <xsl:param name="package" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:choose>
+      <xsl:when test="$objects[@cgn:name=$name and @cgn:package=$package and @jcgn:builder='true']">
+        <xsl:value-of select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xsl:function name="this:has-setters" as="xs:boolean">
+    <xsl:param name="objects"/>
+    <xsl:param name="package" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:choose>
+      <xsl:when test="$objects[@cgn:name=$name and @cgn:package=$package and @cgn:read-only='false']">
+        <xsl:value-of select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  <xsl:function name="this:has-json" as="xs:boolean">
+    <xsl:param name="objects"/>
+    <xsl:param name="package" as="xs:string"/>
+    <xsl:param name="name" as="xs:string"/>
+    <xsl:choose>
+      <xsl:when test="$objects[@cgn:name=$name and @cgn:package=$package and @cgn:json='true']">
+        <xsl:value-of select="true()"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="false()"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
+  
   <xsl:template name="this:create-field-parser">
     <xsl:param name="parser-var" select="'parser'"/>
     <xsl:param name="parser-class"/>
@@ -169,12 +209,51 @@
       </xsl:when>
       <!-- object - use parser defined -->
       <xsl:otherwise>
-        <xsl:value-of select="concat($parser-class,
-                              '.parse(',
-                              $parser-var,
-                              ', new ',
-                              $type,
-                              '.Builder())')"/>
+        <!-- get object's FQDN -->
+        <xsl:variable name="class-name" select="if (cgn:type-contains-package($type)) then cgn:extract-type-name($type) else $type"/>
+        <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($type)) then cgn:extract-type-package($type) else ../@cgn:package"/>
+        <!-- check if the field type has a json flag set -->
+        <xsl:choose>
+          <xsl:when test="not(this:has-json(//cgn:object, $class-pkg, $class-name))">
+            <xsl:message terminate="no">
+              <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', ../@cgn:package, '.', ../@cgn:name,':')"/>
+              <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', @cgn:name, ' doesn''t have cgn:json=true flag')"/>
+            </xsl:message>
+            <xsl:value-of select="'null'"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- now determine if it has setters or builder -->
+            <xsl:choose>
+              <xsl:when test="this:has-setters(//cgn:object, $class-pkg, $class-name)">
+                <xsl:value-of select="concat($parser-class,
+                                      '.parse(',
+                                      $parser-var,
+                                      ', new ',
+                                      $class-pkg,
+                                      '.',
+                                      $class-name,
+                                      '())')"/>
+              </xsl:when>
+              <xsl:when test="this:has-builder(//cgn:object, $class-pkg, $class-name)">
+                <xsl:value-of select="concat($parser-class,
+                                      '.parse(',
+                                      $parser-var,
+                                      ', new ',
+                                      $class-pkg,
+                                      '.',
+                                      $class-name,
+                                      '.Builder())')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:message terminate="no">
+                  <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', ../@cgn:package, '.', ../@cgn:name,':')"/>
+                  <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', @cgn:name, ' have neither jcgn:builder=true nor cgn:read-only=false')"/>
+                </xsl:message>
+                <xsl:value-of select="'null'"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -189,14 +268,16 @@
   <xsl:template name="jcgn:generate-pojo-parser">
     <xsl:param name="indent" select="1"/>
     <xsl:param name="parser-class"/>
-    <xsl:variable name="pojo" select="./@cgn:name"/>
+    <xsl:variable name="pojo" select="concat(./@cgn:package, '.', ./@cgn:name)"/>
     <xsl:variable name="jtype" select="./@jcgn:type"/>
+    <xsl:variable name="instance" select="if (@cgn:read-only='false') then cgn:camelize-string(./@cgn:name) else 'builder'"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-      'public static ',
-      $pojo,
-      ' parse(JsonParser parser, ',
-      $pojo,
-      '.Builder builder) throws IOException {&#10;')"/>
+                          'public static ',
+                          $pojo,
+                          ' parse(JsonParser parser, ',
+                          $pojo,
+                          if (@cgn:read-only = 'false') then concat(' ', $instance) else '.Builder builder',
+                          ') throws IOException {&#10;')"/>
     <!-- actual parsing -->
     <!-- object type guard -->
     <xsl:variable name="exception-string" select="concat('Json node for ',
@@ -215,7 +296,7 @@
       'while(parser.nextValue() != JsonToken.END_OBJECT) {&#10;')"/>
     <!-- has token guard -->
     <xsl:value-of select="concat(cgn:indent($indent+2),
-      'if (!parser.hasCurrentToken()) ',
+                          'if (!parser.hasCurrentToken()) ',
       this:java-exception('Malformed JSON'),
       '&#10;')"/>
 
@@ -302,9 +383,10 @@
       <xsl:value-of select="concat(cgn:indent($indent+4),
         '/* call the setter and set field value */&#10;')"/>
       <xsl:value-of select="concat(cgn:indent($indent+4),
-      'builder.',
-      $setter-name,
-      '(')"/>
+                            $instance,
+                            '.',
+                            $setter-name,
+                            '(')"/>
       <!-- value for setter -->
       <xsl:call-template name="this:create-field-parser">
         <xsl:with-param name="parser-var" select="'parser'"/>
@@ -333,7 +415,10 @@
                           '}&#10;&#10;')"/>
     
     
-    <xsl:value-of select="concat(cgn:indent($indent+1), 'return builder.create();&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1),
+                          'return ',
+                          if (@cgn:read-only='false') then $instance else 'builder.create()',
+                          ';&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent), '}&#10;&#10;')"/>
   </xsl:template>
 
@@ -475,11 +560,12 @@
       <!-- generate actual parsers -->
       <xsl:for-each select="//cgn:object[@cgn:json='true']">
         <xsl:choose>
+          <!-- only generate parsers when for not read-only or classes with builder -->
           <xsl:when test="@jcgn:builder = 'false' and @cgn:read-only='true'">
-            <xsl:message><xsl:value-of select="concat(@cgn:package,
+            <xsl:message><xsl:value-of select="concat('WARNING: ', @cgn:package,
             '.',
             @cgn:name,
-            ' have no builder set and read-only, skipping')"/></xsl:message>
+            ' have no builder set and read-only, skipping JSON parser generation')"/></xsl:message>
           </xsl:when>
           <xsl:otherwise>
             <xsl:call-template name="jcgn:generate-pojo-parser">
