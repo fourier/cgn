@@ -11,9 +11,9 @@
   
 
   <xsl:variable name="this:parser-class">ObjectsParser</xsl:variable>
-  <xsl:variable name="this:parser-package">com.veroveli.example.parser</xsl:variable>
+  <xsl:variable name="this:parser-package">com.mycompany.example.parser</xsl:variable>
   <xsl:variable name="this:generator-class">ObjectsGenerator</xsl:variable>
-  <xsl:variable name="this:generator-package">com.veroveli.example.generator</xsl:variable>
+  <xsl:variable name="this:generator-package">com.mycompany.example.generator</xsl:variable>
 
   
   <xsl:template match="/" mode="this:genparser">

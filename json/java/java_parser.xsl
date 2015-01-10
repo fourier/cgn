@@ -186,7 +186,7 @@
         return builder.create();
     }
     -->
-  <xsl:template name="cgn:generate-pojo-parser">
+  <xsl:template name="jcgn:generate-pojo-parser">
     <xsl:param name="indent" select="1"/>
     <xsl:param name="parser-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
@@ -474,10 +474,20 @@
       
       <!-- generate actual parsers -->
       <xsl:for-each select="//cgn:object[@cgn:json='true']">
-        <xsl:call-template name="cgn:generate-pojo-parser">
-          <xsl:with-param name="indent" select="1"/>
-          <xsl:with-param name="parser-class" select="$parser-class"/>
-        </xsl:call-template>
+        <xsl:choose>
+          <xsl:when test="@jcgn:builder = 'false' and @cgn:read-only='true'">
+            <xsl:message><xsl:value-of select="concat(@cgn:package,
+            '.',
+            @cgn:name,
+            ' have no builder set and read-only, skipping')"/></xsl:message>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:call-template name="jcgn:generate-pojo-parser">
+              <xsl:with-param name="indent" select="1"/>
+              <xsl:with-param name="parser-class" select="$parser-class"/>
+            </xsl:call-template>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:for-each>
       
       <!-- closing class -->

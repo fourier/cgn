@@ -48,7 +48,7 @@
 
   <xsl:function name="cgn:get-short-filename">
     <!--
-        returns the short file name of the argument supplied. Examlp:
+        returns the short file name of the argument supplied. Example:
         cgn:get-short-filename("/Users/alexeyv/Sources/Veroveli/ttandroid/src/com/veroveli/tiro/tasks/model/protocol/protocol.xml")
         returns "protocol.xml"
     -->
