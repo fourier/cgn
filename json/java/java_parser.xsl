@@ -191,6 +191,71 @@
     </xsl:choose>
   </xsl:function>
 
+  <xsl:function name="this:create-fqdn-full-type" as="xs:string">
+    <xsl:param name="package" as="xs:string?"/>
+    <xsl:param name="type" as="xs:string?"/>
+    <xsl:variable name="class-name" select="if (cgn:type-contains-package($type)) then cgn:extract-type-name($type) else $type"/>
+    <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($type)) then cgn:extract-type-package($type) else $package"/>
+    <xsl:value-of select="concat($class-pkg,'.',$class-name)"/>
+  </xsl:function>
+
+
+  <xsl:function name="this:create-new-field-instance" as="xs:string">
+    <!-- create a string like 'new MyClass()' or 'new MyClass.Builder() for the field -->
+    <xsl:param name="objects" />   <!-- all objects -->
+    <xsl:param name="parser-cls"/> <!-- parser class -->
+    <xsl:param name="parser-var"/> <!-- parser variable -->
+    <xsl:param name="package"/>    <!-- parent package -->
+    <xsl:param name="object"/>     <!-- parent object type -->
+    <xsl:param name="field-type"/> <!-- field type -->
+    <xsl:param name="field-name"/> <!-- field name -->
+    <!-- get object's FQDN -->
+    <xsl:variable name="class-name" select="if (cgn:type-contains-package($field-type)) then cgn:extract-type-name($field-type) else $field-type"/>
+    <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($field-type)) then cgn:extract-type-package($field-type) else $package"/>
+    <!-- check if the field type has a json flag set -->
+    <xsl:choose>
+      <xsl:when test="not(this:has-json($objects, $class-pkg, $class-name))">
+        <xsl:message terminate="no">
+          <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', $package, '.', $object,':')"/>
+          <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', $field-name, ' doesn''t have cgn:json=true flag')"/>
+        </xsl:message>
+        <xsl:value-of select="'null'"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <!-- now determine if it has setters or builder -->
+        <xsl:choose>
+          <xsl:when test="this:has-setters($objects, $class-pkg, $class-name)">
+            <xsl:value-of select="concat($parser-cls,
+                                  '.parse(',
+                                  $parser-var,
+                                  ', new ',
+                                  $class-pkg,
+                                  '.',
+                                  $class-name,
+                                  '())')"/>
+          </xsl:when>
+          <xsl:when test="this:has-builder($objects, $class-pkg, $class-name)">
+            <xsl:value-of select="concat($parser-cls,
+                                  '.parse(',
+                                  $parser-var,
+                                  ', new ',
+                                  $class-pkg,
+                                  '.',
+                                  $class-name,
+                                  '.Builder())')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:message terminate="no">
+              <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', $package, '.', $object,':')"/>
+              <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', $field-name, ' have neither jcgn:builder=true nor cgn:read-only=false')"/>
+            </xsl:message>
+            <xsl:value-of select="'null'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+
   
   <xsl:template name="this:create-field-parser">
     <xsl:param name="parser-var" select="'parser'"/>
@@ -209,51 +274,7 @@
       </xsl:when>
       <!-- object - use parser defined -->
       <xsl:otherwise>
-        <!-- get object's FQDN -->
-        <xsl:variable name="class-name" select="if (cgn:type-contains-package($type)) then cgn:extract-type-name($type) else $type"/>
-        <xsl:variable name="class-pkg" select="if (cgn:type-contains-package($type)) then cgn:extract-type-package($type) else ../@cgn:package"/>
-        <!-- check if the field type has a json flag set -->
-        <xsl:choose>
-          <xsl:when test="not(this:has-json(//cgn:object, $class-pkg, $class-name))">
-            <xsl:message terminate="no">
-              <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', ../@cgn:package, '.', ../@cgn:name,':')"/>
-              <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', @cgn:name, ' doesn''t have cgn:json=true flag')"/>
-            </xsl:message>
-            <xsl:value-of select="'null'"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <!-- now determine if it has setters or builder -->
-            <xsl:choose>
-              <xsl:when test="this:has-setters(//cgn:object, $class-pkg, $class-name)">
-                <xsl:value-of select="concat($parser-class,
-                                      '.parse(',
-                                      $parser-var,
-                                      ', new ',
-                                      $class-pkg,
-                                      '.',
-                                      $class-name,
-                                      '())')"/>
-              </xsl:when>
-              <xsl:when test="this:has-builder(//cgn:object, $class-pkg, $class-name)">
-                <xsl:value-of select="concat($parser-class,
-                                      '.parse(',
-                                      $parser-var,
-                                      ', new ',
-                                      $class-pkg,
-                                      '.',
-                                      $class-name,
-                                      '.Builder())')"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:message terminate="no">
-                  <xsl:value-of select="concat('WARNING: while generating JSON-parser for ', ../@cgn:package, '.', ../@cgn:name,':')"/>
-                  <xsl:value-of select="concat(' the type ', $class-pkg, '.', $class-name, ' of field ', @cgn:name, ' have neither jcgn:builder=true nor cgn:read-only=false')"/>
-                </xsl:message>
-                <xsl:value-of select="'null'"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:value-of select="this:create-new-field-instance(//cgn:object, $parser-class, $parser-var, ../@cgn:package, ../@cgn:name, $type, @cgn:name)"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -338,7 +359,9 @@
       <!-- if array - special processing -->
       <xsl:if test="cgn:is-array($type)">
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
-        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $jtype), '&gt;')"/>
+        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;',
+                                                     if (cgn:is-primitive-type($array-type)) then jcgn:array-to-java-type($type, $jtype) else this:create-fqdn-full-type(../@cgn:package, $array-type),
+                                                     '&gt;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
                               '/* Create the array */&#10;')"/>
         <xsl:value-of select="concat(cgn:indent($indent+4),
@@ -371,9 +394,7 @@
             </xsl:choose>
           </xsl:when>
           <xsl:otherwise> <!-- for classes -->
-            <xsl:value-of select="concat($parser-class, '.parse(parser, new ',
-              $array-type,
-              '.Builder())')"/>
+            <xsl:value-of select="this:create-new-field-instance(//cgn:object, $parser-class, 'parser', ../@cgn:package, ../@cgn:name, $array-type, $name)"/>
           </xsl:otherwise>
         </xsl:choose>
         <xsl:text>);&#10;</xsl:text>
