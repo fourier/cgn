@@ -15,7 +15,7 @@
   </xsl:variable>
 
   <xsl:variable name="jcgn:preprocessed-objects2">
-    <!-- 2nd phase: copy jcgn values from cgn:objects to cgn:object -->
+    <!-- 2nd phase: merge jcgn values from cgn:objects to cgn:object -->
     <xsl:apply-templates select="$jcgn:preprocessed-objects1" mode="jcgn:phase2" />
   </xsl:variable>
   
