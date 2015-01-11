@@ -4,9 +4,7 @@
 
   <xsl:template match="cgn:field" mode="cgn:phase3">
     <xsl:copy>
-      <xsl:if test="not(@cgn:type)">
-        <xsl:attribute name="cgn:type" select="'string'"/>
-      </xsl:if>
+      <xsl:call-template name="cgn:preprocess-undeclared-type-field"/>
       <!-- copy the rest -->
       <xsl:copy-of select="@*|node()" />
     </xsl:copy>
