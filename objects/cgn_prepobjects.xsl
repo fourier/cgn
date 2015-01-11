@@ -15,12 +15,12 @@
   </xsl:variable>
 
   <xsl:variable name="cgn:preprocessed-objects2">
-    <!-- 1st phase: adding default values to cgn:objects -->
+    <!-- 2nd phase: copying values from cgn:objects to cgn:object -->
     <xsl:apply-templates select="$cgn:preprocessed-objects1" mode="cgn:phase2" />
   </xsl:variable>
 
   <xsl:variable name="cgn:preprocessed-objects">
-    <!-- 3nd phase: applying the default values for field types -->
+    <!-- 3rd phase: applying the default values for field types -->
     <xsl:apply-templates select="$cgn:preprocessed-objects2" mode="cgn:phase3" />
   </xsl:variable>
 
