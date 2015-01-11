@@ -180,10 +180,9 @@
         </xsl:apply-templates>
       </xsl:if>
 
-      <!-- if class is not read only and has no builder
-           need to add an empty contstructor
+      <!-- if class is not read only need to add an empty contstructor
       -->
-      <xsl:if test="$read-only='false' and $builder='false'">
+      <xsl:if test="$read-only='false'">
         <xsl:call-template name="java-constructor-empty">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
