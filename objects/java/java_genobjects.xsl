@@ -5,12 +5,6 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
   <xsl:variable name="cgn:xml-name" select="base-uri()" as="xs:string"/>
-
-  <xsl:include href="java_prepobjects.xsl"/>
-
-  <xsl:include href="java_object.xsl"/>
-  <xsl:include href="java_functions.xsl"/>
-  <xsl:include href="java_templates.xsl"/>
   
   <xsl:output indent="no" method="text"/>
   <xsl:strip-space elements="*" />

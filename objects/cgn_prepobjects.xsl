@@ -2,12 +2,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
                 xmlns:cgn="https://github.com/fourier/cgn">
 
-  <xsl:include href="cgn_phase1.xsl"/>
-  <xsl:include href="cgn_phase2.xsl"/>
-  <xsl:include href="cgn_phase3.xsl"/>
-  <xsl:include href="cgn_variables.xsl"/>
-  <xsl:include href="cgn_lib.xsl"/>
-  <xsl:include href="cgn_templates.xsl"/>
 
   <xsl:variable name="cgn:preprocessed-objects1">
     <!-- 1st phase: adding default values to cgn:objects -->
