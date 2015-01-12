@@ -75,10 +75,45 @@
     <!-- iterate over field, extracting type -->
     <xsl:for-each select="cgn:field">
       <xsl:variable name="type" select="if (not(cgn:is-array(@cgn:type))) then @cgn:type else cgn:array-type(@cgn:type)"/>
-      <!-- iterate over objects trying to find the same type -->
-      <xsl:for-each select="//cgn:object[@cgn:name=$type and not(@cgn:package = $package)]">
-        <xsl:value-of select="jcgn:generate-import(concat(@cgn:package, '.', @cgn:name))"/>
-      </xsl:for-each>
+      <!-- if user-defined type -->
+      <xsl:if test="not(cgn:is-primitive-type($type))">
+        <!-- the following logic applies: -->
+        <!-- if it is already FQDN, don't import anything -->
+        <xsl:if test="not(cgn:type-contains-package($type))">
+          <!-- if only a class name, determine if we have it in our package -->
+          <!-- if so, do nothing -->
+          <xsl:if test="count(//cgn:object[@cgn:package=$package and @cgn:name=$type]) = 0">
+            <!-- otherwise, check number of other packages containing this class -->
+            <xsl:variable name="objects" select="//cgn:object[@cgn:name=$type]"/>
+            <xsl:choose>
+              <xsl:when test="count($objects) > 1">
+                <!-- if the number of other packages with this class more than 1, error -->
+                <xsl:message>
+                  <xsl:value-of select="concat('WARNING: ',
+                                        $package, '.', ../@cgn:name,
+                                        ': ambiguous field ',
+                                        @cgn:name,
+                                        ' type ',
+                                        @cgn:type,
+                                        '. Possible choices: '
+                                        )"/>
+                  <xsl:for-each select="$objects">
+                    <xsl:value-of select="concat(
+                                          @cgn:package,'.',@cgn:name,
+                                          if (position() != last()) then ', ' else '')"/>
+                  </xsl:for-each>
+                </xsl:message>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:variable name="pkg" select="$objects[1]/@cgn:package"/>
+                <xsl:message><xsl:value-of select="concat('package: ', $pkg)"/>
+</xsl:message>
+                <xsl:value-of select="jcgn:generate-import(concat($pkg, '.', $type))"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
+        </xsl:if>
+      </xsl:if>
     </xsl:for-each>
   </xsl:template>
   
