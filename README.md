@@ -17,6 +17,7 @@ The user can set the following properties for the generated objects:
 * names
 * packages
 * copyright statements
+* authorship statements
 * if the setters should be generated along with getters(read-only)
 * if the methods accompanying fields should be generated (isSetSomething family of methods)
 * if the object should be used by JSON parser/generator
