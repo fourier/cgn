@@ -86,28 +86,42 @@
             <!-- otherwise, check number of other packages containing this class -->
             <xsl:variable name="objects" select="//cgn:object[@cgn:name=$type]"/>
             <xsl:choose>
-              <xsl:when test="count($objects) > 1">
-                <!-- if the number of other packages with this class more than 1, error -->
+              <xsl:when test="count($objects) = 0">
                 <xsl:message>
                   <xsl:value-of select="concat('WARNING: ',
                                         $package, '.', ../@cgn:name,
-                                        ': ambiguous field ',
-                                        @cgn:name,
-                                        ' type ',
+                                        ': type ',
                                         @cgn:type,
-                                        '. Possible choices: '
+                                        ' for the field &quot;',
+                                        @cgn:name,
+                                        '&quot; not found in generated objects'
                                         )"/>
-                  <xsl:for-each select="$objects">
-                    <xsl:value-of select="concat(
-                                          @cgn:package,'.',@cgn:name,
-                                          if (position() != last()) then ', ' else '')"/>
-                  </xsl:for-each>
                 </xsl:message>
               </xsl:when>
               <xsl:otherwise>
+                <xsl:if test="count($objects) > 1">
+                  <!-- if the number of other packages with this class more than 1, warning -->
+                  <xsl:message>
+                    <xsl:value-of select="concat('WARNING: ',
+                                          $package, '.', ../@cgn:name,
+                                          ': ambiguous &quot;',
+                                          @cgn:name,
+                                          '&quot; field type ',
+                                          @cgn:type,
+                                          '. Possible choices: '
+                                        )"/>
+                    <xsl:for-each select="$objects">
+                      <xsl:value-of select="concat(
+                                            @cgn:package,'.',@cgn:name,
+                                            if (position() != last()) then ', ' else '')"/>
+                    </xsl:for-each>
+                    <xsl:value-of select="concat('. Importing the first one: ',
+                                          $objects[1]/@cgn:package,
+                                          '.',
+                                          $type)"/>
+                  </xsl:message>
+                </xsl:if>
                 <xsl:variable name="pkg" select="$objects[1]/@cgn:package"/>
-                <xsl:message><xsl:value-of select="concat('package: ', $pkg)"/>
-</xsl:message>
                 <xsl:value-of select="jcgn:generate-import(concat($pkg, '.', $type))"/>
               </xsl:otherwise>
             </xsl:choose>

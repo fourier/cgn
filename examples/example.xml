@@ -127,6 +127,7 @@
 
     <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
       <field cgn:name="id" cgn:type="int"/>
+      <field cgn:name="unknown" cgn:type="UnknownType"/>
       <field cgn:name="data" cgn:type="UserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
       <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
