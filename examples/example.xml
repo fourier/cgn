@@ -40,6 +40,8 @@
     This file and its contents are Confidential.
   </cgn:copyright>
 
+  <cgn:author>John Doe</cgn:author>
+  
   <objects cgn:package="com.arrays.test"
            cgn:json="true">
     <object cgn:name="CommandLine" cgn:read-only="false" jcgn:builder="true" >
@@ -91,7 +93,9 @@
 
 
   
-  <objects cgn:package="com.mycompany.users" cgn:copyright="Copyright (c) 2014 by My Company&#10;This file and its contents are Confidential." >
+  <objects cgn:package="com.mycompany.users"
+           cgn:copyright="Copyright (c) 2014 by My Company&#10;This file and its contents are Confidential."
+           cgn:author="The Author">
     <object cgn:name="PersonalUserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
       <field cgn:name="name"/>
       <field cgn:name="occupation"/>

@@ -64,12 +64,6 @@
     <xsl:value-of select="$result"/>
   </xsl:function>
 
-  
-  <xsl:function name="cgn:generate-class-comment">
-    <xsl:param name="file"/>
-    <xsl:value-of select="concat('/**&#10; * Generated from ', cgn:get-short-filename($file), ' on ', cgn:get-current-date(), '&#10; */&#10;')"/>
-  </xsl:function>
-
   <xsl:function name="cgn:is-primitive-type">
     <xsl:param name="type"/>
     <xsl:sequence select="exists($cgn:primitive-types-list[. = $type])"/>

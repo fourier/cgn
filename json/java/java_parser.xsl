@@ -556,7 +556,7 @@
       <xsl:call-template name="this:parser-generate-imports" />
 
       <!-- generate class header string like "class UserName {" -->
-      <xsl:call-template name="java-class-header">
+      <xsl:call-template name="jcgn:class-header">
         <xsl:with-param name="class-name" select="$class-name"/>
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
@@ -590,7 +590,7 @@
       </xsl:for-each>
       
       <!-- closing class -->
-      <xsl:call-template name="java-class-footer"/>
+      <xsl:call-template name="jcgn:class-footer"/>
       
     </xsl:result-document>
 

@@ -18,8 +18,20 @@
           <xsl:attribute name="cgn:copyright" select="../cgn:copyright"/>
         </xsl:otherwise>
       </xsl:choose>
+
+      <!-- 2. author field -->
+      
+      <xsl:choose>
+        <xsl:when test="not(../cgn:author)">
+          <xsl:attribute name="cgn:author" select="$cgn:default-author"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:attribute name="cgn:author" select="../cgn:author"/>
+        </xsl:otherwise>
+      </xsl:choose>
+
         
-      <!-- 2. package attribute -->
+      <!-- 3. package attribute -->
       <xsl:choose>
         <xsl:when test="not(@cgn:package)">
           <xsl:attribute name="cgn:package" select="$cgn:default-package"/>
@@ -29,7 +41,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- 3. read-only attribute -->
+      <!-- 4. read-only attribute -->
       <xsl:choose>
         <xsl:when test="not(@cgn:read-only)">
           <xsl:attribute name="cgn:read-only" select="$cgn:default-read-only"/>
@@ -40,7 +52,7 @@
       </xsl:choose>
 
 
-      <!-- 4. json attribute -->
+      <!-- 5. json attribute -->
       <xsl:choose>
         <xsl:when test="not(@cgn:json)">
           <xsl:attribute name="cgn:json" select="$cgn:default-json"/>
@@ -50,7 +62,7 @@
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- 5. isset attribute -->
+      <!-- 6. isset attribute -->
       <xsl:choose>
         <xsl:when test="not(@cgn:is-set)">
           <xsl:attribute name="cgn:is-set" select="$cgn:default-is-set"/>

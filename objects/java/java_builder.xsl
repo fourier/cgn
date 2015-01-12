@@ -48,7 +48,7 @@
     <!-- name of the builder class from 'name' attribute -->
     <xsl:variable name="builder-class-name" select="$builder"/>
     <!-- generate class header string like "class UserName {" -->
-    <xsl:call-template name="java-class-header">
+    <xsl:call-template name="jcgn:class-header">
       <xsl:with-param name="class-name" select="$builder-class-name"/>
       <xsl:with-param name="indent" select="$indent"/>
       <xsl:with-param name="attributes" select="$attributes"/>
@@ -74,7 +74,7 @@
     </xsl:for-each>
     <xsl:text>&#10;</xsl:text>
 
-    <xsl:call-template name="java-constructor-empty">
+    <xsl:call-template name="jcgn:constructor-empty">
       <xsl:with-param name="class-name" select="$builder-class-name"/>
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:call-template>
@@ -104,7 +104,7 @@
     </xsl:call-template>
     
     <!-- closing class -->
-    <xsl:call-template name="java-class-footer">
+    <xsl:call-template name="jcgn:class-footer">
       <xsl:with-param name="indent" select="$indent"/>
     </xsl:call-template>
 

@@ -24,7 +24,7 @@
   <!--
       Java class templates: header and footer
   -->
-  <xsl:template name="java-class-header">
+  <xsl:template name="jcgn:class-header">
     <!-- generate class header string like "class UserName [extends Task][implements BaseRequest]{" -->
     <xsl:param name="class-name"/>
     <xsl:param name="extends-class"/>
@@ -32,8 +32,18 @@
     <xsl:param name="access" select="'public'"/>
     <xsl:param name="attributes"/>
     <xsl:param name="indent" select="0" />
-    <xsl:if test="($indent = 0 and $cgn:xml-name)">
-      <xsl:value-of select="cgn:generate-class-comment($cgn:xml-name)"/>
+    <xsl:if test="$indent = 0">
+      <xsl:choose>
+        <xsl:when test="(string-length(@cgn:author) > 0) and (string-length($cgn:xml-name) > 0)">
+          <xsl:value-of select="jcgn:generate-class-comment-by-author-file(@cgn:author, $cgn:xml-name)"/>
+        </xsl:when>
+        <xsl:when test="string-length(@cgn:author) > 0">
+          <xsl:value-of select="jcgn:generate-class-comment-by-author(@cgn:author)"/>
+        </xsl:when>
+        <xsl:when test="string-length($cgn:xml-name) > 0">
+          <xsl:value-of select="jcgn:generate-class-comment-by-file($cgn:xml-name)"/>
+        </xsl:when>
+      </xsl:choose>
     </xsl:if>
     <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, 'class ', $class-name, ' ')" />
     <xsl:if test="$extends-class">
@@ -45,7 +55,7 @@
     <xsl:text>{&#10;</xsl:text>
   </xsl:template>
 
-  <xsl:template name="java-class-footer">
+  <xsl:template name="jcgn:class-footer">
     <xsl:param name="indent" select="0" />
     <!-- generate class footer string "}" -->
     <xsl:value-of select="cgn:indent($indent)"/>
@@ -55,7 +65,7 @@
   <!--
       Java interface template: header (footer is the same as java class)
   -->
-  <xsl:template name="java-interface-header">
+  <xsl:template name="jcgn:interface-header">
     <!-- generate class header string like "class UserName [extends Task][implements BaseRequest]{" -->
     <xsl:param name="class-name"/>
     <xsl:param name="access" select="'public'"/>    
@@ -63,7 +73,7 @@
     <xsl:param name="attributes"/>
     <xsl:param name="indent" select="0" />
     <xsl:if test="($indent = 0 and $cgn:xml-name)">
-      <xsl:value-of select="cgn:generate-class-comment($cgn:xml-name)"/>
+      <xsl:value-of select="jcgn:generate-class-comment-by-file($cgn:xml-name)"/>
     </xsl:if>
     <xsl:value-of select="concat(cgn:indent($indent), $access, ' ', $attributes, ' interface ', $class-name, ' ')" />
     <xsl:if test="$extends-interface and not($extends-interface = '')">
@@ -202,7 +212,7 @@
   </xsl:template>
   
 
-  <xsl:template name="java-constructor">
+  <xsl:template name="jcgn:constructor">
     <!-- called from cgn:object, generates a constructor from fields, like:
          public UserName(String date) {
          iDate = date;
@@ -229,7 +239,7 @@
     <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
   </xsl:template>
 
-  <xsl:template name="java-constructor-from-builder">
+  <xsl:template name="jcgn:constructor-from-builder">
     <!-- called from cgn:object, generates a constructor from builder:
          protected UserName(UserNameBuilder builder) {
              iDate = builder.iDate;
@@ -267,7 +277,7 @@
   </xsl:template>
 
   
-  <xsl:template name="java-constructor-empty">
+  <xsl:template name="jcgn:constructor-empty">
     <!-- called from cgn:object, generates an empty constructor, like:
          public UserName() {
          }

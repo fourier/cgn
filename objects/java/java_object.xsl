@@ -123,13 +123,13 @@
       <!-- generate class header string like "class UserName {" -->
       <xsl:choose>
         <xsl:when test="$parcelable='true'">
-          <xsl:call-template name="java-class-header">
+          <xsl:call-template name="jcgn:class-header">
             <xsl:with-param name="class-name" select="$class-name"/>
             <xsl:with-param name="implements-interface" select="'android.os.Parcelable'"/>
           </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:call-template name="java-class-header">
+          <xsl:call-template name="jcgn:class-header">
             <xsl:with-param name="class-name" select="$class-name"/>
           </xsl:call-template>
         </xsl:otherwise>
@@ -183,21 +183,21 @@
       <!-- if class is not read only need to add an empty contstructor
       -->
       <xsl:if test="$read-only='false'">
-        <xsl:call-template name="java-constructor-empty">
+        <xsl:call-template name="jcgn:constructor-empty">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
       </xsl:if>
 
       <!-- if not read only or read-only and no builder - add fields constructor -->
       <xsl:if test="$read-only='false' or ($read-only='true' and $builder = 'true')">
-        <xsl:call-template name="java-constructor">
+        <xsl:call-template name="jcgn:constructor">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
       </xsl:if>
       
       <!-- if builder created, generate constructor from builder -->
       <xsl:if test="$builder = 'true'">
-        <xsl:call-template name="java-constructor-from-builder">
+        <xsl:call-template name="jcgn:constructor-from-builder">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
       </xsl:if>
@@ -268,7 +268,7 @@
       </xsl:if>
       
       <!-- closing class -->
-      <xsl:call-template name="java-class-footer"/>
+      <xsl:call-template name="jcgn:class-footer"/>
     </xsl:result-document>
     
   </xsl:template>
