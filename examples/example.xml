@@ -64,6 +64,9 @@
       <field cgn:name="array3" cgn:type="[com.mycompany.example.WorkPackage]"/>
 
     </object>
+
+    <object cgn:name="EmptyObject">
+    </object>
     
   </objects>
 

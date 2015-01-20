@@ -414,14 +414,25 @@
 
     </xsl:for-each>
     <!-- add skip all elements if unknown array or object -->
-    <xsl:value-of select="concat(cgn:indent($indent+2),
-      'else {&#10;',
-      cgn:indent($indent+3),
-      '/* unknown element. Call skipChildren() if the element is an array or object */&#10;',
-      cgn:indent($indent+3),
-      'parser.skipChildren();&#10;',
-      cgn:indent($indent+2),
-      '}&#10;')"/>
+    <xsl:choose>
+      <xsl:when test="count(cgn:field) > 0">
+        <xsl:value-of select="concat(cgn:indent($indent+2),
+                              'else {&#10;',
+                              cgn:indent($indent+3),
+                              '/* unknown element. Call skipChildren() if the element is an array or object */&#10;',
+                              cgn:indent($indent+3),
+                              'parser.skipChildren();&#10;',
+                              cgn:indent($indent+2),
+                              '}&#10;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat(cgn:indent($indent+2),
+                              '/* unknown element. Call skipChildren() if the element is an array or object */&#10;',
+                              cgn:indent($indent+2),
+                              'parser.skipChildren();&#10;')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    
 
     <!-- closing the while loop -->
     <xsl:value-of select="concat(cgn:indent($indent+1),
