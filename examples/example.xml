@@ -41,10 +41,15 @@
   </cgn:copyright>
 
   <cgn:author>John Doe</cgn:author>
+
+  <objects cgn:package="com.test.defaults"
+           cgn:read-only="crap">
+    <object cgn:name="DefaultsTest1"/>
+  </objects>
   
   <objects cgn:package="com.arrays.test"
            cgn:json="true">
-    <object cgn:name="CommandLine" cgn:read-only="false" jcgn:builder="true" >
+    <object cgn:name="CommandLine" cgn:read-only="crap" jcgn:builder="true" >
       <field cgn:name="executable"/>
       <field cgn:name="arguments" cgn:type="[string]"/>
     </object>
@@ -52,7 +57,7 @@
     <object cgn:name="CommandLineUser1" cgn:read-only="true"/>
     <object cgn:name="CommandLineUser2" cgn:read-only="true"/>
 
-    <object cgn:name="BigTest">
+    <object cgn:name="BigTest" cgn:read-only='No'>
       <field cgn:name="0field00" cgn:type="CommandLineUser1"/>
       <field cgn:name="1field01" cgn:type="CommandLineUser2"/>
 
@@ -73,7 +78,7 @@
   <objects cgn:package="com.mycompany.example"
            cgn:read-only="false"
            jcgn:builder="true"
-           jcgn:parcelable="true">
+           jcgn:parcelable="of course">
     <cgn:object cgn:name="WorkPackage">
       <cgn:field cgn:name="customer-id" cgn:type="long" />
       <cgn:field cgn:name="workcode-id" cgn:type="long"/>

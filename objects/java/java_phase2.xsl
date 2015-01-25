@@ -3,32 +3,27 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
-  <xsl:template match="cgn:object" mode="jcgn:phase2">
+  <xsl:template match="cgn:objects" mode="jcgn:phase2">
     <xsl:copy>
-      <!--
-          parent attributes (in cgn:objects) already specified by
-          the previous (3) phase of transformation
-      -->
-      <!-- builder attribute: from parent (cgn:objects) or own -->
+      <!-- builder attribute -->
       <xsl:choose>
         <xsl:when test="not(@jcgn:builder)">
-          <xsl:attribute name="jcgn:builder" select="../@jcgn:builder"/>
+          <xsl:attribute name="jcgn:builder" select="$jcgn:default-builder"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:copy-of select="@jcgn:builder"/>
         </xsl:otherwise>
       </xsl:choose>
 
-      <!-- parcelable attribute: from parent (cgn:objects) or own -->
+      <!-- parcelable attribute -->
       <xsl:choose>
         <xsl:when test="not(@jcgn:parcelable)">
-          <xsl:attribute name="jcgn:parcelable" select="../@jcgn:parcelable"/>
+          <xsl:attribute name="jcgn:parcelable" select="$jcgn:default-parcelable"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:copy-of select="@jcgn:parcelable"/>
         </xsl:otherwise>
-      </xsl:choose>
-
+      </xsl:choose>      
       
       <!-- copy the rest -->
       <xsl:copy-of select="@*|node()" />
@@ -37,15 +32,9 @@
 
   <xsl:template match="@*|node()" mode="jcgn:phase2">
     <xsl:copy>
-      <xsl:apply-templates select="@* | node()" mode="cgn:phase4"/>
+      <xsl:apply-templates select="@* | node()" mode="jcgn:phase2"/>
     </xsl:copy>
   </xsl:template>
-  
-  <xsl:template match="cgn:objects" mode="jcgn:phase2">
-    <xsl:copy>
-      <xsl:apply-templates select="node()|@*" mode="jcgn:phase2"/> 
-    </xsl:copy>
-  </xsl:template>
-  
 
+  
 </xsl:stylesheet>

@@ -3,38 +3,37 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
-  <xsl:template match="cgn:objects" mode="jcgn:phase1">
-    <xsl:copy>
-      <!-- builder attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:builder)">
-          <xsl:attribute name="jcgn:builder" select="$jcgn:default-builder"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:builder"/>
-        </xsl:otherwise>
-      </xsl:choose>
+  <!--
+      1st transformation phase. Verify all known attributes for correct
+      values, i.e. boolean values true/false or yes/no and transform
+      them to the common format (i.e. lower-case true/false values)
+  -->
 
-      <!-- parcelable attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:parcelable)">
-          <xsl:attribute name="jcgn:parcelable" select="$jcgn:default-parcelable"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:parcelable"/>
-        </xsl:otherwise>
-      </xsl:choose>      
-      
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+  <!-- acquire the jcgn namespace, in case if it changes in the future -->
+  <xsl:variable name="jcgn:namespace" select="(//namespace::*[name() = 'jcgn'])[1]"/>
+         
+  <xsl:template match="@* | node()" mode="jcgn:phase1">
+    <xsl:copy>
+      <xsl:apply-templates select="@* | node()" mode="jcgn:phase1"/>
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="@*|node()" mode="jcgn:phase1">
-    <xsl:copy>
-      <xsl:apply-templates select="@* | node()"/>
-    </xsl:copy>
+  <!-- preprocess jcgn:builder attribute -->
+  <xsl:template match="@jcgn:builder" mode="jcgn:phase1">
+    <xsl:call-template name="cgn:boolean-attribute-preprocess">
+      <xsl:with-param name="attribute-name" select="'builder'"/>
+      <xsl:with-param name="attribute-namespace" select="$jcgn:namespace"/>
+      <xsl:with-param name="default-value" select="$jcgn:default-builder"/>
+    </xsl:call-template>
   </xsl:template>
 
+  <!-- preprocess jcgn:parcelable attribute -->
+  <xsl:template match="@jcgn:parcelable" mode="jcgn:phase1">
+    <xsl:call-template name="cgn:boolean-attribute-preprocess">
+      <xsl:with-param name="attribute-name" select="'parcelable'"/>
+      <xsl:with-param name="attribute-namespace" select="$jcgn:namespace"/>
+      <xsl:with-param name="default-value" select="$jcgn:default-parcelable"/>
+    </xsl:call-template>
+  </xsl:template>
   
 </xsl:stylesheet>

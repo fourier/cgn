@@ -6,14 +6,41 @@
   <xsl:include href="cgn_phase1.xsl"/>
   <xsl:include href="cgn_phase2.xsl"/>
   <xsl:include href="cgn_phase3.xsl"/>
+  <xsl:include href="cgn_phase4.xsl"/>
+  <xsl:include href="cgn_phase5.xsl"/>
   <xsl:include href="cgn_prepobjects.xsl"/>
   <xsl:include href="cgn_variables.xsl"/>
   <xsl:include href="cgn_prep_templates.xsl"/>
   
   <xsl:template match="/" mode="cgn:preprocess">
+    <xsl:message>Preprocess variable: cgn:preprocessed-objects</xsl:message>
     <!-- template for command line output -->
     <xsl:sequence select="$cgn:preprocessed-objects"/>
   </xsl:template>
 
+  <xsl:template match="/" mode="cgn:preprocess1">
+    <xsl:message>Preprocess variable: cgn:preprocessed-objects1</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$cgn:preprocessed-objects1"/>
+  </xsl:template>
+
+  <xsl:template match="/" mode="cgn:preprocess2">
+    <xsl:message>Preprocess variable: cgn:preprocessed-objects2</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$cgn:preprocessed-objects2"/>
+  </xsl:template>
+
+  <xsl:template match="/" mode="cgn:preprocess3">
+    <xsl:message>Preprocess variable: cgn:preprocessed-objects3</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$cgn:preprocessed-objects3"/>
+  </xsl:template>
+
+  <xsl:template match="/" mode="cgn:preprocess4">
+    <xsl:message>Preprocess variable: cgn:preprocessed-objects4</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$cgn:preprocessed-objects4"/>
+  </xsl:template>
+  
   
 </xsl:stylesheet>

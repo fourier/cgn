@@ -5,6 +5,8 @@
   <xsl:include href="../objects/cgn_phase1.xsl"/>
   <xsl:include href="../objects/cgn_phase2.xsl"/>
   <xsl:include href="../objects/cgn_phase3.xsl"/>
+  <xsl:include href="../objects/cgn_phase4.xsl"/>
+  <xsl:include href="../objects/cgn_phase5.xsl"/>
   <xsl:include href="../objects/cgn_prepobjects.xsl"/>
   <xsl:include href="../objects/cgn_variables.xsl"/>
   <xsl:include href="../objects/cgn_lib.xsl"/>
@@ -20,8 +22,8 @@
   <xsl:include href="../objects/java/java_phase1.xsl" />
   <xsl:include href="../objects/java/java_phase2.xsl" />
   <xsl:include href="../objects/java/java_phase3.xsl" />
+  <xsl:include href="../objects/java/java_phase4.xsl"/>
 
-  
 
 </xsl:stylesheet>
 
