@@ -8,6 +8,8 @@
   <xsl:include href="../objects/cgn_phase1.xsl"/>
   <xsl:include href="../objects/cgn_phase2.xsl"/>
   <xsl:include href="../objects/cgn_phase3.xsl"/>
+  <xsl:include href="../objects/cgn_phase4.xsl"/>
+  <xsl:include href="../objects/cgn_phase5.xsl"/>
   <xsl:include href="../objects/cgn_prepobjects.xsl"/>
   <xsl:include href="../objects/cgn_variables.xsl"/>
   <xsl:include href="../objects/cgn_lib.xsl"/>
@@ -23,6 +25,7 @@
   <xsl:include href="../objects/java/java_phase1.xsl" />
   <xsl:include href="../objects/java/java_phase2.xsl" />
   <xsl:include href="../objects/java/java_phase3.xsl" />
+  <xsl:include href="../objects/java/java_phase4.xsl" />
 
   <xsl:include href="../json/java/java_parser.xsl" />
   <xsl:include href="../json/java/java_generator.xsl" />
@@ -62,17 +65,20 @@
   </xsl:template>
 
   <xsl:template name="jcgn:gen-parser-main">
+    <xsl:variable name="objects" select="$jcgn:preprocessed-objects//cgn:objects"/>
+    <xsl:message><xsl:value-of select="concat('size: ', count($objects))"/></xsl:message>
+
     <xsl:call-template name="jcgn:genobjects"/>
     <!-- take copyright from the root element: /cgn:copyright -->
     <xsl:variable name="copyright" select="//cgn:copyright"/>
     <!-- generate json parser -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser">
+    <xsl:apply-templates select="$objects" mode="this:genparser">
       <xsl:with-param name="parser-class" select="$this:parser-class"/>
       <xsl:with-param name="parser-package" select="$this:parser-package"/>
       <xsl:with-param name="copyright" select="$copyright"/>
     </xsl:apply-templates>
     <!-- generate json generator -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:gengenerator">
+    <xsl:apply-templates select="$objects" mode="this:gengenerator">
       <xsl:with-param name="gen-class" select="$this:generator-class"/>
       <xsl:with-param name="gen-package" select="$this:generator-package"/>
       <xsl:with-param name="copyright" select="$copyright"/>
