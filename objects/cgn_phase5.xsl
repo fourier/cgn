@@ -12,20 +12,6 @@
     <xsl:copy>
       <xsl:apply-templates select="@* | node()" mode="cgn:phase5"/>
     </xsl:copy>
-  </xsl:template>
-
-  
-  <xsl:template match="cgn:object" mode="cgn:phase5">
-    <xsl:copy>
-      <xsl:apply-templates select="node()|@*" mode="cgn:phase5"/> 
-    </xsl:copy>
-  </xsl:template>
-  
-  <xsl:template match="cgn:objects" mode="cgn:phase5">
-    <xsl:copy>
-      <xsl:apply-templates select="node()|@*" mode="cgn:phase5"/> 
-    </xsl:copy>
-  </xsl:template>
-  
+  </xsl:template>  
 
 </xsl:stylesheet>

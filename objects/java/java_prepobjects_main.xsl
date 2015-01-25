@@ -6,6 +6,8 @@
   <xsl:include href="../cgn_phase1.xsl"/>
   <xsl:include href="../cgn_phase2.xsl"/>
   <xsl:include href="../cgn_phase3.xsl"/>
+  <xsl:include href="../cgn_phase4.xsl"/>
+  <xsl:include href="../cgn_phase5.xsl"/>
   <xsl:include href="../cgn_prepobjects.xsl"/>
   <xsl:include href="../cgn_variables.xsl"/>
   <xsl:include href="../cgn_lib.xsl"/>
@@ -15,11 +17,30 @@
   <xsl:include href="java_phase1.xsl"/>
   <xsl:include href="java_phase2.xsl"/>
   <xsl:include href="java_phase3.xsl"/>
+  <xsl:include href="java_phase4.xsl"/>
   <xsl:include href="java_prepobjects.xsl"/>
 
   <xsl:template match="/" mode="jcgn:preprocess">
+    <xsl:message>Preprocess variable: jcgn:preprocessed-objects</xsl:message>
     <xsl:copy-of select="$jcgn:preprocessed-objects"/>
   </xsl:template>
 
-  
+  <xsl:template match="/" mode="jcgn:preprocess1">
+    <xsl:message>Preprocess variable: jcgn:preprocessed-objects1</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$jcgn:preprocessed-objects1"/>
+  </xsl:template>
+
+  <xsl:template match="/" mode="jcgn:preprocess2">
+    <xsl:message>Preprocess variable: jcgn:preprocessed-objects2</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$jcgn:preprocessed-objects2"/>
+  </xsl:template>
+
+  <xsl:template match="/" mode="jcgn:preprocess3">
+    <xsl:message>Preprocess variable: jcgn:preprocessed-objects3</xsl:message>
+    <!-- template for command line output -->
+    <xsl:sequence select="$jcgn:preprocessed-objects3"/>
+  </xsl:template>
+    
 </xsl:stylesheet>

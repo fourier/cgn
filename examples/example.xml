@@ -75,7 +75,7 @@
   <objects cgn:package="com.mycompany.example"
            cgn:read-only="false"
            jcgn:builder="true"
-           jcgn:parcelable="true">
+           jcgn:parcelable="of course">
     <cgn:object cgn:name="WorkPackage">
       <cgn:field cgn:name="customer-id" cgn:type="long" />
       <cgn:field cgn:name="workcode-id" cgn:type="long"/>

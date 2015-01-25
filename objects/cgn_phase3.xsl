@@ -79,12 +79,6 @@
       <xsl:apply-templates select="@* | node()" mode="cgn:phase3"/>
     </xsl:copy>
   </xsl:template>
-  
-  <xsl:template match="cgn:objects" mode="cgn:phase3">
-    <xsl:copy>
-      <xsl:apply-templates select="node()|@*" mode="cgn:phase3"/> 
-    </xsl:copy>
-  </xsl:template>
-  
+    
 
 </xsl:stylesheet>
