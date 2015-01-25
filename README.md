@@ -2,7 +2,7 @@ Code generator (cgn)
 ====================
 This project makes it simple to generate Java source code (variations of [POJO](http://en.wikipedia.org/wiki/Plain_Old_Java_Object)) and Json parser/gerenartor for them (based on [jackson](https://github.com/FasterXML/jackson)) using [Saxon HE](http://saxon.sourceforge.net/) XSL processor.
 
-The Saxon XSLT and XQuery processor developed by [Saxonica](http://www.saxonica.com/). One can install the [Saxon Home Edition](http://sourceforge.net/projects/saxon/files/Saxon-HE/) in order to use cgn. Please specify the path to Saxon (SAXON_PATH) supplied *examples/\*.sh* files.
+The Saxon XSLT and XQuery processor developed by [Saxonica](http://www.saxonica.com/). One can install the [Saxon Home Edition](http://sourceforge.net/projects/saxon/files/Saxon-HE/) in order to use cgn. Please specify the path to Saxon (SAXON_PATH) in supplied *.sh files in the [examples](https://github.com/fourier/cgn/tree/master/examples) directory.
 
 The aim of the project is to automate as much as possible with generated objects. The JAVA language is the one of possible backends; in future other languages support could be added (beginning with the plain C and ObjectiveC, allowing users for example do define data model in XML form and generate the code for both Android and iOS).
 

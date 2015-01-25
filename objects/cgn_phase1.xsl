@@ -2,88 +2,40 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
                 xmlns:cgn="https://github.com/fourier/cgn">
 
-  <xsl:template match="cgn:objects" mode="cgn:phase1">
+  <!--
+      1st transformation phase. Verify all known attributes for correct
+      values, i.e. boolean values true/false or yes/no and transform
+      them to the common format (i.e. lower-case true/false values)
+  -->
+         
+  <xsl:template match="@* | node()" mode="cgn:phase1">
     <xsl:copy>
-      <!-- 1. copyright attribute -->
-      <!--
-          NOTE: unable to move this to template because XPath qnames
-          could not be evaluated in runtime, and saxon:evaluate is not
-          available in HE version of Saxon
-      -->
-      <xsl:choose>
-        <xsl:when test="not(../cgn:copyright)">
-          <xsl:attribute name="cgn:copyright" select="$cgn:default-copyright"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="cgn:copyright" select="../cgn:copyright"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-      <!-- 2. author field -->
-      
-      <xsl:choose>
-        <xsl:when test="not(../cgn:author)">
-          <xsl:attribute name="cgn:author" select="$cgn:default-author"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="cgn:author" select="../cgn:author"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-        
-      <!-- 3. package attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:package)">
-          <xsl:attribute name="cgn:package" select="$cgn:default-package"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:package"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-      <!-- 4. read-only attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:read-only)">
-          <xsl:attribute name="cgn:read-only" select="$cgn:default-read-only"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:read-only"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-
-      <!-- 5. json attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:json)">
-          <xsl:attribute name="cgn:json" select="$cgn:default-json"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:json"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-      <!-- 6. isset attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:is-set)">
-          <xsl:attribute name="cgn:is-set" select="$cgn:default-is-set"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:is-set"/>
-        </xsl:otherwise>
-      </xsl:choose>
-      
-      
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <xsl:apply-templates select="@* | node()" mode="cgn:phase1"/>
     </xsl:copy>
   </xsl:template>
 
-
-  <xsl:template match="@*|node()" mode="cgn:phase1">
-    <xsl:copy>
-      <xsl:apply-templates select="@* | node()"/>
-    </xsl:copy>
+  <!-- preprocess cgn:read-only attribute -->
+  <xsl:template match="@cgn:read-only" mode="cgn:phase1">
+    <xsl:call-template name="cgn:boolean-attribute-preprocess">
+      <xsl:with-param name="attribute-name" select="'cgn:read-only'"/>
+      <xsl:with-param name="default-value" select="$cgn:default-read-only"/>
+    </xsl:call-template>
   </xsl:template>
 
+  <!-- preprocess cgn:json attribute -->
+  <xsl:template match="@cgn:json" mode="cgn:phase1">
+    <xsl:call-template name="cgn:boolean-attribute-preprocess">
+      <xsl:with-param name="attribute-name" select="'cgn:json'"/>
+      <xsl:with-param name="default-value" select="$cgn:default-json"/>
+    </xsl:call-template>
+  </xsl:template>
 
+  <!-- preprocess cgn:is-set attribute -->
+  <xsl:template match="@cgn:is-set" mode="cgn:phase1">
+    <xsl:call-template name="cgn:boolean-attribute-preprocess">
+      <xsl:with-param name="attribute-name" select="'cgn:is-set'"/>
+      <xsl:with-param name="default-value" select="$cgn:default-is-set"/>
+    </xsl:call-template>
+  </xsl:template>
+  
 </xsl:stylesheet>
