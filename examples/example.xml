@@ -44,7 +44,9 @@
 
   <objects cgn:package="com.test.defaults"
            cgn:read-only="crap">
-    <object cgn:name="DefaultsTest1"/>
+    <object cgn:name="DefaultsTest1">
+      <field cgn:name="not-existing-type" cgn:type="[com.not.exists]"/>
+    </object>
   </objects>
   
   <objects cgn:package="com.arrays.test"
@@ -70,8 +72,7 @@
 
     </object>
 
-    <object cgn:name="EmptyObject">
-    </object>
+    <object cgn:name="EmptyObject"/>
     
   </objects>
 
@@ -161,6 +162,9 @@
       <field cgn:name="user-name" cgn:type="string"/>
     </object>
 
+
+    <object cgn:name="Conversation"/>
+
   </objects>
 
 
@@ -178,7 +182,7 @@
     
     <object cgn:name="Conversations" cgn:read-only="false" >
       <field cgn:name="date" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
-      <field cgn:name="conversanions" cgn:type="[Conversation]"/>
+      <field cgn:name="conversations" cgn:type="[Conversation]"/>
       <field cgn:name="company" cgn:type="Company"/>
       <field cgn:name="joda-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
       <field cgn:name="normal-dates" cgn:type="[date]"/>

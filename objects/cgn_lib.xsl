@@ -79,6 +79,11 @@
     <xsl:sequence select="substring($type, 2, string-length($type)-2)"/>
   </xsl:function>
 
+  <xsl:function name="cgn:create-array">
+    <xsl:param name="type"/>
+    <xsl:value-of select="concat('[', $type, ']')"/>
+  </xsl:function>
+
   
   <xsl:function name="cgn:indent">
     <xsl:param name="level"/>

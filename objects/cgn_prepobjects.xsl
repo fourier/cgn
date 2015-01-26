@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-                xmlns:cgn="https://github.com/fourier/cgn">
-
+                xmlns:cgn="https://github.com/fourier/cgn"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  
   <xsl:variable name="cgn:preprocessed-objects1">
     <!-- 1st phase: process known values, like boolean -->
     <xsl:apply-templates select="/" mode="cgn:phase1" />
@@ -20,6 +21,14 @@
   <xsl:variable name="cgn:preprocessed-objects4">
     <!-- 4th phase: applying the default values for field types -->
     <xsl:apply-templates select="$cgn:preprocessed-objects3" mode="cgn:phase4" />
+  </xsl:variable>
+
+  <!-- at this stage all packages are propagated to individual objects, -->
+  <!-- so we can collect all objects with their packages -->
+  <xsl:variable name="cgn:fqdn-objects-list" as="xs:string*">
+    <xsl:for-each select="$cgn:preprocessed-objects4//cgn:object">
+      <xsl:copy-of select="concat(@cgn:package, '.', @cgn:name)"/>
+    </xsl:for-each>
   </xsl:variable>
   
   <xsl:variable name="cgn:preprocessed-objects">
