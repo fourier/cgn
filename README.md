@@ -45,6 +45,90 @@ Usage
 ========
 The user should specify the objects he is willing to generate using XML description. The **cgn** designed to be extensible with generation for other languages, not only java, therefore its elements defined in 2 namespaces for now: *xmlns:cgn="https://github.com/fourier/cgn"* and *xmlns:jcgn="https://github.com/fourier/cgn/java"*. The object fields specific for all output languages (currently Java only) should be declared in **cgn** namespace, the Java-specific should be declared in **jcgn** namespace.
 
+Gradle task
+===========
+One can easily integrate the code generation routine into the gradle-based project, considering Saxon is available at the Maven central repository.
+First, don't forget to include Maven Central as a repository into your **build.gradle**:
+
+```groovy
+repositories {
+    jcenter()
+    mavenCentral()
+}
+```
+
+Add the **gen/** dir to the java.srcDirs, assuming **src/** is the sources directory:
+
+```groovy
+sourceSets {
+        main {
+            java.srcDirs = ['src/', 'gen/']
+```
+
+We need to add a new configuration **saxon** in order to find the path to the Saxon jar file:
+
+```groovy
+configurations {
+    saxon
+}
+````
+
+Now add compile-time dependencies:
+
+```groovy
+dependencies {
+    saxon 'net.sf.saxon:Saxon-HE:9.6.0-3'
+    compile fileTree('gen') {
+        builtBy 'gensrcs'
+    }
+    compile files(['../protocol/protocol.xml'])
+}
+```
+
+Here the **gensrcs** is the task used to generate sources, and **../protocol/protocol.xml** is the xml file with the objects description
+
+Now we need to add the final steps:
+
+```groovy
+// path to generated sources, relative to the root
+def generatedDir = new File('gen/')
+
+task cleansrcs << {
+    description 'remove generated sources'
+    println 'Removing old generated sources ...'
+    if (generatedDir.isDirectory()) {
+        generatedDir.deleteDir()
+    }
+}
+
+// determine path to Saxon jar file downloaded from Maven central
+def findSaxonJar() {
+    return configurations.saxon.asPath
+}
+
+// Code generation task
+task gensrcs(type: JavaExec) {
+    description 'Regenerate code using cgn package'
+    doFirst {
+        println 'Generating new sources for the data model...'
+    }
+    inputs.file '../protocol/protocol.xml'
+    outputs.dir 'gen'
+    workingDir '../protocol/'
+    classpath findSaxonJar()
+    main 'net.sf.saxon.Transform'
+    args = ['-s:protocol.xml', '-xsl:path/to/cgn/objects/java/java_genobjects.xsl', '-it:"{https://github.com/fourier/cgn/java}genobjects"', '-o:../path/to/gen/directory/.dummy.xml']
+}
+
+// generate sources with gen before performing the build
+// sources generated only if "gen" dir is not existing
+preBuild.dependsOn gensrcs
+
+// remove generated sources before doing the clean
+clean.dependsOn cleansrcs
+```
+
+
 Examples
 ========
 First, explore the [example.xml](https://github.com/fourier/cgn/blob/master/examples/example.xml) in ***examples*** directory for the example and descriptions of all possible fields.
