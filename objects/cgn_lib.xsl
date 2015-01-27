@@ -126,6 +126,10 @@
                           else ''"/>
   </xsl:function>
 
+  <xsl:function name="cgn:extract-type" as="xs:string">
+    <xsl:param name="type"/>
+    <xsl:value-of select="if (not(cgn:is-array($type))) then $type else cgn:array-type($type)"/>
+  </xsl:function>
 
   
   <xsl:function name="cgn:create-fqdn-full-type" as="xs:string">

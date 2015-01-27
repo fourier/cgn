@@ -288,14 +288,6 @@
     <xsl:value-of select="concat(cgn:indent($indent+1),'}&#10;&#10;')"/>
   </xsl:template>
   
-  <xsl:template name="jcgn:test-builder-value">
-    <!-- determine correctness of the builder value -->
-    <xsl:if test="./@jcgn:builder and not(./@jcgn:builder = 'true') and not(./@jcgn:builder = 'false')">
-      <xsl:message terminate="yes">
-        <xsl:text>jcgn:builder attribute can have either 'false' or 'true' values, or absent(false by default)</xsl:text>
-      </xsl:message>
-    </xsl:if>
-  </xsl:template>
 
   <xsl:template name="jcgn:test-isset-applicable">
     <!-- determine correctness of the builder value -->

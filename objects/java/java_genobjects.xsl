@@ -11,7 +11,7 @@
 
   <xsl:template name="jcgn:genobjects">
     <xsl:message>Generating POJO classes</xsl:message>
-    <xsl:apply-templates select="$jcgn:preprocessed-objects//cgn:objects" mode="java"/>
+    <xsl:apply-templates select="$jcgn:preprocessed-objects//cgn:objects" mode="genobjects"/>
   </xsl:template>
 
 

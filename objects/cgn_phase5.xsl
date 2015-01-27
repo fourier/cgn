@@ -18,7 +18,7 @@
   </xsl:template>
 
   <xsl:template match="cgn:object/cgn:field/@cgn:type" mode="cgn:phase5">
-    <xsl:variable name="type" select="if (not(cgn:is-array(.))) then . else cgn:array-type(.)"/>
+    <xsl:variable name="type" select="cgn:extract-type(.)"/>
     <xsl:choose>
       <!-- if user-defined type -->
       <xsl:when test="not(cgn:is-primitive-type($type))">

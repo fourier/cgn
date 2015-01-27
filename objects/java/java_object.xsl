@@ -2,6 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:this="https://github.com/fourier/cgn/java/object">
   <xsl:include href="java_builder.xsl"/>
   <xsl:include href="java_parcelable.xsl"/>
@@ -132,8 +133,8 @@
   </xsl:template>
   
   <xsl:variable name="builder-class-name" select="'Builder'"/>
-  
-  <xsl:template match="cgn:object" mode="java">
+
+  <xsl:template match="cgn:object" mode="genobjects">
     <!-- extract necessary parameters for convenience -->
     <xsl:variable name="package" select="./@cgn:package"/>
     <xsl:variable name="builder" select="./@jcgn:builder"/>
@@ -142,8 +143,6 @@
     <xsl:variable name="is-set" select="./@cgn:is-set"/>
 
     <!-- sanity checks -->
-    <xsl:call-template name="cgn:test-read-only-value"/>
-    <xsl:call-template name="jcgn:test-builder-value"/>
     <xsl:call-template name="jcgn:test-isset-applicable"/>
     
     <!-- name of class from 'name' attribute -->
@@ -165,6 +164,45 @@
         <xsl:with-param name="copyright" select="./@cgn:copyright"/>
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
+
+      <!-- first, extract all distinct FQDN-types of fields -->
+      <xsl:variable name="types" select="distinct-values(cgn:field[ not(cgn:is-primitive-type(cgn:extract-type(@cgn:type)))]/cgn:extract-type(@cgn:type))" as="xs:string*"/>
+
+      <!-- for each distinct FQDN-name extract the class name -->
+      <xsl:variable name="short-types" as="xs:string*">
+        <xsl:for-each select="$types">
+          <xsl:sequence select="cgn:extract-type-name(.)"/>          
+        </xsl:for-each>
+      </xsl:variable>
+
+      <!-- now create the mapping between the distinct FQDN type and -->
+      <!-- amount of class names equal to the class name of the FQDN type -->
+      <xsl:variable name="type-counts">
+        <xsl:for-each select="$types">
+          <xsl:variable name="short-type" select="cgn:extract-type-name(.)"/>
+          <xsl:variable name="same" select="$short-types[. = $short-type]" as="xs:string*"/>
+          <xsl:element name="fqdn">
+            <xsl:attribute name="type" select="."/>
+            <xsl:attribute name="count" select="count($same)"/>
+          </xsl:element>
+        </xsl:for-each>
+      </xsl:variable>
+      <!-- usage example: -->
+      <!--
+      <xsl:for-each select="cgn:field">
+        <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
+        <xsl:if test="not(cgn:is-primitive-type($type))">
+          <xsl:message>
+            <xsl:value-of select="concat('Type: ',
+                                  $type,
+                                  ' count: ',
+                                  $type-counts/fqdn[@type = $type]/@count)"/>
+          </xsl:message>
+          
+        </xsl:if>
+      </xsl:for-each>
+      -->
+      
       <!-- imports should be here if necessary-->
       <xsl:call-template name="jcgn:generate-imports"/>
       <xsl:text>&#10;</xsl:text>
