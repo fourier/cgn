@@ -81,7 +81,7 @@
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="jtype" select="./@jcgn:type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+    <xsl:variable name="java-type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
     <xsl:variable name="primitive-type-reader-map">
       <entry key="string">in.readString()</entry>
       <entry key="int">in.readInt()</entry>
@@ -198,7 +198,7 @@
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="jtype" select="./@jcgn:type"/>
-    <xsl:variable name="java-type" select="cgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+    <xsl:variable name="java-type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
     <xsl:variable name="primitive-type-writer-map">
       <entry key="string">out.writeString(</entry>
       <entry key="int">out.writeInt(</entry>

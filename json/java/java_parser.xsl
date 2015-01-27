@@ -334,7 +334,7 @@
         '/* parse &quot;',
         $name,
         '&quot; of type ',
-        cgn:type-to-java-type($type, $jtype),
+        jcgn:type-to-java-type($type, $jtype),
         ' */ ',
         '{&#10;')"/>
       <!-- generate assert -->

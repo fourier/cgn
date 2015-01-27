@@ -140,6 +140,11 @@
     <xsl:value-of select="concat($class-pkg,'.',$class-name)"/>
   </xsl:function>
 
+  <xsl:function name="cgn:type-is-in-package" as="xs:boolean">
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="package" as="xs:string"/>
+    <xsl:sequence select="cgn:extract-type-package($type) = $package"/>
+  </xsl:function>
 
   
 </xsl:stylesheet>

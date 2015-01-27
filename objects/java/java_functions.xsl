@@ -60,7 +60,7 @@
     </xsl:choose>
   </xsl:function>
 
-  <xsl:function name="cgn:type-to-java-type">
+  <xsl:function name="jcgn:type-to-java-type">
     <xsl:param name="type"/>
     <xsl:param name="jtype"/>
     <xsl:choose>
@@ -91,6 +91,19 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:function>
+
+  <xsl:function name="jcgn:type-to-java-type-imported">
+    <xsl:param name="type"/>
+    <xsl:param name="jtype"/>
+    <xsl:value-of select="jcgn:type-to-java-type(if (cgn:is-array($type))
+                          then
+                          cgn:create-array(cgn:extract-type-name(cgn:array-type($type)))
+                          else
+                          cgn:extract-type-name($type), $jtype)"/>
+    
+  </xsl:function>
+
+  
 
 
   <xsl:function name="jcgn:generate-import">

@@ -69,65 +69,26 @@
                           '}&#10;&#10;')"/>
   </xsl:template>
 
+  <xsl:function name="this:should-import" as="xs:boolean">
+    <xsl:param name="type" as="xs:string"/>
+    <xsl:param name="package" as="xs:string"/>
+    <xsl:param name="count" as="xs:integer?"/>
+    <xsl:sequence select="not(cgn:type-is-in-package($type, $package)) and $count = 1"/>
+  </xsl:function>
   
   
   <xsl:template name="jcgn:generate-imports">
     <xsl:variable name="package" select="./@cgn:package"/>
-    <!-- iterate over field, extracting type -->
-    <xsl:for-each select="cgn:field">
-      <xsl:variable name="type" select="if (not(cgn:is-array(@cgn:type))) then @cgn:type else cgn:array-type(@cgn:type)"/>
-      <!-- if user-defined type -->
-      <xsl:if test="not(cgn:is-primitive-type($type))">
-        <!-- the following logic applies: -->
-        <!-- if it is already FQDN, don't import anything -->
-        <xsl:if test="not(cgn:type-contains-package($type))">
-          <!-- if only a class name, determine if we have it in our package -->
-          <!-- if so, do nothing -->
-          <xsl:if test="count(//cgn:object[@cgn:package=$package and @cgn:name=$type]) = 0">
-            <!-- otherwise, check number of other packages containing this class -->
-            <xsl:variable name="objects" select="//cgn:object[@cgn:name=$type]"/>
-            <xsl:choose>
-              <xsl:when test="count($objects) = 0">
-                <xsl:message>
-                  <xsl:value-of select="concat('WARNING: ',
-                                        $package, '.', ../@cgn:name,
-                                        ': type ',
-                                        @cgn:type,
-                                        ' for the field &quot;',
-                                        @cgn:name,
-                                        '&quot; not found in generated objects'
-                                        )"/>
-                </xsl:message>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:if test="count($objects) > 1">
-                  <!-- if the number of other packages with this class more than 1, warning -->
-                  <xsl:message>
-                    <xsl:value-of select="concat('WARNING: ',
-                                          $package, '.', ../@cgn:name,
-                                          ': ambiguous &quot;',
-                                          @cgn:name,
-                                          '&quot; field type ',
-                                          @cgn:type,
-                                          '. Possible choices: '
-                                        )"/>
-                    <xsl:for-each select="$objects">
-                      <xsl:value-of select="concat(
-                                            @cgn:package,'.',@cgn:name,
-                                            if (position() != last()) then ', ' else '')"/>
-                    </xsl:for-each>
-                    <xsl:value-of select="concat('. Importing the first one: ',
-                                          $objects[1]/@cgn:package,
-                                          '.',
-                                          $type)"/>
-                  </xsl:message>
-                </xsl:if>
-                <xsl:variable name="pkg" select="$objects[1]/@cgn:package"/>
-                <xsl:value-of select="jcgn:generate-import(concat($pkg, '.', $type))"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:if>
-        </xsl:if>
+    <!-- create type counts -->
+    <xsl:variable name="type-counts">
+      <xsl:call-template name="cgn:create-type-counts-xml"/>
+    </xsl:variable>
+
+    <!-- iterate over distinct types -->
+    <xsl:for-each select="$type-counts/fqdn">
+      <!-- import if type is not in our package and not ambiguous -->
+      <xsl:if test="this:should-import(@type, $package, @count)">
+        <xsl:value-of select="jcgn:generate-import(@type)"/>
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
@@ -165,31 +126,11 @@
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
 
-      <!-- first, extract all distinct FQDN-types of fields -->
-      <xsl:variable name="types" select="distinct-values(cgn:field[ not(cgn:is-primitive-type(cgn:extract-type(@cgn:type)))]/cgn:extract-type(@cgn:type))" as="xs:string*"/>
-
-      <!-- for each distinct FQDN-name extract the class name -->
-      <xsl:variable name="short-types" as="xs:string*">
-        <xsl:for-each select="$types">
-          <xsl:sequence select="cgn:extract-type-name(.)"/>          
-        </xsl:for-each>
-      </xsl:variable>
-
-      <!-- now create the mapping between the distinct FQDN type and -->
-      <!-- amount of class names equal to the class name of the FQDN type -->
       <xsl:variable name="type-counts">
-        <xsl:for-each select="$types">
-          <xsl:variable name="short-type" select="cgn:extract-type-name(.)"/>
-          <xsl:variable name="same" select="$short-types[. = $short-type]" as="xs:string*"/>
-          <xsl:element name="fqdn">
-            <xsl:attribute name="type" select="."/>
-            <xsl:attribute name="count" select="count($same)"/>
-          </xsl:element>
-        </xsl:for-each>
+        <xsl:call-template name="cgn:create-type-counts-xml"/>
       </xsl:variable>
-      <!-- usage example: -->
-      <!--
-      <xsl:for-each select="cgn:field">
+
+      <!--xsl:for-each select="cgn:field">
         <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
         <xsl:if test="not(cgn:is-primitive-type($type))">
           <xsl:message>
@@ -200,8 +141,8 @@
           </xsl:message>
           
         </xsl:if>
-      </xsl:for-each>
-      -->
+      </xsl:for-each-->
+
       
       <!-- imports should be here if necessary-->
       <xsl:call-template name="jcgn:generate-imports"/>
@@ -242,8 +183,23 @@
                             ' */&#10;')"/>
       <xsl:variable name="final" select="@cgn:read-only='true'"/>
       <xsl:for-each select="cgn:field">
+        <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
+        <!-- determine if field type is imported -->
+        <xsl:variable name="imported" as="xs:boolean">
+          <xsl:choose>
+            <xsl:when test="cgn:is-primitive-type($type)">
+              <xsl:sequence select="false()"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable name="count" select="$type-counts/fqdn[@type = $type]/@count"/>
+              <xsl:sequence select="this:should-import($type, $package, $count) or cgn:type-is-in-package($type, $package)"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
         <xsl:apply-templates select="." mode="jcgn:generate-field">
           <xsl:with-param name="final" select="$final"/>
+          <xsl:with-param name="imported" select="$imported" as="xs:boolean"/>
         </xsl:apply-templates>
       </xsl:for-each>
       <xsl:text>&#10;</xsl:text>
