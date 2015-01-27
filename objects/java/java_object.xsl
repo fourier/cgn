@@ -73,7 +73,7 @@
     <xsl:param name="type" as="xs:string"/>
     <xsl:param name="package" as="xs:string"/>
     <xsl:param name="count" as="xs:integer?"/>
-    <xsl:sequence select="not(cgn:type-is-in-package($type, $package)) and $count = 1"/>
+    <xsl:sequence select="$count = 1 and not(cgn:type-is-in-package($type, $package))"/>
   </xsl:function>
   
   
@@ -192,7 +192,7 @@
             </xsl:when>
             <xsl:otherwise>
               <xsl:variable name="count" select="$type-counts/fqdn[@type = $type]/@count"/>
-              <xsl:sequence select="this:should-import($type, $package, $count) or cgn:type-is-in-package($type, $package)"/>
+              <xsl:sequence select="this:should-import($type, $package, $count)"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
