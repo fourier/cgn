@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
   
@@ -90,16 +91,17 @@
     -->
     <xsl:param name="indent" select="0" />
     <xsl:param name="final" select="false()"/>
-    <xsl:param name="imported" select="false()"/>
+    <!-- if we should exctract type from FQDN name -->
+    <xsl:param name="extract" select="false()"/>
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type">
       <xsl:choose>
-        <xsl:when test="not($imported)">
+        <xsl:when test="not($extract)">
           <!-- do as usual -->
           <xsl:value-of select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="jcgn:type-to-java-type-imported(./@cgn:type, ./@jcgn:type)"/>
+          <xsl:value-of select="jcgn:type-to-java-type-extract(./@cgn:type, ./@jcgn:type)"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -313,6 +315,58 @@
                               ' fields, but only 31 supported for now in order to generate isSet-family of methods')"/>
       </xsl:message>
     </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="jcgn:object-fields">
+    <!-- called from cgn:object, creates the tree like
+         <field name="some-name" type="[SomeClass]" java-name="iSomeName" java-type="ArrayList<SomeClass>"/>
+         ...
+         Usage example:
+         <xsl:variable name="fields">
+           <xsl:call-template name="jcgn:object-fields"/>
+         </xsl:variable>
+
+         <xsl:for-each select="$fields/field">
+           <xsl:message>
+             <xsl:value-of select="concat('name: ', ./@name, ' type: ', ./@type, ' java-name: ', ./@java-name, ' java-type: ', ./@java-type)"/>
+           </xsl:message>
+         </xsl:for-each>
+    -->
+    <xsl:param name="type-counts" as="document-node()">
+      <xsl:call-template name="cgn:create-type-counts-xml"/>
+    </xsl:param>
+
+      <xsl:for-each select="cgn:field">
+        <xsl:element name="field">
+          <xsl:attribute name="name" select="@cgn:name"/>
+          <xsl:attribute name="type" select="@cgn:type"/>
+          <xsl:attribute name="java-name" select="jcgn:generate-field-name(@cgn:name)"/>
+          <xsl:attribute name="java-type">
+            <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
+            <xsl:variable name="extract" as="xs:boolean">
+              <xsl:choose>
+                <xsl:when test="cgn:is-primitive-type($type)">
+                  <xsl:sequence select="false()"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:variable name="count" select="$type-counts/fqdn[@type = $type]/@count"/>
+                  <xsl:sequence select="jcgn:should-import($type, ../@cgn:package, $count) or cgn:type-is-in-package($type, ../@cgn:package)"/>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:variable>
+            <xsl:choose>
+              <xsl:when test="not($extract)">
+                 <!-- do as usual -->
+                <xsl:value-of select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="jcgn:type-to-java-type-extract(./@cgn:type, ./@jcgn:type)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+        </xsl:element>
+      </xsl:for-each>
+
   </xsl:template>
 
 </xsl:stylesheet>

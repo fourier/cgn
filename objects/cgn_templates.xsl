@@ -44,12 +44,12 @@
     <xsl:for-each select="$types">
       <xsl:variable name="short-type" select="cgn:extract-type-name(.)"/>
       <xsl:variable name="same" select="$short-types[. = $short-type]" as="xs:string*"/>
+
       <xsl:element name="fqdn">
         <xsl:attribute name="type" select="."/>
         <xsl:attribute name="count" select="count($same)"/>
       </xsl:element>
     </xsl:for-each>
-    
   </xsl:template>
   
 </xsl:stylesheet>
