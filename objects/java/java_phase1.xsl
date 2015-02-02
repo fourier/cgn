@@ -36,5 +36,11 @@
       <xsl:with-param name="default-value" select="$jcgn:default-parcelable"/>
     </xsl:call-template>
   </xsl:template>
+
+  <!-- preprocess jcgn:date-type attribute -->
+  <xsl:template match="@jcgn:date-type" mode="jcgn:phase1">
+    <xsl:call-template name="jcgn:date-type-attribute-preprocess"/>
+  </xsl:template>
+
   
 </xsl:stylesheet>

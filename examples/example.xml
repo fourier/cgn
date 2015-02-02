@@ -116,7 +116,7 @@
       <field cgn:name="id" cgn:type="int"/>
       <field cgn:name="data" cgn:type="PersonalUserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
-      <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="started" cgn:type="date" jcgn:date-type="joda"/>
       <jcgn:source>
     public void dumpEmployee() {
         System.out.println("Employee " + mData.getName() + " started at " + org.joda.time.format.DateTimeFormat.shortDate().print(mStarted));        
@@ -134,12 +134,12 @@
       <field cgn:name="visits" cgn:type="[date]"/>
     </object>
 
-    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
+    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true" jcgn:date-type="joda">
       <field cgn:name="id" cgn:type="int"/>
       <field cgn:name="unknown" cgn:type="UnknownType"/>
       <field cgn:name="data" cgn:type="UserData"/>
       <field cgn:name="probation" cgn:type="boolean" />
-      <field cgn:name="started" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="started" cgn:type="date" />
     </object>
 
     <object cgn:name="Company" cgn:package="com.mycompany.protocol" jcgn:parcelable="true">
@@ -153,8 +153,8 @@
       <field cgn:name="message" cgn:type="[byte]"/>
       <field cgn:name="dates" cgn:type="[date]"/>
       <field cgn:name="date" cgn:type="date" />
-      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
-      <field cgn:name="joda-date" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:date-type="org.joda.time.DateTime"/>
+      <field cgn:name="joda-date" cgn:type="date" jcgn:date-type="org.joda.time.DateTime"/>
       <field cgn:name="strings" cgn:type="[string]"/>
     </object>
 
@@ -181,11 +181,11 @@
     </object>
     
     <object cgn:name="Conversations" cgn:read-only="false" >
-      <field cgn:name="date" cgn:type="date" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="date" cgn:type="date" jcgn:date-type="org.joda.time.DateTime"/>
       <field cgn:name="conversations" cgn:type="[Conversation]"/>
       <field cgn:name="current-conversation" cgn:type="com.mycompany.example.Conversation"/>
       <field cgn:name="company" cgn:type="Company"/>
-      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:type="org.joda.time.DateTime"/>
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:date-type="org.joda.time.DateTime"/>
       <field cgn:name="normal-dates" cgn:type="[date]"/>
     </object>
 
