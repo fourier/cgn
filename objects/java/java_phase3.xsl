@@ -5,45 +5,30 @@
 
   <xsl:template match="cgn:object" mode="jcgn:phase3">
     <xsl:copy>
+      <!-- copy the attributes -->
+      <xsl:copy-of select="@*" />
+
       <!--
           parent attributes (in cgn:objects) already specified by
           the previous (3) phase of transformation
       -->
       <!-- builder attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:builder)">
-          <xsl:attribute name="jcgn:builder" select="../@jcgn:builder"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:builder"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@jcgn:builder)">
+        <xsl:attribute name="jcgn:builder" select="../@jcgn:builder"/>
+      </xsl:if>
 
       <!-- parcelable attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:parcelable)">
-          <xsl:attribute name="jcgn:parcelable" select="../@jcgn:parcelable"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:parcelable"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
-
+      <xsl:if test="not(@jcgn:parcelable)">
+        <xsl:attribute name="jcgn:parcelable" select="../@jcgn:parcelable"/>
+      </xsl:if>
+      
       <!-- date-type attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:date-type)">
-          <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:date-type"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
+      <xsl:if test="not(@jcgn:date-type)">
+        <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
+      </xsl:if>
       
-      
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <!-- copy the rest nodes -->
+      <xsl:copy-of select="node()" />
     </xsl:copy>
   </xsl:template>
 

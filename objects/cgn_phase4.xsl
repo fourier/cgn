@@ -4,9 +4,11 @@
 
   <xsl:template match="cgn:field" mode="cgn:phase4">
     <xsl:copy>
+      <!-- copy all attributes -->
+      <xsl:copy-of select="@*"/>
       <xsl:call-template name="cgn:preprocess-undeclared-type-field"/>
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <!-- copy all nodes -->
+      <xsl:copy-of select="node()" />
     </xsl:copy>
   </xsl:template>
 

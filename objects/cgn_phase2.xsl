@@ -4,6 +4,7 @@
 
   <xsl:template match="cgn:objects" mode="cgn:phase2">
     <xsl:copy>
+      <xsl:copy-of select="@*" />
       <!-- 1. copyright attribute -->
       <!--
           NOTE: unable to move this to template because XPath qnames
@@ -31,48 +32,27 @@
 
         
       <!-- 3. package attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:package)">
-          <xsl:attribute name="cgn:package" select="$cgn:default-package"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:package"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:package)">
+        <xsl:attribute name="cgn:package" select="$cgn:default-package"/>
+      </xsl:if>
 
       <!-- 4. read-only attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:read-only)">
-          <xsl:attribute name="cgn:read-only" select="$cgn:default-read-only"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:read-only"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
+      <xsl:if test="not(@cgn:read-only)">
+        <xsl:attribute name="cgn:read-only" select="$cgn:default-read-only"/>
+      </xsl:if>
 
       <!-- 5. json attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:json)">
-          <xsl:attribute name="cgn:json" select="$cgn:default-json"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:json"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:json)">
+        <xsl:attribute name="cgn:json" select="$cgn:default-json"/>
+      </xsl:if>
 
       <!-- 6. isset attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:is-set)">
-          <xsl:attribute name="cgn:is-set" select="$cgn:default-is-set"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:is-set"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:is-set)">
+        <xsl:attribute name="cgn:is-set" select="$cgn:default-is-set"/>
+      </xsl:if>
       
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <!-- copy the rest nodes -->
+      <xsl:copy-of select="node()" />
     </xsl:copy>
   </xsl:template>
 

@@ -17,10 +17,22 @@
     <!-- 3rd phase: merge jcgn values from cgn:objects to cgn:object -->
     <xsl:apply-templates select="$jcgn:preprocessed-objects2" mode="jcgn:phase3" />
   </xsl:variable>
+
+  <xsl:variable name="jcgn:preprocessed-objects4">
+    <!-- 4th phase: if not set jcgn:type for cgn:type='date'/'[date]', set it -->
+    <!-- also create the jtmp:object-fields struct -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects3" mode="jcgn:phase4" />
+  </xsl:variable>
+
+  <xsl:variable name="jcgn:preprocessed-objects5">
+    <!-- 4th phase: if not set jcgn:type for cgn:type='date'/'[date]', set it -->
+    <!-- also create the jtmp:object-fields struct -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects4" mode="jcgn:phase5" />
+  </xsl:variable>
   
   <xsl:variable name="jcgn:preprocessed-objects">
-    <!-- 4th phase: if not set jcgn:type for cgn:type='date'/'[date]', set it -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects3" mode="jcgn:phase4" />
+    <!-- 5th phase: add attributes jcgn:java-type to jcgn:field -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects5" mode="jcgn:phase6" />
   </xsl:variable>
   
 </xsl:stylesheet>

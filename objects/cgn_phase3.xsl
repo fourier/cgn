@@ -4,73 +4,45 @@
 
   <xsl:template match="cgn:object" mode="cgn:phase3">
     <xsl:copy>
+      <!-- copy attributes -->
+      <xsl:copy-of select="@*" />
+
       <!--
           parent attributes (in cgn:objects) already specified by
           the first phase of transformation
       -->
       <!-- 1. copyright attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:copyright)">
+      <xsl:if test="not(@cgn:copyright)">
           <xsl:attribute name="cgn:copyright" select="../@cgn:copyright"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:copyright"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      </xsl:if>
 
       <!-- 2. author attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:author)">
-          <xsl:attribute name="cgn:author" select="../@cgn:author"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:author"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:author)">
+        <xsl:attribute name="cgn:author" select="../@cgn:author"/>
+      </xsl:if>
 
       <!-- 3. package attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:package)">
-          <xsl:attribute name="cgn:package" select="../@cgn:package"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:package"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:package)">
+        <xsl:attribute name="cgn:package" select="../@cgn:package"/>
+      </xsl:if>
 
       <!-- 4. read-only attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:read-only)">
-          <xsl:attribute name="cgn:read-only" select="../@cgn:read-only"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:read-only"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:read-only)">
+        <xsl:attribute name="cgn:read-only" select="../@cgn:read-only"/>
+      </xsl:if>
 
       <!-- 5. json attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:json)">
-          <xsl:attribute name="cgn:json" select="../@cgn:json"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:json"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@cgn:json)">
+        <xsl:attribute name="cgn:json" select="../@cgn:json"/>
+      </xsl:if>
 
       <!-- 6. is-set attribute: from parent (cgn:objects) or own -->
-      <xsl:choose>
-        <xsl:when test="not(@cgn:is-set)">
-          <xsl:attribute name="cgn:is-set" select="../@cgn:is-set"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@cgn:is-set"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
+      <xsl:if test="not(@cgn:is-set)">
+        <xsl:attribute name="cgn:is-set" select="../@cgn:is-set"/>
+      </xsl:if>
       
-      <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <!-- copy the rest nodes -->
+      <xsl:copy-of select="node()" />
     </xsl:copy>
   </xsl:template>
 

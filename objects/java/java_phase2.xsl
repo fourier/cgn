@@ -5,39 +5,26 @@
 
   <xsl:template match="cgn:objects" mode="jcgn:phase2">
     <xsl:copy>
+      <!-- copy all attributes -->
+      <xsl:copy-of select="@*"/>
       <!-- builder attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:builder)">
-          <xsl:attribute name="jcgn:builder" select="$jcgn:default-builder"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:builder"/>
-        </xsl:otherwise>
-      </xsl:choose>
+      <xsl:if test="not(@jcgn:builder)">
+        <xsl:attribute name="jcgn:builder" select="$jcgn:default-builder"/>
+      </xsl:if>
 
       <!-- parcelable attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:parcelable)">
-          <xsl:attribute name="jcgn:parcelable" select="$jcgn:default-parcelable"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:parcelable"/>
-        </xsl:otherwise>
-      </xsl:choose>      
+      <xsl:if test="not(@jcgn:parcelable)">
+        <xsl:attribute name="jcgn:parcelable" select="$jcgn:default-parcelable"/>
+      </xsl:if>
 
       <!-- date-type attribute -->
-      <xsl:choose>
-        <xsl:when test="not(@jcgn:date-type)">
-          <xsl:attribute name="jcgn:date-type" select="$jcgn:default-date-type"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:copy-of select="@jcgn:date-type"/>
-        </xsl:otherwise>
-      </xsl:choose>      
-
       
+      <xsl:if test="not(@jcgn:date-type)">
+        <xsl:attribute name="jcgn:date-type" select="$jcgn:default-date-type"/>
+      </xsl:if>
+
       <!-- copy the rest -->
-      <xsl:copy-of select="@*|node()" />
+      <xsl:copy-of select="node()" />
     </xsl:copy>
   </xsl:template>
 
