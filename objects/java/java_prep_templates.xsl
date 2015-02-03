@@ -93,7 +93,8 @@
             <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
             <xsl:variable name="extract" as="xs:boolean">
               <xsl:choose>
-                <xsl:when test="cgn:is-primitive-type($type)">
+                <xsl:when test="cgn:is-primitive-type($type) or
+                                (cgn:is-array($type) and cgn:is-primitive-type(cgn:array-type($type)))">
                   <xsl:sequence select="false()"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -105,10 +106,10 @@
             <xsl:choose>
               <xsl:when test="not($extract)">
                  <!-- do as usual -->
-                <xsl:value-of select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+                <xsl:value-of select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:date-type)"/>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select="jcgn:type-to-java-type-extract(./@cgn:type, ./@jcgn:type)"/>
+                <xsl:value-of select="jcgn:type-to-java-type-extract(./@cgn:type, ./@jcgn:date-type)"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>

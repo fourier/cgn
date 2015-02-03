@@ -25,7 +25,21 @@
     <entry key="byte">byte</entry>
   </xsl:variable>
 
-
+  <xsl:function name="jcgn:date-type-to-type" as="xs:string">
+    <xsl:param name="jtype"/>
+    <xsl:choose>
+      <xsl:when test="$jtype = 'java'">
+        <xsl:value-of select="'java.util.Date'"/>
+      </xsl:when>
+      <xsl:when test="$jtype = 'joda'">
+        <xsl:value-of select="'org.joda.time.DateTime'"/>
+      </xsl:when>
+      <xsl:otherwise> <!-- unknown? -->
+        <xsl:message terminate="yes">Unknown jcgn:date-type</xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
+  
   <xsl:function name="jcgn:is-primitive-java-type">
     <xsl:param name="name"/>
     <xsl:variable name="primitive-java-types">byte,short,int,long,float,double,boolean,char,String</xsl:variable>
@@ -51,7 +65,7 @@
             <xsl:value-of select="$jcgn:primitive-type-to-java-type-map/entry[@key=$array-type]"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$jtype"/>
+            <xsl:value-of select="jcgn:date-type-to-type($jtype)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -73,7 +87,7 @@
             <xsl:value-of select="jcgn:primitive-type-to-java-type($type)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="$jtype"/>
+            <xsl:value-of select="jcgn:date-type-to-type($jtype)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
