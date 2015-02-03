@@ -6,14 +6,9 @@
 
   <xsl:template name="jcgn:preprocess-date-field">
     <!-- if not specified jcgn:date-type get from parent  -->
-    <xsl:choose>
-      <xsl:when test="@cgn:type = 'date' and not(@jcgn:date-type)" >
-        <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
-      </xsl:when>
-      <xsl:when test="cgn:is-array(@cgn:type) and cgn:array-type(@cgn:type) = 'date' and not(@jcgn:date-type)">
-        <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
-      </xsl:when>
-    </xsl:choose>
+    <xsl:if test="(@cgn:type = 'date' or (cgn:is-array(@cgn:type) and cgn:array-type(@cgn:type) = 'date')) and not(@jcgn:date-type)" >
+      <xsl:attribute name="jcgn:date-type" select="../@jcgn:date-type"/>
+    </xsl:if>
   </xsl:template>
 
   

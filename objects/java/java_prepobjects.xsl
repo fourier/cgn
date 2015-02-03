@@ -29,10 +29,17 @@
     <!-- also create the jtmp:object-fields struct -->
     <xsl:apply-templates select="$jcgn:preprocessed-objects4" mode="jcgn:phase5" />
   </xsl:variable>
+
+  <xsl:variable name="jcgn:preprocessed-objects6">
+    <!-- 4th phase: if not set jcgn:type for cgn:type='date'/'[date]', set it -->
+    <!-- also create the jtmp:object-fields struct -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects5" mode="jcgn:phase6" />
+  </xsl:variable>
+
   
   <xsl:variable name="jcgn:preprocessed-objects">
     <!-- 5th phase: add attributes jcgn:java-type to jcgn:field -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects5" mode="jcgn:phase6" />
+    <xsl:apply-templates select="$jcgn:preprocessed-objects6" mode="jcgn:phase7" />
   </xsl:variable>
   
 </xsl:stylesheet>

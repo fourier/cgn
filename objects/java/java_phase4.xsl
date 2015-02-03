@@ -8,23 +8,10 @@
     <xsl:copy>
       <!-- copy attributes -->
       <xsl:copy-of select="@*" />
+      <!-- if the date field do some preprocessing -->
       <xsl:call-template name="jcgn:preprocess-date-field"/>
       <!-- copy nodes -->
       <xsl:copy-of select="node()" />
-    </xsl:copy>
-  </xsl:template>
-
-  <xsl:template match="cgn:object" mode="jcgn:phase4">
-    <xsl:copy>
-      <!-- copy all attributes and fields -->
-      <xsl:copy-of select="@* | node()"/>
-
-      <!-- create a temporary child jtmp:object-fields -->
-      <xsl:element name="jtmp:object-fields">
-        <xsl:call-template name="jcgn:object-fields"/>
-      </xsl:element>
-
-
     </xsl:copy>
   </xsl:template>
 
