@@ -82,7 +82,6 @@
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="date-type" select="./@jcgn:date-type"/>
     <xsl:variable name="java-type" select="@jcgn:type"/>
-    <xsl:variable name="java-date-type" select="jcgn:date-type-to-type($date-type)"/>
     <xsl:variable name="primitive-type-reader-map">
       <entry key="string">in.readString()</entry>
       <entry key="int">in.readInt()</entry>
@@ -196,8 +195,8 @@
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="jtype" select="./@jcgn:type"/>
-    <xsl:variable name="java-type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
+    <xsl:variable name="java-type" select="@jcgn:type"/>
     <xsl:variable name="primitive-type-writer-map">
       <entry key="string">out.writeString(</entry>
       <entry key="int">out.writeInt(</entry>
@@ -214,12 +213,12 @@
       <xsl:when test="not(cgn:is-array($type))">
         <xsl:choose>
           <!-- if jcgn:type is defined and it is a date -->
-          <xsl:when test="$type = 'date' and $jtype = 'org.joda.time.DateTime'">
+          <xsl:when test="$type = 'date' and $date-type = 'joda'">
             <xsl:value-of select="concat('out.writeString(ISO8601_JODA_DATE_FORMAT.print(',
                                   $name,
                                   '))')"/>
           </xsl:when>
-          <xsl:when test="$type = 'date' and $jtype = 'java.util.Date'">
+          <xsl:when test="$type = 'date' and $date-type = 'java'">
             <xsl:value-of select="concat('out.writeString(ISO8601_JAVA_DATE_FORMAT.format(',
                                   $name,
                                   '))')"/>
@@ -252,13 +251,13 @@
                                   ')')"/>
           </xsl:when>
           <!-- if jcgn:type is defined and it is a date -->
-          <xsl:when test="$array-type = 'date' and $jtype = 'org.joda.time.DateTime'">
+          <xsl:when test="$array-type = 'date' and $date-type = 'joda'">
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'for (',
-                                  $jtype,
+                                  jcgn:date-type-to-type($date-type),
                                   ' date : ',
                                   $name,
                                   ')&#10;',
@@ -269,13 +268,13 @@
                                   cgn:indent($indent+1),
                                   '}')"/>
           </xsl:when>
-          <xsl:when test="$array-type = 'date' and $jtype = 'java.util.Date'">
+          <xsl:when test="$array-type = 'date' and $date-type = 'java'">
             <xsl:text>{&#10;</xsl:text>
             <xsl:value-of select="concat(cgn:indent($indent+2),
                                   'java.util.ArrayList&lt;String&gt; tmpArray = new java.util.ArrayList&lt;String&gt;();&#10;',
                                   cgn:indent($indent+2),
                                   'for (',
-                                  $jtype,
+                                  jcgn:date-type-to-type($date-type),
                                   ' date : ',
                                   $name,
                                   ')&#10;',
