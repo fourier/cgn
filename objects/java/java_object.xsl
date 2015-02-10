@@ -50,8 +50,6 @@
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
     <xsl:value-of select="concat(cgn:indent($indent), '/**&#10;',
-                          cgn:indent($indent), ' * Returns &lt;code&gt;true&lt;/code&gt; if the value of the &quot;', @cgn:name, '&quot; field is set&#10;',
-                          cgn:indent($indent), ' * &#10;',
                           cgn:indent($indent), ' * @return &lt;code&gt;true&lt;/code&gt; if the value of the &quot;', @cgn:name, '&quot; field is set&#10;',
                           cgn:indent($indent), ' */&#10;')"/>
     <xsl:value-of select="concat(cgn:indent($indent),'public boolean ',
@@ -68,7 +66,6 @@
                           cgn:indent($indent),
                           '}&#10;&#10;')"/>
   </xsl:template>
-
   
   
   <xsl:template name="jcgn:generate-imports">
@@ -120,30 +117,6 @@
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
 
-      <xsl:variable name="type-counts">
-        <xsl:call-template name="cgn:create-type-counts-xml"/>
-      </xsl:variable>
-
-      <!-- <xsl:for-each select="cgn:field"> -->
-      <!--   <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/> -->
-      <!--   <xsl:if test="not(cgn:is-primitive-type($type))"> -->
-      <!--     <xsl:message> -->
-      <!--       <xsl:value-of select="concat('Type: ', -->
-      <!--                             $type, -->
-      <!--                             ' count: ', -->
-      <!--                             $type-counts/fqdn[@type = $type]/@count)"/> -->
-      <!--     </xsl:message> -->
-          
-      <!--   </xsl:if> -->
-      <!-- </xsl:for-each> -->
-
-
-      <xsl:variable name="fields">
-        <xsl:call-template name="jcgn:object-fields">
-          <xsl:with-param name="type-counts" select="$type-counts" />
-        </xsl:call-template>
-      </xsl:variable>
-
       <!-- imports should be here if necessary-->
       <xsl:call-template name="jcgn:generate-imports"/>
       <xsl:text>&#10;</xsl:text>
@@ -183,45 +156,30 @@
                             ' */&#10;')"/>
       <xsl:variable name="final" select="@cgn:read-only='true'"/>
       <xsl:for-each select="cgn:field">
-        <xsl:variable name="type" select="cgn:extract-type(@cgn:type)"/>
-        <!-- determine if field type is imported -->
-        <xsl:variable name="extract" as="xs:boolean">
-          <xsl:choose>
-            <xsl:when test="cgn:is-primitive-type($type)">
-              <xsl:sequence select="false()"/>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:variable name="count" select="$type-counts/fqdn[@type = $type]/@count"/>
-              <xsl:sequence select="jcgn:should-import($type, $package, $count) or cgn:type-is-in-package($type, $package)"/>
-            </xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
         <xsl:apply-templates select="." mode="jcgn:generate-field">
           <xsl:with-param name="final" select="$final"/>
-          <xsl:with-param name="extract" select="$extract" as="xs:boolean"/>
         </xsl:apply-templates>
       </xsl:for-each>
       <xsl:text>&#10;</xsl:text>
 
       <!-- create a builder if necessary -->
-      <xsl:if test="$builder='true'">
-        <xsl:value-of select="concat(cgn:indent(1),
-                              '/**&#10;',
-                              cgn:indent(1),
-                              ' * Internal Builder class for the ',
-                              $class-name,
-                              '&#10;',
-                              cgn:indent(1),
-                              ' */&#10;')"/>
-        <xsl:apply-templates select="." mode="jcgn:builder">
-          <xsl:with-param name="class-name" select="$class-name"/>
-          <xsl:with-param name="indent" select="1"/>
-          <xsl:with-param name="builder" select="$builder-class-name"/>
-          <xsl:with-param name="create-func-name" select="'create'"/>
-          <xsl:with-param name="attributes" select="'static '"/>
-        </xsl:apply-templates>
-      </xsl:if>
+      <!-- <xsl:if test="$builder='true'"> -->
+      <!--   <xsl:value-of select="concat(cgn:indent(1), -->
+      <!--                         '/**&#10;', -->
+      <!--                         cgn:indent(1), -->
+      <!--                         ' * Internal Builder class for the ', -->
+      <!--                         $class-name, -->
+      <!--                         '&#10;', -->
+      <!--                         cgn:indent(1), -->
+      <!--                         ' */&#10;')"/> -->
+      <!--   <xsl:apply-templates select="." mode="jcgn:builder"> -->
+      <!--     <xsl:with-param name="class-name" select="$class-name"/> -->
+      <!--     <xsl:with-param name="indent" select="1"/> -->
+      <!--     <xsl:with-param name="builder" select="$builder-class-name"/> -->
+      <!--     <xsl:with-param name="create-func-name" select="'create'"/> -->
+      <!--     <xsl:with-param name="attributes" select="'static '"/> -->
+      <!--   </xsl:apply-templates> -->
+      <!-- </xsl:if> -->
 
       <!-- if class is not read only need to add an empty contstructor
       -->
@@ -246,12 +204,12 @@
       </xsl:if>
 
       <!-- if class is parcellable, generate appropriate methods -->
-      <xsl:if test="$parcelable='true'">
-        <xsl:apply-templates select="." mode="jcgn:parcelable">
-          <xsl:with-param name="class-name" select="$class-name"/>
-          <xsl:with-param name="indent" select="1"/>
-        </xsl:apply-templates>
-      </xsl:if>
+      <!-- <xsl:if test="$parcelable='true'"> -->
+      <!--   <xsl:apply-templates select="." mode="jcgn:parcelable"> -->
+      <!--     <xsl:with-param name="class-name" select="$class-name"/> -->
+      <!--     <xsl:with-param name="indent" select="1"/> -->
+      <!--   </xsl:apply-templates> -->
+      <!-- </xsl:if> -->
       
 
       <!-- now generate a list of getters for params -->

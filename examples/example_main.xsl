@@ -23,6 +23,10 @@
   <xsl:include href="../objects/java/java_phase2.xsl" />
   <xsl:include href="../objects/java/java_phase3.xsl" />
   <xsl:include href="../objects/java/java_phase4.xsl"/>
+  <xsl:include href="../objects/java/java_phase5.xsl"/>
+  <xsl:include href="../objects/java/java_phase6.xsl"/>
+  <xsl:include href="../objects/java/java_phase7.xsl"/>
+
 
 
 </xsl:stylesheet>

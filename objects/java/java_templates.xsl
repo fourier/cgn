@@ -92,19 +92,8 @@
     <xsl:param name="indent" select="0" />
     <xsl:param name="final" select="false()"/>
     <!-- if we should exctract type from FQDN name -->
-    <xsl:param name="extract" select="false()"/>
-    <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
-    <xsl:variable name="type">
-      <xsl:choose>
-        <xsl:when test="not($extract)">
-          <!-- do as usual -->
-          <xsl:value-of select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="jcgn:type-to-java-type-extract(./@cgn:type, ./@jcgn:type)"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+    <xsl:variable name="name" select="./@jcgn:variable-name"/>
+    <xsl:variable name="type" select="./@jcgn:type"/>
     <xsl:variable name="final-string" select="if ($final) then 'final ' else ''"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), 'private ', $final-string ,$type, ' ', $name, ';&#10;')"/>
   </xsl:template>
@@ -114,16 +103,25 @@
         Generate a getter for a field.
     -->
     <xsl:param name="indent" select="0" />
+    <xsl:variable name="variable-name"
+                  select="if (not(@jcgn:variable-name))
+                          then (jcgn:generate-field-name(@cgn:name))
+                          else (@jcgn:variable-name)"/>
+    <xsl:variable name="type"
+                  select="if (not(@jcgn:type))
+                          then (jcgn:type-to-java-type(./@cgn:type, ./@jcgn:date-type))
+                          else (@jcgn:type)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
                           cgn:indent($indent+1), ' * @return the value of the &quot;', @cgn:name, '&quot; field&#10;',
                           cgn:indent($indent+1), ' */&#10;')"/>
-    <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type))"/>
+    <xsl:value-of select="concat(cgn:indent($indent+1), 'public ', 
+                          $type)"/>
     <xsl:text> </xsl:text>
     <xsl:value-of select="concat(jcgn:create-getter-name(./@cgn:name),
                           '() {&#10;',
                           cgn:indent($indent+2),
                           'return this.',
-                          jcgn:generate-field-name(./@cgn:name),
+                          $variable-name,
                           ';&#10;',
                           cgn:indent($indent+1),
                           '}&#10;&#10;')"/>
@@ -136,8 +134,14 @@
     <xsl:param name="class-name"/>
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="./@cgn:name"/>
-    <xsl:variable name="type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
-    <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
+    <xsl:variable name="var-name"
+                  select="if (not(@jcgn:variable-name))
+                          then (jcgn:generate-field-name(@cgn:name))
+                          else (@jcgn:variable-name)"/>
+    <xsl:variable name="type"
+                  select="if (not(@jcgn:type))
+                          then (jcgn:type-to-java-type(./@cgn:type, ./@jcgn:date-type))
+                          else (@jcgn:type)"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
     <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
@@ -155,8 +159,8 @@
                           jcgn:create-function-argument($name),
                           ') {&#10;',
                           cgn:indent($indent+2),
-                          'this.',
-                          jcgn:generate-field-assignment($name))"/>
+                          'this.')"/>
+    <xsl:apply-templates select="." mode="jcgn:generate-field-assignment"/>
     <xsl:value-of select="concat(cgn:indent($indent+2),
                           'return this;&#10;',
                           cgn:indent($indent+1),
@@ -170,8 +174,14 @@
     <xsl:param name="class-name"/>
     <xsl:param name="indent" select="0" />
     <xsl:variable name="name" select="./@cgn:name"/>
-    <xsl:variable name="type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
-    <xsl:variable name="var-name" select="jcgn:generate-field-name($name)"/>
+    <xsl:variable name="var-name"
+                  select="if (not(@jcgn:variable-name))
+                          then (jcgn:generate-field-name(@cgn:name))
+                          else (@jcgn:variable-name)"/>
+    <xsl:variable name="type"
+                  select="if (not(@jcgn:type))
+                          then (jcgn:type-to-java-type(./@cgn:type, ./@jcgn:date-type))
+                          else (@jcgn:type)"/>
     <xsl:variable name="bitfield-name" select="jcgn:bitfield-name($name)"/>
     <xsl:variable name="bitfield-var-name" select="jcgn:bitfields-var-name($class-name)"/>
     <xsl:value-of select="concat(cgn:indent($indent+1), '/**&#10;',
@@ -209,18 +219,34 @@
     <!-- arguments list -->
     <xsl:for-each select="cgn:field">
       <!-- take type, space, variable name -->
-      <xsl:value-of select="concat(jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type),
+      <xsl:value-of select="concat(./@jcgn:type,
                             ' ',
                             jcgn:create-function-argument(./@cgn:name))"/>
       <xsl:if test="position() != last( )">, </xsl:if>
     </xsl:for-each>
   </xsl:template>
 
+
+  <xsl:template match="cgn:field" mode="jcgn:generate-field-assignment">
+    <xsl:param name="argument-name" select="jcgn:create-function-argument(@cgn:name)"/>
+    <xsl:param name="indent" select="0"/>
+    <xsl:variable name="variable-name"
+                  select="if (not(@jcgn:variable-name))
+                          then (jcgn:generate-field-name(@cgn:name))
+                          else (@jcgn:variable-name)"/>
+    <xsl:value-of select="concat(cgn:indent($indent),
+                          $variable-name,
+                          ' = ',
+                          $argument-name,
+                          ';&#10;')"/>
+  </xsl:template>
+
+  
   <xsl:template name="jcgn:generate-assignments">
     <xsl:param name="indent" select="0" />
     <xsl:for-each select="cgn:field">
-      <xsl:value-of select="concat(cgn:indent($indent+2),
-                            jcgn:generate-field-assignment(./@cgn:name))"/>
+      <xsl:value-of select="cgn:indent($indent)"/>
+      <xsl:apply-templates select="." mode="jcgn:generate-field-assignment"/> 
     </xsl:for-each>
   </xsl:template>
   
@@ -239,7 +265,7 @@
     <xsl:text>) {&#10;</xsl:text>
     <!-- body of constructor : list of field assignments -->
     <xsl:call-template name="jcgn:generate-assignments">
-      <xsl:with-param name="indent" select="$indent"/>
+      <xsl:with-param name="indent" select="$indent+2"/>
     </xsl:call-template>
     <!-- set fields in case of is-set flag -->
     <xsl:if test="@cgn:is-set='true'">

@@ -26,12 +26,12 @@
   </xsl:variable>
 
   <xsl:function name="jcgn:date-type-to-type" as="xs:string">
-    <xsl:param name="jtype"/>
+    <xsl:param name="datetype"/>
     <xsl:choose>
-      <xsl:when test="$jtype = 'java'">
+      <xsl:when test="$datetype = 'java'">
         <xsl:value-of select="'java.util.Date'"/>
       </xsl:when>
-      <xsl:when test="$jtype = 'joda'">
+      <xsl:when test="$datetype = 'joda'">
         <xsl:value-of select="'org.joda.time.DateTime'"/>
       </xsl:when>
       <xsl:otherwise> <!-- unknown? -->
@@ -55,17 +55,17 @@
 
   <xsl:function name="jcgn:array-to-java-type">
     <xsl:param name="type"/>
-    <xsl:param name="jtype"/>
+    <xsl:param name="datetype"/>
     <xsl:variable name="array-type" select="cgn:array-type($type)"/>
     <xsl:choose>
       <xsl:when test="cgn:is-primitive-type($array-type)">
         <!-- handle case of the jcgn:type separately -->
         <xsl:choose>
-          <xsl:when test="not($jtype)">
+          <xsl:when test="not($datetype)">
             <xsl:value-of select="$jcgn:primitive-type-to-java-type-map/entry[@key=$array-type]"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="jcgn:date-type-to-type($jtype)"/>
+            <xsl:value-of select="jcgn:date-type-to-type($datetype)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -77,17 +77,17 @@
 
   <xsl:function name="jcgn:type-to-java-type">
     <xsl:param name="type"/>
-    <xsl:param name="jtype"/>
+    <xsl:param name="datetype"/>
     <xsl:choose>
       <!-- first verify if primitive type -->
       <xsl:when test="cgn:is-primitive-type($type)">
         <!-- handle case of the jcgn:type separately -->
         <xsl:choose>
-          <xsl:when test="not($jtype)">
+          <xsl:when test="not($datetype)">
             <xsl:value-of select="jcgn:primitive-type-to-java-type($type)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="jcgn:date-type-to-type($jtype)"/>
+            <xsl:value-of select="jcgn:date-type-to-type($datetype)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -95,7 +95,7 @@
         <!-- not a primitive type, verify if an array -->
         <xsl:choose>
           <xsl:when test="cgn:is-array($type)">
-            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $jtype), '&gt;')"/>
+            <xsl:value-of select="concat('java.util.ArrayList&lt;', jcgn:array-to-java-type($type, $datetype), '&gt;')"/>
           </xsl:when>
           <xsl:otherwise>
             <!-- not an array, just return as it is -->
@@ -109,12 +109,12 @@
 
   <xsl:function name="jcgn:type-to-java-type-extract">
     <xsl:param name="type"/>
-    <xsl:param name="jtype"/>
+    <xsl:param name="datetype"/>
     <xsl:value-of select="jcgn:type-to-java-type(if (cgn:is-array($type))
                           then
                           cgn:create-array(cgn:extract-type-name(cgn:array-type($type)))
                           else
-                          cgn:extract-type-name($type), $jtype)"/>
+                          cgn:extract-type-name($type), $datetype)"/>
     
   </xsl:function>
 
@@ -227,6 +227,12 @@
     <xsl:param name="package" as="xs:string"/>
     <xsl:param name="count" as="xs:integer?"/>
     <xsl:sequence select="$count = 1 and not(cgn:type-is-in-package($type, $package))"/>
+  </xsl:function>
+
+  <xsl:function name="jcgn:array-type" as="xs:string">
+    <!-- extracts a string between '<' and '>' characters -->
+    <xsl:param name="java-array"/>
+    <xsl:value-of select="substring-before(substring-after($java-array, '&lt;'), '&gt;')"/>
   </xsl:function>
 
   
