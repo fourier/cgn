@@ -139,11 +139,21 @@
       cgn:pascalize-string($name))"/>
   </xsl:function>
 
+  <xsl:function name="jcgn:is-identifier-can-start-with" as="xs:boolean">
+    <xsl:param name="name"/>
+    <xsl:value-of select="matches(substring(name,1,1),
+      '^([A-Za-z_$])')"/>
+  </xsl:function>
+
+  
   <xsl:function name="jcgn:create-function-argument">
     <xsl:param name="name"/>
     <xsl:variable name="arg-name" select="cgn:camelize-string($name)"/>
     <xsl:choose>
       <xsl:when test="jcgn:is-primitive-java-type($arg-name)">
+        <xsl:value-of select="concat('_', $arg-name)"/>
+      </xsl:when>
+      <xsl:when test="not(matches(substring($arg-name,1,1), '^([A-Za-z_$])'))">
         <xsl:value-of select="concat('_', $arg-name)"/>
       </xsl:when>
       <xsl:otherwise>
