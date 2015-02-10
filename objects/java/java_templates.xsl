@@ -216,13 +216,26 @@
 
   
   <xsl:template name="jcgn:generate-arguments">
+    <xsl:param name="class-name" select="cgn:pascalize-string(@cgn:name)"/>
+    <xsl:param name="indent" select="1"/>
+    <xsl:variable name="start-string" select="concat(cgn:indent($indent+1),'public ', $class-name,'(')"/>
+    <xsl:variable name="offset">
+      <xsl:for-each select="(1 to string-length($start-string))">
+        <xsl:text>&#32;</xsl:text>
+      </xsl:for-each>
+    </xsl:variable>
     <!-- arguments list -->
     <xsl:for-each select="cgn:field">
       <!-- take type, space, variable name -->
-      <xsl:value-of select="concat(./@jcgn:type,
+      <xsl:variable name="arg" 
+                    select="concat(./@jcgn:type,
                             ' ',
                             jcgn:create-function-argument(./@cgn:name))"/>
-      <xsl:if test="position() != last( )">, </xsl:if>
+      <xsl:if test="position() != 1">
+        <xsl:value-of select="$offset"/>
+      </xsl:if>
+      <xsl:value-of select="$arg"/>
+      <xsl:if test="position() != last( )">,&#10;</xsl:if>
     </xsl:for-each>
   </xsl:template>
 
@@ -261,7 +274,10 @@
     <xsl:param name="indent" select="0" />
     <xsl:value-of select="concat(cgn:indent($indent+1),'public ', $class-name,'(')"/>
     <!-- generate arguments -->
-    <xsl:call-template name="jcgn:generate-arguments"/>
+    <xsl:call-template name="jcgn:generate-arguments">
+      <xsl:with-param name="class-name" select="$class-name"/>
+      <xsl:with-param name="indent" select="$indent"/>
+    </xsl:call-template>
     <xsl:text>) {&#10;</xsl:text>
     <!-- body of constructor : list of field assignments -->
     <xsl:call-template name="jcgn:generate-assignments">

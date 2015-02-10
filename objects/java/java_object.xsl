@@ -98,7 +98,7 @@
     <xsl:call-template name="jcgn:test-isset-applicable"/>
     
     <!-- name of class from 'name' attribute -->
-    <xsl:variable name="class-name" select="./@cgn:name"/>
+    <xsl:variable name="class-name" select="cgn:pascalize-string(@cgn:name)"/>
     <!-- java file name -->
     <xsl:variable name="file-name" select="cgn:create-java-file-name($package, concat($class-name, '.java'))"/>
     <xsl:message>
@@ -190,7 +190,7 @@
       </xsl:if>
 
       <!-- if not read only or read-only and no builder - add fields constructor -->
-      <xsl:if test="$read-only='false' or ($read-only='true' and $builder = 'true')">
+      <xsl:if test="$read-only='false' or ($read-only='true' and $builder = 'false')">
         <xsl:call-template name="jcgn:constructor">
           <xsl:with-param name="class-name" select="$class-name"/>
         </xsl:call-template>
