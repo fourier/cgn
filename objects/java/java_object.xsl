@@ -163,23 +163,23 @@
       <xsl:text>&#10;</xsl:text>
 
       <!-- create a builder if necessary -->
-      <!-- <xsl:if test="$builder='true'"> -->
-      <!--   <xsl:value-of select="concat(cgn:indent(1), -->
-      <!--                         '/**&#10;', -->
-      <!--                         cgn:indent(1), -->
-      <!--                         ' * Internal Builder class for the ', -->
-      <!--                         $class-name, -->
-      <!--                         '&#10;', -->
-      <!--                         cgn:indent(1), -->
-      <!--                         ' */&#10;')"/> -->
-      <!--   <xsl:apply-templates select="." mode="jcgn:builder"> -->
-      <!--     <xsl:with-param name="class-name" select="$class-name"/> -->
-      <!--     <xsl:with-param name="indent" select="1"/> -->
-      <!--     <xsl:with-param name="builder" select="$builder-class-name"/> -->
-      <!--     <xsl:with-param name="create-func-name" select="'create'"/> -->
-      <!--     <xsl:with-param name="attributes" select="'static '"/> -->
-      <!--   </xsl:apply-templates> -->
-      <!-- </xsl:if> -->
+      <xsl:if test="$builder='true'">
+        <xsl:value-of select="concat(cgn:indent(1),
+                              '/**&#10;',
+                              cgn:indent(1),
+                              ' * Internal Builder class for the ',
+                              $class-name,
+                              '&#10;',
+                              cgn:indent(1),
+                              ' */&#10;')"/>
+        <xsl:apply-templates select="." mode="jcgn:builder">
+          <xsl:with-param name="class-name" select="$class-name"/>
+          <xsl:with-param name="indent" select="1"/>
+          <xsl:with-param name="builder" select="$builder-class-name"/>
+          <xsl:with-param name="create-func-name" select="'create'"/>
+          <xsl:with-param name="attributes" select="'static '"/>
+        </xsl:apply-templates>
+      </xsl:if>
 
       <!-- if class is not read only need to add an empty contstructor
       -->
@@ -204,12 +204,12 @@
       </xsl:if>
 
       <!-- if class is parcellable, generate appropriate methods -->
-      <!-- <xsl:if test="$parcelable='true'"> -->
-      <!--   <xsl:apply-templates select="." mode="jcgn:parcelable"> -->
-      <!--     <xsl:with-param name="class-name" select="$class-name"/> -->
-      <!--     <xsl:with-param name="indent" select="1"/> -->
-      <!--   </xsl:apply-templates> -->
-      <!-- </xsl:if> -->
+      <xsl:if test="$parcelable='true'">
+        <xsl:apply-templates select="." mode="jcgn:parcelable">
+          <xsl:with-param name="class-name" select="$class-name"/>
+          <xsl:with-param name="indent" select="1"/>
+        </xsl:apply-templates>
+      </xsl:if>
       
 
       <!-- now generate a list of getters for params -->

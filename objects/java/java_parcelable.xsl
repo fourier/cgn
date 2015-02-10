@@ -80,8 +80,9 @@
     <xsl:param name="indent"/>
     <xsl:variable name="name" select="jcgn:generate-field-name(./@cgn:name)"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="jtype" select="./@jcgn:type"/>
-    <xsl:variable name="java-type" select="jcgn:type-to-java-type(./@cgn:type, ./@jcgn:type)"/>
+    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
+    <xsl:variable name="java-type" select="@jcgn:type"/>
+    <xsl:variable name="java-date-type" select="jcgn:date-type-to-type($date-type)"/>
     <xsl:variable name="primitive-type-reader-map">
       <entry key="string">in.readString()</entry>
       <entry key="int">in.readInt()</entry>
@@ -89,9 +90,6 @@
       <entry key="long">in.readLong()</entry>
       <entry key="boolean">in.readByte() != 0</entry>
       <entry key="byte">in.readByte()</entry>
-      <entry key="date"><xsl:value-of select="concat('(',
-      ./@jcgn:type,
-      ')in.readSerializable()')"/></entry>
     </xsl:variable>
 
     <xsl:value-of select="concat(cgn:indent($indent+1),
@@ -103,14 +101,14 @@
       <xsl:when test="not(cgn:is-array($type))">
         <xsl:choose>
           <!-- if jcgn:type is defined and it is a date -->
-          <xsl:when test="$type = 'date' and $jtype = 'org.joda.time.DateTime'">
+          <xsl:when test="$type = 'date' and $date-type = 'joda'">
             <xsl:text>parseDate(in.readString(), ISO8601_JODA_DATE_FORMAT)</xsl:text>
           </xsl:when>
-          <xsl:when test="$type = 'date' and $jtype = 'java.util.Date'">
+          <xsl:when test="$type = 'date' and $date-type = 'java'">
             <xsl:text>parseDate(in.readString(), ISO8601_JAVA_DATE_FORMAT)</xsl:text>
           </xsl:when>
           <!-- if primitive type, use the map above -->
-          <xsl:when test="cgn:is-primitive-type($type)">
+          <xsl:when test="cgn:is-primitive-type($type) and $type != 'date' ">
             <xsl:value-of select="$primitive-type-reader-map/entry[@key=$type]"/>
           </xsl:when>
           <!-- otherwise readParcelable -->
@@ -127,10 +125,10 @@
       <xsl:otherwise>
         <xsl:variable name="array-type" select="cgn:array-type($type)"/>
         <xsl:choose>
-          <!-- if jcgn:type is defined and it is a date -->
-          <xsl:when test="$array-type = 'date' and $jtype = 'org.joda.time.DateTime'">
+          <!-- if cgn:date is a date -->
+          <xsl:when test="$array-type = 'date' and $date-type = 'joda'">
             <xsl:value-of select="concat('new java.util.ArrayList&lt;',
-                                  $jtype,
+                                  jcgn:date-type-to-type($date-type),
                                   '&gt;();&#10;',
                                   cgn:indent($indent+1))"/>
             <xsl:text>{&#10;</xsl:text>
@@ -147,9 +145,9 @@
                                   cgn:indent($indent+1),
                                   '}')"/>
           </xsl:when>
-          <xsl:when test="$array-type = 'date' and $jtype = 'java.util.Date'">
+          <xsl:when test="$array-type = 'date' and $date-type = 'java'">
             <xsl:value-of select="concat('new java.util.ArrayList&lt;',
-                                  $jtype,
+                                  jcgn:date-type-to-type($date-type),
                                   '&gt;();&#10;',
                                   cgn:indent($indent+1))"/>
             <xsl:text>{&#10;</xsl:text>
@@ -166,6 +164,7 @@
                                   cgn:indent($indent+1),
                                   '}')"/>
           </xsl:when>
+          <!-- special handling for strings -->
           <xsl:when test="$array-type = 'string'">
             <xsl:text>new java.util.ArrayList&lt;String&gt;();</xsl:text>
             <xsl:value-of select="concat('in.readStringList(this.',
@@ -379,14 +378,14 @@
     <xsl:text> */&#10;&#10;</xsl:text>
 
     <!-- if necessary, generate no throwing parser for the Joda DateTime -->
-    <xsl:if test="cgn:field[@jcgn:type='org.joda.time.DateTime']">
+    <xsl:if test="cgn:field[@jcgn:date-type='joda']">
       <xsl:call-template name="this:generate-joda-date-parser-method">
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:call-template>
     </xsl:if>
 
     <!-- if necessary, generate no throwing parser for the java.util.date -->
-    <xsl:if test="cgn:field[@jcgn:type='java.util.Date']">
+    <xsl:if test="cgn:field[@jcgn:date-type='java']">
       <xsl:call-template name="this:generate-java-date-parser-method">
         <xsl:with-param name="indent" select="$indent"/>
       </xsl:call-template>
@@ -400,14 +399,14 @@
                           $class-name,
                           '(android.os.Parcel in) {&#10;')"/>
     <!-- generate static formatter for java.util.date -->
-    <xsl:if test="cgn:field[@jcgn:type='java.util.Date']">
+    <xsl:if test="cgn:field[@jcgn:date-type='java']">
       <xsl:call-template name="this:generate-java-datetime-formatter">
         <xsl:with-param name="indent" select="$indent+1"/>
       </xsl:call-template>
     </xsl:if>
     
     <!-- if necessary, generate Joda DateTime formatter -->
-    <xsl:if test="cgn:field[@jcgn:type='org.joda.time.DateTime']">
+    <xsl:if test="cgn:field[@jcgn:date-type='joda']">
       <xsl:call-template name="this:generate-joda-datetime-formatter">
         <xsl:with-param name="indent" select="$indent+1"/>
       </xsl:call-template>
@@ -446,14 +445,14 @@
     <xsl:value-of select="concat(cgn:indent($indent),
                           'public void writeToParcel(android.os.Parcel out, int flags) {&#10;')"/>
     <!-- generate static formatter for java.util.date -->
-    <xsl:if test="cgn:field[@jcgn:type='java.util.Date']">
+    <xsl:if test="cgn:field[@jcgn:date-type='java']">
       <xsl:call-template name="this:generate-java-datetime-formatter">
         <xsl:with-param name="indent" select="$indent+1"/>
       </xsl:call-template>
     </xsl:if>
     
     <!-- if necessary, generate Joda DateTime formatter -->
-    <xsl:if test="cgn:field[@jcgn:type='org.joda.time.DateTime']">
+    <xsl:if test="cgn:field[@jcgn:date-type='joda']">
       <xsl:call-template name="this:generate-joda-datetime-formatter">
         <xsl:with-param name="indent" select="$indent+1"/>
       </xsl:call-template>

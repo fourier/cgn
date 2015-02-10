@@ -5,25 +5,6 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
   
 
-  <xsl:variable name="jcgn:primitive-type-to-java-type-map">
-    <entry key="string">String</entry>
-    <entry key="date">java.util.Date</entry>
-    <entry key="int">Integer</entry>
-    <entry key="double">Double</entry>
-    <entry key="long">Long</entry>
-    <entry key="boolean">Boolean</entry>
-    <entry key="byte">Byte</entry>
-  </xsl:variable>
-
-  <xsl:variable name="jcgn:primitive-type-to-java-primitive-type-map">
-    <entry key="string">String</entry>
-    <entry key="date">java.util.Date</entry>
-    <entry key="int">int</entry>
-    <entry key="double">double</entry>
-    <entry key="long">long</entry>
-    <entry key="boolean">boolean</entry>
-    <entry key="byte">byte</entry>
-  </xsl:variable>
 
   <xsl:function name="jcgn:date-type-to-type" as="xs:string">
     <xsl:param name="datetype"/>
