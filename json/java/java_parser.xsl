@@ -279,7 +279,8 @@
     <xsl:param name="instance"/>
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="jtype" select="./@jcgn:type"/>
+    <xsl:variable name="date-type" select="./@jcgn:date-type"/>
+    <xsl:variable name="jtype" select="@jcgn:type"/>
     <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
     <!-- generate if switch -->
     <xsl:value-of select="cgn:indent($indent+2)"/>
@@ -293,7 +294,7 @@
                           '/* parse &quot;',
                           $name,
                           '&quot; of type ',
-                          jcgn:type-to-java-type($type, $jtype),
+                          $jtype,
                           ' */ ',
                           '{&#10;')"/>
     <!-- generate assert -->
@@ -422,7 +423,7 @@
     <!-- iterate through fields -->
     <xsl:for-each select="cgn:field">
       <xsl:apply-templates select="." mode="jcgn:generate-pojo-parser">
-        <xsl:with-param name="indent" select="$indent+3"/>
+        <xsl:with-param name="indent" select="$indent"/>
         <xsl:with-param name="pojo" select="$pojo"/>
         <xsl:with-param name="parser-class" select="$parser-class"/>
         <xsl:with-param name="instance" select="$instance"/>

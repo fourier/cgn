@@ -122,8 +122,12 @@
         <xsl:attribute name="type" select="@cgn:type"/>
         <xsl:attribute name="java-name" select="jcgn:generate-field-name(@cgn:name)"/>
         <xsl:variable name="java-type" select="this:java-type($extract,./@cgn:type, ./@jcgn:date-type)"/>
+        <xsl:variable name="java-full-type" select="this:java-type(false(),./@cgn:type, ./@jcgn:date-type)"/>
         <xsl:attribute name="java-type">
           <xsl:value-of select="$java-type"/>
+        </xsl:attribute>
+        <xsl:attribute name="java-full-type">
+          <xsl:value-of select="$java-full-type"/>
         </xsl:attribute>
       </xsl:element>
     </xsl:for-each>
