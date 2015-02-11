@@ -86,7 +86,8 @@
   
   <xsl:variable name="builder-class-name" select="'Builder'"/>
 
-  <xsl:template match="cgn:object" mode="genobjects">
+  
+  <xsl:template match="cgn:object" mode="jcgn:genobjects">
     <!-- extract necessary parameters for convenience -->
     <xsl:variable name="package" select="./@cgn:package"/>
     <xsl:variable name="builder" select="./@jcgn:builder"/>
@@ -273,5 +274,6 @@
     </xsl:result-document>
     
   </xsl:template>
+
 
 </xsl:stylesheet>

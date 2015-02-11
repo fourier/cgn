@@ -28,6 +28,7 @@
   <xsl:template name="jcgn:class-header">
     <!-- generate class header string like "class UserName [extends Task][implements BaseRequest]{" -->
     <xsl:param name="class-name"/>
+    <xsl:param name="author" select="@cgn:author"/>
     <xsl:param name="extends-class"/>
     <xsl:param name="implements-interface"/>
     <xsl:param name="access" select="'public'"/>
@@ -35,11 +36,11 @@
     <xsl:param name="indent" select="0" />
     <xsl:if test="$indent = 0">
       <xsl:choose>
-        <xsl:when test="(string-length(@cgn:author) > 0) and (string-length($cgn:xml-name) > 0)">
-          <xsl:value-of select="jcgn:generate-class-comment-by-author-file(@cgn:author, $cgn:xml-name)"/>
+        <xsl:when test="(string-length($author) > 0) and (string-length($cgn:xml-name) > 0)">
+          <xsl:value-of select="jcgn:generate-class-comment-by-author-file($author, $cgn:xml-name)"/>
         </xsl:when>
-        <xsl:when test="string-length(@cgn:author) > 0">
-          <xsl:value-of select="jcgn:generate-class-comment-by-author(@cgn:author)"/>
+        <xsl:when test="string-length($author) > 0">
+          <xsl:value-of select="jcgn:generate-class-comment-by-author($author)"/>
         </xsl:when>
         <xsl:when test="string-length($cgn:xml-name) > 0">
           <xsl:value-of select="jcgn:generate-class-comment-by-file($cgn:xml-name)"/>

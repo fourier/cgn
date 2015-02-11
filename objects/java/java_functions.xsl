@@ -139,13 +139,6 @@
       cgn:pascalize-string($name))"/>
   </xsl:function>
 
-  <xsl:function name="jcgn:is-identifier-can-start-with" as="xs:boolean">
-    <xsl:param name="name"/>
-    <xsl:value-of select="matches(substring(name,1,1),
-      '^([A-Za-z_$])')"/>
-  </xsl:function>
-
-  
   <xsl:function name="jcgn:create-function-argument">
     <xsl:param name="name"/>
     <xsl:variable name="arg-name" select="cgn:camelize-string($name)"/>

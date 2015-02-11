@@ -26,9 +26,13 @@
   <xsl:include href="../objects/java/java_phase2.xsl" />
   <xsl:include href="../objects/java/java_phase3.xsl" />
   <xsl:include href="../objects/java/java_phase4.xsl" />
+  <xsl:include href="../objects/java/java_phase5.xsl"/>
+  <xsl:include href="../objects/java/java_phase6.xsl"/>
+  <xsl:include href="../objects/java/java_phase7.xsl"/>
 
   <xsl:include href="../json/java/java_parser.xsl" />
   <xsl:include href="../json/java/java_generator.xsl" />
+  <xsl:include href="../json/java/java_genparsers.xsl" />
 
 
 
@@ -41,44 +45,26 @@
   <xsl:template match="/" mode="this:genparser">
     <xsl:param name="parser-class"/>
     <xsl:param name="parser-package"/>
-    <xsl:param name="copyright"/>
     <!-- creating parser -->
     <xsl:message>Generating JSON parser</xsl:message>
     <xsl:call-template name="cgn:generate-json-parser">
       <xsl:with-param name="parser-package" select="$parser-package"/>
       <xsl:with-param name="parser-class" select="$parser-class"/>
-      <xsl:with-param name="copyright" select="$copyright"/>
-    </xsl:call-template>
-  </xsl:template>
-
-  <xsl:template match="/" mode="this:gengenerator">
-    <xsl:param name="gen-class"/>
-    <xsl:param name="gen-package"/>
-    <xsl:param name="copyright"/>
-    <!-- creating parser -->
-    <xsl:message>Generating JSON generator</xsl:message>
-    <xsl:call-template name="cgn:generate-json-generator">
-      <xsl:with-param name="gen-package" select="$gen-package"/>
-      <xsl:with-param name="gen-class" select="$gen-class"/>
-      <xsl:with-param name="copyright" select="$copyright"/>
     </xsl:call-template>
   </xsl:template>
 
   <xsl:template name="jcgn:gen-parser-main">
     <xsl:call-template name="jcgn:genobjects"/>
-    <!-- take copyright from the root element: /cgn:copyright -->
-    <xsl:variable name="copyright" select="//cgn:copyright"/>
     <!-- generate json parser -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser">
-      <xsl:with-param name="parser-class" select="$this:parser-class"/>
-      <xsl:with-param name="parser-package" select="$this:parser-package"/>
-      <xsl:with-param name="copyright" select="$copyright"/>
-    </xsl:apply-templates>
+    <!-- <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser"> -->
+    <!--   <xsl:with-param name="parser-class" select="$this:parser-class"/> -->
+    <!--   <xsl:with-param name="parser-package" select="$this:parser-package"/> -->
+    <!--   <xsl:with-param name="copyright" select="$copyright"/> -->
+    <!-- </xsl:apply-templates> -->
     <!-- generate json generator -->
-    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:gengenerator">
-      <xsl:with-param name="gen-class" select="$this:generator-class"/>
-      <xsl:with-param name="gen-package" select="$this:generator-package"/>
-      <xsl:with-param name="copyright" select="$copyright"/>
+    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="jcgn:gengenerator">
+      <xsl:with-param name="class-name" select="$this:generator-class"/>
+      <xsl:with-param name="package" select="$this:generator-package"/>
     </xsl:apply-templates>
 
   </xsl:template>
