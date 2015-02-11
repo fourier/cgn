@@ -42,25 +42,14 @@
   <xsl:variable name="this:generator-package">com.mycompany.example.generator</xsl:variable>
 
   
-  <xsl:template match="/" mode="this:genparser">
-    <xsl:param name="parser-class"/>
-    <xsl:param name="parser-package"/>
-    <!-- creating parser -->
-    <xsl:message>Generating JSON parser</xsl:message>
-    <xsl:call-template name="cgn:generate-json-parser">
-      <xsl:with-param name="parser-package" select="$parser-package"/>
-      <xsl:with-param name="parser-class" select="$parser-class"/>
-    </xsl:call-template>
-  </xsl:template>
 
   <xsl:template name="jcgn:gen-parser-main">
     <xsl:call-template name="jcgn:genobjects"/>
     <!-- generate json parser -->
-    <!-- <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="this:genparser"> -->
-    <!--   <xsl:with-param name="parser-class" select="$this:parser-class"/> -->
-    <!--   <xsl:with-param name="parser-package" select="$this:parser-package"/> -->
-    <!--   <xsl:with-param name="copyright" select="$copyright"/> -->
-    <!-- </xsl:apply-templates> -->
+    <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="jcgn:genparser">
+      <xsl:with-param name="class-name" select="$this:parser-class"/>
+    <xsl:with-param name="package" select="$this:parser-package"/>
+  </xsl:apply-templates>
     <!-- generate json generator -->
     <xsl:apply-templates select="$jcgn:preprocessed-objects" mode="jcgn:gengenerator">
       <xsl:with-param name="class-name" select="$this:generator-class"/>

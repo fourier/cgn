@@ -226,7 +226,7 @@
         return builder.create();
     }
     -->
-  <xsl:template name="jcgn:generate-pojo-generator">
+  <xsl:template match="cgn:object" mode="jcgn:generate-pojo-generator">
     <xsl:param name="indent" select="1"/>
     <xsl:param name="gen-class"/>
     <xsl:variable name="pojo" select="./@cgn:name"/>
@@ -369,10 +369,10 @@
       
       <!-- generate actual parsers -->
       <xsl:for-each select="//cgn:object[@cgn:json='true']">
-        <xsl:call-template name="jcgn:generate-pojo-generator">
+        <xsl:apply-templates select="." mode="jcgn:generate-pojo-generator">
           <xsl:with-param name="indent" select="1"/>
           <xsl:with-param name="gen-class" select="$class-name"/>
-        </xsl:call-template>
+        </xsl:apply-templates>
       </xsl:for-each>
       
       <!-- closing class -->

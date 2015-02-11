@@ -272,17 +272,120 @@
   </xsl:template>
 
   
+  <xsl:template match="cgn:field" mode="jcgn:generate-pojo-parser">
+    <xsl:param name="indent" select="1"/>
+    <xsl:param name="pojo" select="cgn:create-fqdn-full-type(../@cgn:package, ../@cgn:name)"/>
+    <xsl:param name="parser-class"/>
+    <xsl:param name="instance"/>
+    <xsl:variable name="name" select="./@cgn:name"/>
+    <xsl:variable name="type" select="./@cgn:type"/>
+    <xsl:variable name="jtype" select="./@jcgn:type"/>
+    <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
+    <!-- generate if switch -->
+    <xsl:value-of select="cgn:indent($indent+2)"/>
+    <xsl:if test="position()!=1">
+      <xsl:text>else </xsl:text>
+    </xsl:if>
+    <xsl:value-of select="concat(
+                          'if (&quot;',
+                          $name,
+                          '&quot;.equals(currentName)) ',
+                          '/* parse &quot;',
+                          $name,
+                          '&quot; of type ',
+                          jcgn:type-to-java-type($type, $jtype),
+                          ' */ ',
+                          '{&#10;')"/>
+    <!-- generate assert -->
+    <xsl:value-of select="concat(cgn:indent($indent+3),
+                          '/* type verification, either NULL or ',
+                          this:type-to-json-type($type),
+                          ' */&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+3), this:generate-type-assert('parser.getCurrentToken()', $type, $name, $pojo))"/>
+    <!-- add if !null statement -->
+    <xsl:value-of select="concat(cgn:indent($indent+3),
+                          '/* if not NULL try to parse */&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+3),
+                          'if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {&#10;')"/>
+    <!-- if array - special processing -->
+    <xsl:if test="cgn:is-array($type)">
+      <xsl:variable name="array-type" select="cgn:array-type($type)"/>
+      <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;',
+                                                   if (cgn:is-primitive-type($array-type)) then jcgn:array-to-java-type($type, $jtype) else cgn:create-fqdn-full-type(../@cgn:package, $array-type),
+                                                   '&gt;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+4),
+                            '/* Create the array */&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+4),
+                            $java-array-type,
+                            ' array = new ',
+                            $java-array-type,
+                            '();&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+4),
+                            '/* Loop until the end of the array */&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+4),
+                            'while (parser.nextToken() != JsonToken.END_ARRAY) {&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+5),
+                            '/* We expect not null elements of correct type */&#10;')"/>
+      <xsl:value-of select="concat(cgn:indent($indent+5),
+                            this:generate-type-assert('parser.getCurrentToken()', $array-type, concat($name,'[i]'), $pojo))"/>
+      <xsl:value-of select="concat(cgn:indent($indent+5),
+                            'array.add(')"/>
+      <xsl:choose>
+        <xsl:when test="cgn:is-primitive-type($array-type)">
+          <xsl:choose>
+            <xsl:when test="($array-type = 'string') or ($array-type = 'date')">
+              <xsl:value-of select="this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="concat(jcgn:array-to-java-type($type, $jtype),
+                                    '.valueOf(',
+                                    this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class),
+                                    ')')"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:when>
+        <xsl:otherwise> <!-- for classes -->
+          <xsl:value-of select="this:create-new-field-instance(//cgn:object, $parser-class, 'parser', ../@cgn:package, ../@cgn:name, $array-type, $name)"/>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:text>);&#10;</xsl:text>
+      <xsl:value-of select="concat(cgn:indent($indent+4),'}&#10;')"/>
+    </xsl:if>
+    <!-- call setter -->
+    <xsl:value-of select="concat(cgn:indent($indent+4),
+                          '/* call the setter and set field value */&#10;')"/>
+    <xsl:value-of select="concat(cgn:indent($indent+4),
+                          $instance,
+                          '.',
+                          $setter-name,
+                          '(')"/>
+    <!-- value for setter -->
+    <xsl:call-template name="this:create-field-parser">
+      <xsl:with-param name="parser-var" select="'parser'"/>
+      <xsl:with-param name="parser-class" select="$parser-class"/>
+    </xsl:call-template>
+    <!-- close setter call -->
+    <xsl:text>);&#10;</xsl:text>
+    <!-- closing if statement -->
+    <xsl:value-of select="concat(cgn:indent($indent+3),'}&#10;')"/>
+    <!-- closing if statement -->
+    <xsl:value-of select="concat(cgn:indent($indent+2),'}&#10;')"/>
+  </xsl:template>
+
+
   <!--
   
     public static PersonalUserData parseJson(JsonNode node, PersonalUserData.Builder builder) {
         return builder.create();
     }
     -->
-  <xsl:template name="jcgn:generate-pojo-parser">
+  <xsl:template match="cgn:object" mode="jcgn:generate-pojo-parser">
+    <!-- arguments -->
     <xsl:param name="indent" select="1"/>
     <xsl:param name="parser-class"/>
-    <xsl:variable name="pojo" select="concat(./@cgn:package, '.', ./@cgn:name)"/>
-    <xsl:variable name="jtype" select="./@jcgn:type"/>
+    <!-- variables -->
+    <xsl:variable name="pojo" select="cgn:create-fqdn-full-type(@cgn:package, @cgn:name)"/>
+    <xsl:variable name="date-type" select="./@jcgn:type"/>
     <xsl:variable name="instance" select="if (@cgn:read-only='false') then cgn:camelize-string(./@cgn:name) else 'builder'"/>
     <xsl:value-of select="concat(cgn:indent($indent),
                           'public static ',
@@ -318,100 +421,12 @@
                           'final String currentName = parser.getCurrentName();&#10;&#10;')"/>
     <!-- iterate through fields -->
     <xsl:for-each select="cgn:field">
-      <xsl:variable name="name" select="./@cgn:name"/>
-      <xsl:variable name="type" select="./@cgn:type"/>
-      <xsl:variable name="jtype" select="./@jcgn:type"/>
-      <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
-      <!-- generate if switch -->
-      <xsl:value-of select="cgn:indent($indent+2)"/>
-      <xsl:if test="position()!=1">
-        <xsl:text>else </xsl:text>
-      </xsl:if>
-      <xsl:value-of select="concat(
-        'if (&quot;',
-        $name,
-        '&quot;.equals(currentName)) ',
-        '/* parse &quot;',
-        $name,
-        '&quot; of type ',
-        jcgn:type-to-java-type($type, $jtype),
-        ' */ ',
-        '{&#10;')"/>
-      <!-- generate assert -->
-      <xsl:value-of select="concat(cgn:indent($indent+3),
-                            '/* type verification, either NULL or ',
-                            this:type-to-json-type($type),
-                            ' */&#10;')"/>
-      <xsl:value-of select="concat(cgn:indent($indent+3), this:generate-type-assert('parser.getCurrentToken()', $type, $name, $pojo))"/>
-      <!-- add if !null statement -->
-      <xsl:value-of select="concat(cgn:indent($indent+3),
-                            '/* if not NULL try to parse */&#10;')"/>
-      <xsl:value-of select="concat(cgn:indent($indent+3),
-        'if (parser.getCurrentToken() != JsonToken.VALUE_NULL) {&#10;')"/>
-      <!-- if array - special processing -->
-      <xsl:if test="cgn:is-array($type)">
-        <xsl:variable name="array-type" select="cgn:array-type($type)"/>
-        <xsl:variable name="java-array-type" select="concat('java.util.ArrayList&lt;',
-                                                     if (cgn:is-primitive-type($array-type)) then jcgn:array-to-java-type($type, $jtype) else cgn:create-fqdn-full-type(../@cgn:package, $array-type),
-                                                     '&gt;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+4),
-                              '/* Create the array */&#10;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+4),
-          $java-array-type,
-          ' array = new ',
-          $java-array-type,
-          '();&#10;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+4),
-                              '/* Loop until the end of the array */&#10;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+4),
-          'while (parser.nextToken() != JsonToken.END_ARRAY) {&#10;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+5),
-                              '/* We expect not null elements of correct type */&#10;')"/>
-        <xsl:value-of select="concat(cgn:indent($indent+5),
-          this:generate-type-assert('parser.getCurrentToken()', $array-type, concat($name,'[i]'), $pojo))"/>
-        <xsl:value-of select="concat(cgn:indent($indent+5),
-                              'array.add(')"/>
-        <xsl:choose>
-          <xsl:when test="cgn:is-primitive-type($array-type)">
-            <xsl:choose>
-              <xsl:when test="($array-type = 'string') or ($array-type = 'date')">
-                <xsl:value-of select="this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="concat(jcgn:array-to-java-type($type, $jtype),
-                                      '.valueOf(',
-                                      this:json-node-getter-for-type($array-type, $jtype, 'parser', $parser-class),
-                                      ')')"/>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:otherwise> <!-- for classes -->
-            <xsl:value-of select="this:create-new-field-instance(//cgn:object, $parser-class, 'parser', ../@cgn:package, ../@cgn:name, $array-type, $name)"/>
-          </xsl:otherwise>
-        </xsl:choose>
-        <xsl:text>);&#10;</xsl:text>
-        <xsl:value-of select="concat(cgn:indent($indent+4),'}&#10;')"/>
-      </xsl:if>
-      <!-- call setter -->
-      <xsl:value-of select="concat(cgn:indent($indent+4),
-        '/* call the setter and set field value */&#10;')"/>
-      <xsl:value-of select="concat(cgn:indent($indent+4),
-                            $instance,
-                            '.',
-                            $setter-name,
-                            '(')"/>
-      <!-- value for setter -->
-      <xsl:call-template name="this:create-field-parser">
-        <xsl:with-param name="parser-var" select="'parser'"/>
+      <xsl:apply-templates select="." mode="jcgn:generate-pojo-parser">
+        <xsl:with-param name="indent" select="$indent+3"/>
+        <xsl:with-param name="pojo" select="$pojo"/>
         <xsl:with-param name="parser-class" select="$parser-class"/>
-      </xsl:call-template>
-      <!-- close setter call -->
-      <xsl:text>);&#10;</xsl:text>
-      <!-- closing if statement -->
-      <xsl:value-of select="concat(cgn:indent($indent+3),'}&#10;')"/>
-      <!-- closing if statement -->
-      <xsl:value-of select="concat(cgn:indent($indent+2),'}&#10;')"/>
-
+        <xsl:with-param name="instance" select="$instance"/>
+      </xsl:apply-templates>
     </xsl:for-each>
     <!-- add skip all elements if unknown array or object -->
     <xsl:choose>
@@ -540,16 +555,20 @@
   </xsl:function>
 
   
-  <xsl:template name="cgn:generate-json-parser">
-    <xsl:param name="parser-package" />
-    <xsl:param name="parser-class" />
-    <xsl:param name="copyright" select="$cgn:default-copyright"/>
-    <xsl:variable name="class-name" select="$parser-class"/>
-    <xsl:variable name="file-name" select="cgn:create-java-file-name($parser-package, concat($class-name, '.java'))"/>
+  <xsl:template name="jcgn:generate-json-parser">
+    <xsl:param name="package" />
+    <xsl:param name="class-name" select="'JsonParser'"/>
+    <xsl:param name="copyright" select="if (not(//cgn:copyright))
+                                        then ($cgn:default-copyright)
+                                        else (//cgn:copyright)"/>
+    <xsl:param name="author" select="if (not(//cgn:author))
+                                     then ($cgn:default-author)
+                                     else (//cgn:author)"/>
+    <xsl:variable name="file-name" select="cgn:create-java-file-name($package, concat($class-name, '.java'))"/>
 
     <xsl:message>
       <xsl:value-of select="concat('Generating class ',
-                            $parser-package,
+                            $package,
                             '.',
                             $class-name,
                             ': ',
@@ -559,7 +578,7 @@
     <xsl:result-document href="{$file-name}" method="text">
       <!-- header -->
       <xsl:call-template name="jcgn:file-header">
-        <xsl:with-param name="package" select="$parser-package"/>
+        <xsl:with-param name="package" select="$package"/>
         <xsl:with-param name="copyright" select="$copyright"/>
       </xsl:call-template>
       
@@ -572,11 +591,13 @@
       </xsl:call-template>
       <xsl:text>&#10;</xsl:text>
 
-      <!-- generate static method for date parsing -->
-      <xsl:call-template name="this:generate-date-parser"/>
-
+      <!-- if necessary, generate Java Date parser -->
+      <xsl:if test="//cgn:object[@cgn:json='true']/cgn:field[@jcgn:date-type='java']">
+        <xsl:call-template name="this:generate-date-parser"/>
+      </xsl:if>
+      
       <!-- if necessary, generate Joda DateTime parser -->
-      <xsl:if test="//cgn:object[@cgn:json='true']/cgn:field[@jcgn:type='org.joda.time.DateTime']">
+      <xsl:if test="//cgn:object[@cgn:json='true']/cgn:field[@jcgn:date-type='joda']">
         <xsl:call-template name="this:generate-iso-date-parser"/>
       </xsl:if>
 
@@ -592,10 +613,10 @@
             ' have no builder set and read-only, skipping JSON parser generation')"/></xsl:message>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:call-template name="jcgn:generate-pojo-parser">
+            <xsl:apply-templates select="." mode="jcgn:generate-pojo-parser">
               <xsl:with-param name="indent" select="1"/>
-              <xsl:with-param name="parser-class" select="$parser-class"/>
-            </xsl:call-template>
+              <xsl:with-param name="parser-class" select="$class-name"/>
+            </xsl:apply-templates>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:for-each>
