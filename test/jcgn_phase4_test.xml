@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 4rd java transformation phase -->
+
+  <!-- test if the the field jcgn:date-type is not set, but the
+       cgn:type is 'date' or '[date]', take the jcgn:date-type
+       from the parent cgn:object
+  -->
+  <objects cgn:package="com.test.java.phase4.field.datetype.notset">
+    <object cgn:name="Test1" jcgn:date-type="joda">
+      <field cgn:name="java-date" cgn:type="date" jcgn:date-type="java"/>
+      <field cgn:name="java-array" cgn:type="[date]" jcgn:date-type="java"/>
+      <field cgn:name="joda-date" cgn:type="date" />
+      <field cgn:name="joda-array" cgn:type="[date]"/>
+    </object>
+  </objects>
+
+</root>
+

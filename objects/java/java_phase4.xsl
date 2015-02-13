@@ -4,6 +4,9 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
                 xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
 
+  <!-- 4th phase. If the field is of type 'date' or '[date]' and no
+       jcgn:date-type set, add the jcgn:date-type from parent
+  -->
   <xsl:template match="cgn:field" mode="jcgn:phase4">
     <xsl:copy>
       <!-- copy attributes -->
