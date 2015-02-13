@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn"
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 2nd transformation phase --><!-- test if the copyright and author is specified on a level above,
+       if so, assign them as cgn:copyright and cgn:author attributes
+       to cgn:objects
+  -->
+   <test1>
+      <cgn:copyright>
+      Copyright (c) 2014 by My Company
+      This file and its contents are Confidential.
+    </cgn:copyright>
+      <cgn:author>John Doe</cgn:author>
+      <objects cgn:package="com.test.phase1.objects.copyright.exists"
+               cgn:copyright="&#xA;      Copyright (c) 2014 by My Company&#xA;      This file and its contents are Confidential.&#xA;    "
+               cgn:author="John Doe"
+               cgn:read-only="false"
+               cgn:json="false"
+               cgn:is-set="false"/>
+   </test1>
+   <!-- if no copyright or author on a level above, create
+       cgn:copyright and cgn:author with default values in cgn:objects
+       if no cgn:json, cgn:read-only, cgn:package and cgn:is-set,
+       set their appropriate default values
+  -->
+   <objects cgn:copyright=""
+            cgn:author=""
+            cgn:package="com.example.cgn"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"/>
+</root>
