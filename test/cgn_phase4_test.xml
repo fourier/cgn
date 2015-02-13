@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 4th transformation phase -->
+
+  <cgn:copyright>
+    Copyright (c) 2014 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+
+  <cgn:author>John Doe</cgn:author>
+
+  <!-- test if the field cgn:type is not set, use the default (string) -->
+  <objects cgn:package="com.test.phase4.field.type.not.set"
+           cgn:read-only="false"
+           cgn:json="true"
+           cgn:is-set="true">
+    <object cgn:name="Test1">
+      <field cgn:name="some-field"/>
+      <field cgn:name="some-other-field" cgn:type="int"/>
+      <field cgn:name="yet-another-field" cgn:type="double"/>
+    </object>
+  </objects>
+  
+</root>
+
