@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 3rd java transformation phase -->
+
+  <!-- test if the :
+       jcgn:builder
+       jcgn:parcelable
+       jcgn:date-type
+       are not specified in cgn:object, take them from parent cgn:objects
+  -->
+  <objects cgn:package="com.test.java.phase3.object.attributes.from.parent"
+           jcgn:builder="true"
+           jcgn:parcelable="true"
+           jcgn:date-type="joda">
+    <object cgn:name="Test1"/>
+  </objects>
+
+  <!-- use own :
+       jcgn:builder
+       jcgn:parcelable
+       jcgn:date-type
+       attributes specified in cgn:object instead of parent cgn:objects
+  -->
+  <objects cgn:package="com.test.java.phase3.object.attributes.own"
+           jcgn:builder="false"
+           jcgn:parcelable="false"
+           jcgn:date-type="java">
+    <object cgn:name="Test2"
+            jcgn:builder="true"
+            jcgn:parcelable="true"
+            jcgn:date-type="joda">
+      <field cgn:name="some-field"/>
+    </object>
+  </objects>
+  
+</root>
+
