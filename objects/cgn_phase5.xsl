@@ -4,6 +4,21 @@
                 xmlns:this="https://github.com/fourier/cgn/phase5"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+  <!-- in this phase we resolve all ambiguities in field types if
+       field type is an object or array of objects, by searching in
+       all objects and replacing the field type with the FQDN of
+       this type
+  -->
+
+  <!-- at this stage all packages are propagated to individual objects, -->
+  <!-- so we can collect all objects with their packages -->
+  <xsl:variable name="this:fqdn-objects-list" as="xs:string*">
+    <xsl:for-each select="$cgn:preprocessed-objects4//cgn:object">
+      <xsl:copy-of select="concat(@cgn:package, '.', @cgn:name)"/>
+    </xsl:for-each>
+  </xsl:variable>
+
+  
   <xsl:template name="this:construct-type">
     <xsl:param name="old-type"/>
     <xsl:param name="new-type"/>
@@ -17,6 +32,10 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- iterate by all fields and if the field type points to an object
+       or array of objects, find their FQDN and replace type with the
+       FQDN
+  -->
   <xsl:template match="cgn:object/cgn:field/@cgn:type" mode="cgn:phase5">
     <xsl:variable name="type" select="cgn:extract-type(.)"/>
     <xsl:choose>
@@ -25,7 +44,7 @@
         <!-- test if it is FQDN and it is exist -->
         <xsl:choose>
           <xsl:when test="cgn:type-contains-package($type)">
-            <xsl:if test="not($cgn:fqdn-objects-list[ . = $type])">
+            <xsl:if test="not($this:fqdn-objects-list[ . = $type])">
               <xsl:message>
                 <xsl:value-of select="concat('WARNING: type ',
                                       $type,
@@ -43,7 +62,7 @@
           </xsl:when>
           <!-- not FQDN, try to find all classes with this name -->
           <xsl:otherwise>
-            <xsl:variable name="found" select="$cgn:fqdn-objects-list[ cgn:extract-type-name(.) = $type]" as="xs:string*"/>
+            <xsl:variable name="found" select="$this:fqdn-objects-list[ cgn:extract-type-name(.) = $type]" as="xs:string*"/>
             <!-- now try to find if such class exists at all -->
             <xsl:choose>
               <!-- not found :( -->

@@ -3,6 +3,13 @@
                 xmlns:cgn="https://github.com/fourier/cgn">
 
   <xsl:template match="cgn:field" mode="cgn:phase4">
+    <!-- cgn:name MUST always present! -->
+    <xsl:if test="not(@cgn:name)">
+      <xsl:message terminate="yes">
+        <xsl:value-of select="concat('Field without cgn:name attribute found in object ', cgn:create-fqdn-full-type(../@cgn:package,../@cgn:name))"/>
+      </xsl:message>
+    </xsl:if>
+
     <xsl:copy>
       <!-- copy all attributes -->
       <xsl:copy-of select="@*"/>

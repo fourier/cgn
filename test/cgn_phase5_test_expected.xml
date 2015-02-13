@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn"
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 5th transformation phase -->
+   <cgn:copyright>
+    Copyright (c) 2014 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+   <cgn:author>John Doe</cgn:author>
+   <!-- test if nothing happens with the normal field types,
+       like primitive types or arrays of primitive types
+  -->
+   <objects cgn:package="com.test.phase5.field.types.normal"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="Test1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.field.types.normal"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false">
+         <field cgn:name="field1" cgn:type="int"/>
+         <field cgn:name="field2" cgn:type="double"/>
+         <field cgn:name="field3" cgn:type="[int]"/>
+         <field cgn:name="field4" cgn:type="[string]"/>
+         <field cgn:name="field5" cgn:type="string"/>
+         <field cgn:name="field6" cgn:type="date"/>
+      </object>
+   </objects>
+   <!-- test field types which are not arrays -->
+   <objects cgn:package="com.test.phase5.fqdn.not.arrays"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="SomeObject"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+      <object cgn:name="SomeObject1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="com.test.phase5.fqdn.one.SomeObject1"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type" cgn:type="com.unknown.Type"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type" cgn:type="UnknownType"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="com.test.phase5.fqdn.two.SomeObject2"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="com.test.phase5.fqdn.not.arrays.SomeObject"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package"
+                cgn:type="com.test.phase5.fqdn.package1.SomeObject3"/>
+      </object>
+   </objects>
+   <!-- test field types which are arrays -->
+   <objects cgn:package="com.test.phase5.fqdn.arrays"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="SomeObject"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+      <object cgn:name="SomeObject1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="[com.test.phase5.fqdn.one.SomeObject1]"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type" cgn:type="[com.unknown.Type]"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type" cgn:type="[UnknownType]"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="[com.test.phase5.fqdn.two.SomeObject2]"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="[com.test.phase5.fqdn.arrays.SomeObject]"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package"
+                cgn:type="[com.test.phase5.fqdn.package1.SomeObject3]"/>
+      </object>
+   </objects>
+   <!-- help objects -->
+   <objects cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:package="com.example.cgn"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="SomeObject1"
+              cgn:package="com.test.phase5.fqdn.one"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+      <object cgn:name="SomeObject2"
+              cgn:package="com.test.phase5.fqdn.two"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.phase5.fqdn.package1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.phase5.fqdn.package2"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"/>
+   </objects>
+</root>

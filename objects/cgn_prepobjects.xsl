@@ -22,14 +22,6 @@
     <!-- 4th phase: applying the default values for field types -->
     <xsl:apply-templates select="$cgn:preprocessed-objects3" mode="cgn:phase4" />
   </xsl:variable>
-
-  <!-- at this stage all packages are propagated to individual objects, -->
-  <!-- so we can collect all objects with their packages -->
-  <xsl:variable name="cgn:fqdn-objects-list" as="xs:string*">
-    <xsl:for-each select="$cgn:preprocessed-objects4//cgn:object">
-      <xsl:copy-of select="concat(@cgn:package, '.', @cgn:name)"/>
-    </xsl:for-each>
-  </xsl:variable>
   
   <xsl:variable name="cgn:preprocessed-objects">
     <!-- 5th phase: process construct FQDN names for object field types -->
