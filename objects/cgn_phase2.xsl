@@ -3,6 +3,14 @@
                 xmlns:cgn="https://github.com/fourier/cgn">
 
   <xsl:template match="cgn:objects" mode="cgn:phase2">
+    <xsl:variable name="copyright"
+                  select="if (not(../cgn:copyright))
+                          then $cgn:default-copyright
+                          else ../cgn:copyright"/>
+    <xsl:variable name="author"
+                  select="if (not(../cgn:author))
+                          then $cgn:default-author
+                          else ../cgn:author"/>
     <xsl:copy>
       <xsl:copy-of select="@*" />
       <!-- 1. copyright attribute -->
@@ -11,25 +19,14 @@
           could not be evaluated in runtime, and saxon:evaluate is not
           available in HE version of Saxon
       -->
-      <xsl:choose>
-        <xsl:when test="not(../cgn:copyright)">
-          <xsl:attribute name="cgn:copyright" select="$cgn:default-copyright"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="cgn:copyright" select="../cgn:copyright"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
+      <xsl:if test="not(@cgn:copyright)">
+          <xsl:attribute name="cgn:copyright" select="$copyright"/>
+      </xsl:if>
+          
       <!-- 2. author field -->
-      <xsl:choose>
-        <xsl:when test="not(../cgn:author)">
-          <xsl:attribute name="cgn:author" select="$cgn:default-author"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:attribute name="cgn:author" select="../cgn:author"/>
-        </xsl:otherwise>
-      </xsl:choose>
-
+      <xsl:if test="not(@cgn:author)">
+          <xsl:attribute name="cgn:author" select="$author"/>
+      </xsl:if>
         
       <!-- 3. package attribute -->
       <xsl:if test="not(@cgn:package)">

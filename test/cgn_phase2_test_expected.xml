@@ -30,4 +30,11 @@
             cgn:read-only="false"
             cgn:json="false"
             cgn:is-set="false"/>
+   <!-- objects can redefine copyright and author -->
+   <objects cgn:copyright="Some Other Company"
+            cgn:author="Another developer"
+            cgn:package="com.example.cgn"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"/>
 </root>

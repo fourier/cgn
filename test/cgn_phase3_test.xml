@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 3rd transformation phase -->
+
+  <cgn:copyright>
+    Copyright (c) 2014 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+
+  <cgn:author>John Doe</cgn:author>
+
+  <!-- test if the :
+       cgn:copyright
+       cgn:author
+       cgn:package
+       cgn:read-only
+       cgn:json
+       cgn:is-set
+       are not specified in cgn:object, take them from parent cgn:objects
+  -->
+  <objects cgn:package="com.test.phase3.object.attributes.from.parent"
+           cgn:read-only="false"
+           cgn:json="true"
+           cgn:is-set="true">
+    <object cgn:name="Test1"/>
+  </objects>
+
+  <!-- use own :
+       cgn:copyright
+       cgn:author
+       cgn:package
+       cgn:read-only
+       cgn:json
+       cgn:is-set
+       attributes specified in cgn:object instead of parent cgn:objects
+  -->
+  <objects cgn:package="com.arrays.test"
+           cgn:json="false">
+    <object cgn:name="Test2"
+            cgn:copyright="Some cool company"
+            cgn:author="Another Author"
+            cgn:package="com.test.phase3.object.attributes.own"
+            cgn:read-only="true"
+            cgn:json="yes"
+            cgn:is-set="yes">
+      <field cgn:name="some-field"/>
+    </object>
+  </objects>
+  
+</root>
+

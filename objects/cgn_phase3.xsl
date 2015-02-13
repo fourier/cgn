@@ -3,6 +3,13 @@
                 xmlns:cgn="https://github.com/fourier/cgn">
 
   <xsl:template match="cgn:object" mode="cgn:phase3">
+    <!-- cgn:name MUST always present! -->
+    <xsl:if test="not(@cgn:name)">
+      <xsl:message terminate="yes">
+        <xsl:value-of select="concat('Object without cgn:name attribute found in package ', ../@cgn:package)"/>
+      </xsl:message>
+    </xsl:if>
+
     <xsl:copy>
       <!-- copy attributes -->
       <xsl:copy-of select="@*" />

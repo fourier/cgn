@@ -28,5 +28,9 @@
   -->
   <objects/>
 
+  <!-- objects can redefine copyright and author -->
+  <objects cgn:copyright="Some Other Company"
+           cgn:author="Another developer"/>
+  
 </root>
 
