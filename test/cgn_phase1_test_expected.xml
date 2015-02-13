@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn"
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 1st transformation phase:
+       verification of the predefined attribute values
+       correctness and transformation them to the
+       same form
+  --><!-- verifying the following attributes:
+       cgn:read-only
+       cgn:json
+       cgn:is-set
+       possible values: case-insensitive true/false or yes/no
+       all other values generate warning and interpreted as false
+  --><!-- verifying on a objects level, input: invalid -->
+   <objects cgn:package="com.test.phase1.objects.level.wrong"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="Test1">
+         <field cgn:name="some-field"/>
+      </object>
+   </objects>
+   <!-- verifying on a objects level, input: case-insensitive -->
+   <objects cgn:package="com.test.phase1.objects.level.true.false"
+            cgn:read-only="true"
+            cgn:json="false"
+            cgn:is-set="false">
+      <object cgn:name="Test1">
+         <field cgn:name="some-field"/>
+      </object>
+   </objects>
+   <!-- verifying on a object level, input: invalid -->
+   <objects cgn:package="com.test.phase1.object.level.wrong">
+      <object cgn:name="Test1" cgn:read-only="false">
+         <field cgn:name="some-field"/>
+      </object>
+      <object cgn:name="Test2" cgn:json="false">
+         <field cgn:name="some-field"/>
+      </object>
+      <object cgn:name="Test3" cgn:is-set="false">
+         <field cgn:name="some-field"/>
+      </object>
+   </objects>
+   <!-- verifying on a objects level, input: case-insensitive -->
+   <objects cgn:package="com.test.phase1.object.level.true.false">
+      <object cgn:name="Test1" cgn:read-only="true">
+         <field cgn:name="some-field"/>
+      </object>
+      <object cgn:name="Test2" cgn:json="false">
+         <field cgn:name="some-field"/>
+      </object>
+      <object cgn:name="Test3" cgn:is-set="true">
+         <field cgn:name="some-field"/>
+      </object>
+      <object cgn:name="Test4" cgn:is-set="false">
+         <field cgn:name="some-field"/>
+      </object>
+   </objects>
+</root>
