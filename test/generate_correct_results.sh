@@ -6,3 +6,4 @@
 ../tools/cgn_preprocess.sh cgn_phase5_test.xml 5 > cgn_phase5_test_expected.xml
 
 ../tools/jcgn_preprocess.sh jcgn_phase1_test.xml 1 > jcgn_phase1_test_expected.xml
+../tools/jcgn_preprocess.sh jcgn_phase2_test.xml 2 > jcgn_phase2_test_expected.xml

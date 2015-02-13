@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 2nd java transformation phase -->
+
+  <!-- if no jcgn:builder, jcg:parcelable or or jcgn:date-type defined
+       create them with default values in cgn:objects
+  -->
+  <objects/>
+
+  <!-- objects can redefine
+       jcgn:builder
+       jcg:parcelable
+       jcgn:date-type
+  -->
+  <objects jcgn:builder="true"
+           jcgn:parcelable="true"
+           jcgn:date-type="joda"/>
+  
+</root>
+

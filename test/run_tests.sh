@@ -18,4 +18,7 @@ diff -q cgn_phase5_test_result.xml cgn_phase5_test_expected.xml
 echo Testing jcgn:phase1
 ../tools/jcgn_preprocess.sh jcgn_phase1_test.xml 1 > jcgn_phase1_test_result.xml
 diff -q jcgn_phase1_test_result.xml jcgn_phase1_test_expected.xml
+echo Testing jcgn:phase2
+../tools/jcgn_preprocess.sh jcgn_phase2_test.xml 2 > jcgn_phase2_test_result.xml
+diff -q jcgn_phase2_test_result.xml jcgn_phase2_test_expected.xml
 
