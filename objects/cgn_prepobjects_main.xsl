@@ -11,6 +11,7 @@
   <xsl:include href="cgn_prepobjects.xsl"/>
   <xsl:include href="cgn_variables.xsl"/>
   <xsl:include href="cgn_prep_templates.xsl"/>
+  <xsl:include href="cgn_lib.xsl"/>
   
   <xsl:template match="/" mode="cgn:preprocess">
     <xsl:message>Preprocess variable: cgn:preprocessed-objects</xsl:message>
