@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+  <!-- this test tests the 1st java transformation phase:
+       verification of the predefined attribute values
+       correctness and transformation them to the
+       same form
+  -->
+
+  <!-- verifying the following attributes:
+       jcgn:builder
+       jcgn:parcelable
+       jcgn:date-type
+       possible values: case-insensitive true/false or yes/no
+       all other values generate warning and interpreted as false
+       for jcgn:date possible values are case-insensivite 'java' and 'joda'.
+       all other values are interpreted as 'java'
+  -->
+
+  <!-- verifying on a objects level, input: invalid -->
+  <objects cgn:package="com.test.java.phase1.objects.level.wrong"
+           jcgn:builder="don't know"
+           jcgn:parcelable="not sure"
+           jcgn:date-type="what to set">
+    <object cgn:name="Test1">
+      <field cgn:name="some-field"/>
+    </object>
+  </objects>
+
+  <!-- verifying on a objects level, input: case-insensitive -->
+  <objects cgn:package="com.test.java.phase1.objects.level.true.false.java"
+           jcgn:builder="True"
+           jcgn:parcelable="False"
+           jcgn:date-type="Java">
+    <object cgn:name="Test1">
+      <field cgn:name="some-field"/>
+    </object>
+  </objects>
+
+  <!-- verifying on a object level, input: invalid -->
+  <objects cgn:package="com.test.java.phase1.object.level.wrong">
+    <object cgn:name="Test1" jcgn:builder="don't know">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test2" jcgn:parcelable="not sure">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test3" jcgn:date-type="what to set">
+      <field cgn:name="some-field"/>
+    </object>
+
+  </objects>
+
+  <!-- verifying on a objects and field(for date-type) level,
+       input: case-insensitive
+  -->
+  <objects cgn:package="com.test.phase1.object.level.true.false">
+    <object cgn:name="Test1" jcgn:builder="True">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test2" jcgn:parcelable="False">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test3" jcgn:date-type="jOda">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test4" jcgn:date-type="JavA">
+      <field cgn:name="some-field"/>
+    </object>
+    <object cgn:name="Test5">
+      <field cgn:name="some-field" jcgn:date-type="Joda"/>
+    </object>
+
+  </objects>
+
+  
+
+</root>
+
