@@ -15,7 +15,6 @@
         <xsl:call-template name="jcgn:object-fields"/>
       </xsl:element>
 
-
     </xsl:copy>
   </xsl:template>
 

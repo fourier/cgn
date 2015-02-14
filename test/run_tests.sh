@@ -1,30 +1,20 @@
 #!/bin/sh
-echo Testing cgn:phase1
-../tools/cgn_preprocess.sh cgn_phase1_test.xml 1 > cgn_phase1_test_result.xml
-diff -q cgn_phase1_test_result.xml cgn_phase1_test_expected.xml
-echo Testing cgn:phase2
-../tools/cgn_preprocess.sh cgn_phase2_test.xml 2 > cgn_phase2_test_result.xml
-diff -q cgn_phase2_test_result.xml cgn_phase2_test_expected.xml
-echo Testing cgn:phase3
-../tools/cgn_preprocess.sh cgn_phase3_test.xml 3 > cgn_phase3_test_result.xml
-diff -q cgn_phase3_test_result.xml cgn_phase3_test_expected.xml
-echo Testing cgn:phase4
-../tools/cgn_preprocess.sh cgn_phase4_test.xml 4 > cgn_phase4_test_result.xml
-diff -q cgn_phase4_test_result.xml cgn_phase4_test_expected.xml
-echo Testing cgn:phase5
-../tools/cgn_preprocess.sh cgn_phase5_test.xml 5 > cgn_phase5_test_result.xml
-diff -q cgn_phase5_test_result.xml cgn_phase5_test_expected.xml
+CGN_PHASES=5
+for i in $(seq 1 $CGN_PHASES); do
+    TEST_FILE=cgn_phase${i}_test.xml
+    RESULT_FILE=cgn_phase${i}_test_result.xml
+    EXPECT_FILE=cgn_phase${i}_test_expected.xml
+    echo Testing cgn:phase$i
+    ../tools/cgn_preprocess.sh $TEST_FILE $i > $RESULT_FILE
+    diff -q $RESULT_FILE $EXPECT_FILE
+done
 
-echo Testing jcgn:phase1
-../tools/jcgn_preprocess.sh jcgn_phase1_test.xml 1 > jcgn_phase1_test_result.xml
-diff -q jcgn_phase1_test_result.xml jcgn_phase1_test_expected.xml
-echo Testing jcgn:phase2
-../tools/jcgn_preprocess.sh jcgn_phase2_test.xml 2 > jcgn_phase2_test_result.xml
-diff -q jcgn_phase2_test_result.xml jcgn_phase2_test_expected.xml
-echo Testing jcgn:phase3
-../tools/jcgn_preprocess.sh jcgn_phase3_test.xml 3 > jcgn_phase3_test_result.xml
-diff -q jcgn_phase3_test_result.xml jcgn_phase3_test_expected.xml
-echo Testing jcgn:phase4
-../tools/jcgn_preprocess.sh jcgn_phase4_test.xml 4 > jcgn_phase4_test_result.xml
-diff -q jcgn_phase4_test_result.xml jcgn_phase4_test_expected.xml
-
+JCGN_PHASES=5
+for i in $(seq 1 $JCGN_PHASES); do
+    TEST_FILE=jcgn_phase${i}_test.xml
+    RESULT_FILE=jcgn_phase${i}_test_result.xml
+    EXPECT_FILE=jcgn_phase${i}_test_expected.xml
+    echo Testing jcgn:phase$i
+    ../tools/jcgn_preprocess.sh $TEST_FILE $i > $RESULT_FILE
+    diff -q $RESULT_FILE $EXPECT_FILE
+done
