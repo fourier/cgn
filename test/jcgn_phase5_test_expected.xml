@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn"
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 5th transformation phase -->
+   <cgn:copyright>
+    Copyright (c) 2014 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+   <cgn:author>John Doe</cgn:author>
+   <!-- test if nothing happens with the normal field types,
+       like primitive types or arrays of primitive types
+  -->
+   <objects cgn:package="com.test.phase5.field.types.normal"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="Test1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.field.types.normal"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <field cgn:name="field1" cgn:type="int"/>
+         <field cgn:name="field2" cgn:type="double"/>
+         <field cgn:name="field3" cgn:type="[int]"/>
+         <field cgn:name="field4" cgn:type="[string]"/>
+         <field cgn:name="field5" cgn:type="string"/>
+         <field cgn:name="field6" cgn:type="date" jcgn:date-type="java"/>
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
+            <field xmlns=""
+                   name="field1"
+                   type="int"
+                   java-name="mField1"
+                   java-type="int"
+                   java-full-type="int"/>
+            <field xmlns=""
+                   name="field2"
+                   type="double"
+                   java-name="mField2"
+                   java-type="double"
+                   java-full-type="double"/>
+            <field xmlns=""
+                   name="field3"
+                   type="[int]"
+                   java-name="mField3"
+                   java-type="java.util.ArrayList&lt;Integer&gt;"
+                   java-full-type="java.util.ArrayList&lt;Integer&gt;"/>
+            <field xmlns=""
+                   name="field4"
+                   type="[string]"
+                   java-name="mField4"
+                   java-type="java.util.ArrayList&lt;String&gt;"
+                   java-full-type="java.util.ArrayList&lt;String&gt;"/>
+            <field xmlns=""
+                   name="field5"
+                   type="string"
+                   java-name="mField5"
+                   java-type="String"
+                   java-full-type="String"/>
+            <field xmlns=""
+                   name="field6"
+                   type="date"
+                   java-name="mField6"
+                   java-type="java.util.Date"
+                   java-full-type="java.util.Date"/>
+         </jtmp:object-fields>
+      </object>
+   </objects>
+   <!-- test field types which are not arrays -->
+   <objects cgn:package="com.test.phase5.fqdn.not.arrays"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+      <object cgn:name="SomeObject1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="com.test.phase5.fqdn.one.SomeObject1"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type" cgn:type="com.unknown.Type"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type" cgn:type="UnknownType"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="com.test.phase5.fqdn.two.SomeObject2"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="com.test.phase5.fqdn.not.arrays.SomeObject"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package"
+                cgn:type="com.test.phase5.fqdn.package1.SomeObject3"/>
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
+            <field xmlns=""
+                   name="object-someobject"
+                   type="com.test.phase5.fqdn.one.SomeObject1"
+                   java-name="mObjectSomeobject"
+                   java-type="SomeObject1"
+                   java-full-type="com.test.phase5.fqdn.one.SomeObject1"/>
+            <field xmlns=""
+                   name="object-unknown-fqdn-type"
+                   type="com.unknown.Type"
+                   java-name="mObjectUnknownFqdnType"
+                   java-type="Type"
+                   java-full-type="com.unknown.Type"/>
+            <field xmlns=""
+                   name="object-unknown-type"
+                   type="UnknownType"
+                   java-name="mObjectUnknownType"
+                   java-type="UnknownType"
+                   java-full-type="UnknownType"/>
+            <field xmlns=""
+                   name="object-someobject2"
+                   type="com.test.phase5.fqdn.two.SomeObject2"
+                   java-name="mObjectSomeobject2"
+                   java-type="SomeObject2"
+                   java-full-type="com.test.phase5.fqdn.two.SomeObject2"/>
+            <field xmlns=""
+                   name="object-ambigious-same-package"
+                   type="com.test.phase5.fqdn.not.arrays.SomeObject"
+                   java-name="mObjectAmbigiousSamePackage"
+                   java-type="SomeObject"
+                   java-full-type="com.test.phase5.fqdn.not.arrays.SomeObject"/>
+            <field xmlns=""
+                   name="object-ambigious-another-package"
+                   type="com.test.phase5.fqdn.package1.SomeObject3"
+                   java-name="mObjectAmbigiousAnotherPackage"
+                   java-type="SomeObject3"
+                   java-full-type="com.test.phase5.fqdn.package1.SomeObject3"/>
+         </jtmp:object-fields>
+      </object>
+   </objects>
+   <!-- test field types which are arrays -->
+   <objects cgn:package="com.test.phase5.fqdn.arrays"
+            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+      <object cgn:name="SomeObject1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="[com.test.phase5.fqdn.one.SomeObject1]"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type" cgn:type="[com.unknown.Type]"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type" cgn:type="[UnknownType]"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="[com.test.phase5.fqdn.two.SomeObject2]"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="[com.test.phase5.fqdn.arrays.SomeObject]"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package"
+                cgn:type="[com.test.phase5.fqdn.package1.SomeObject3]"/>
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
+            <field xmlns=""
+                   name="object-someobject"
+                   type="[com.test.phase5.fqdn.one.SomeObject1]"
+                   java-name="mObjectSomeobject"
+                   java-type="java.util.ArrayList&lt;SomeObject1&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.one.SomeObject1&gt;"/>
+            <field xmlns=""
+                   name="object-unknown-fqdn-type"
+                   type="[com.unknown.Type]"
+                   java-name="mObjectUnknownFqdnType"
+                   java-type="java.util.ArrayList&lt;Type&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.unknown.Type&gt;"/>
+            <field xmlns=""
+                   name="object-unknown-type"
+                   type="[UnknownType]"
+                   java-name="mObjectUnknownType"
+                   java-type="java.util.ArrayList&lt;UnknownType&gt;"
+                   java-full-type="java.util.ArrayList&lt;UnknownType&gt;"/>
+            <field xmlns=""
+                   name="object-someobject2"
+                   type="[com.test.phase5.fqdn.two.SomeObject2]"
+                   java-name="mObjectSomeobject2"
+                   java-type="java.util.ArrayList&lt;SomeObject2&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.two.SomeObject2&gt;"/>
+            <field xmlns=""
+                   name="object-ambigious-same-package"
+                   type="[com.test.phase5.fqdn.arrays.SomeObject]"
+                   java-name="mObjectAmbigiousSamePackage"
+                   java-type="java.util.ArrayList&lt;SomeObject&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.arrays.SomeObject&gt;"/>
+            <field xmlns=""
+                   name="object-ambigious-another-package"
+                   type="[com.test.phase5.fqdn.package1.SomeObject3]"
+                   java-name="mObjectAmbigiousAnotherPackage"
+                   java-type="java.util.ArrayList&lt;SomeObject3&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.package1.SomeObject3&gt;"/>
+         </jtmp:object-fields>
+      </object>
+   </objects>
+   <!-- help objects -->
+   <objects cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+            cgn:author="John Doe"
+            cgn:package="com.example.cgn"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject1"
+              cgn:package="com.test.phase5.fqdn.one"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+      <object cgn:name="SomeObject2"
+              cgn:package="com.test.phase5.fqdn.two"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.phase5.fqdn.package1"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.phase5.fqdn.package2"
+              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
+              cgn:author="John Doe"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
+      </object>
+   </objects>
+</root>
