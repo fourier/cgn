@@ -22,53 +22,39 @@
   </objects>
 
   <!-- test field types which are not arrays -->
-  <objects cgn:package="com.test.phase5.fqdn.not.arrays">
-    <object cgn:name="SomeObject"/>
-    <object cgn:name="SomeObject1">
-      <!-- test with full FQDN -->
-      <field cgn:name="object-someobject" cgn:type="com.test.phase5.fqdn.one.SomeObject1"/>
-      <!-- test unknown type with FQDN -->
-      <field cgn:name="object-unknown-fqdn-type" cgn:type="com.unknown.Type"/>
-      <!-- test unknown type without FQDN -->
-      <field cgn:name="object-unknown-type" cgn:type="UnknownType"/>
-      <!-- test resolving unambiguous FQDN -->
-      <field cgn:name="object-someobject2" cgn:type="SomeObject2"/>
-      <!-- test resolving ambiguous FQDN where object is in the same package -->
-      <field cgn:name="object-ambigious-same-package" cgn:type="SomeObject"/>
-      <!-- test resolving ambiguous FQDN where object is not in the same package -->
-      <field cgn:name="object-ambigious-another-package" cgn:type="SomeObject3"/>
+  <objects cgn:package="com.test.type.counts">
+    <!-- for this test counts should be:
+         com.test.type.counts.helpers.one.SomeObject1 count=3
+         com.test.type.counts.helpers.two.SomeObject1 count=3
+         com.test.type.counts.helpers.three.SomeObject1 count=3
+         com.test.type.counts.helpers.one.SomeObject2 count=2
+         com.test.type.counts.helpers.two.SomeObject2 count=2
+         com.test.type.counts.helpers.one.TheObject count=1
+    -->
+    <object cgn:name="Test1">
+      <field cgn:name="someobject1" cgn:type="com.test.type.counts.helpers.one.SomeObject1"/>
+      <field cgn:name="someobjects1" cgn:type="[com.test.type.counts.helpers.two.SomeObject1]"/>
+      <field cgn:name="someobjects-another" cgn:type="[com.test.type.counts.helpers.three.SomeObject1]"/>
+      <field cgn:name="someobjects2" cgn:type="[com.test.type.counts.helpers.one.SomeObject2]"/>
+      <field cgn:name="someobject2" cgn:type="com.test.type.counts.helpers.two.SomeObject2"/>
+      <field cgn:name="theobject" cgn:type="com.test.type.counts.helpers.one.TheObject"/>
     </object>
-
   </objects>
 
-  <!-- test field types which are arrays -->
-  <objects cgn:package="com.test.phase5.fqdn.arrays">
-    <object cgn:name="SomeObject"/>
-    <object cgn:name="SomeObject1">
-      <!-- test with full FQDN -->
-      <field cgn:name="object-someobject" cgn:type="[com.test.phase5.fqdn.one.SomeObject1]"/>
-      <!-- test unknown type with FQDN -->
-      <field cgn:name="object-unknown-fqdn-type" cgn:type="[com.unknown.Type]"/>
-      <!-- test unknown type without FQDN -->
-      <field cgn:name="object-unknown-type" cgn:type="[UnknownType]"/>
-      <!-- test resolving unambiguous FQDN -->
-      <field cgn:name="object-someobject2" cgn:type="[SomeObject2]"/>
-      <!-- test resolving ambiguous FQDN where object is in the same package -->
-      <field cgn:name="object-ambigious-same-package" cgn:type="[SomeObject]"/>
-      <!-- test resolving ambiguous FQDN where object is not in the same package -->
-      <field cgn:name="object-ambigious-another-package" cgn:type="[SomeObject3]"/>
-    </object>
-
+  <objects cgn:package="com.test.type.counts.helpers.one">
+    <object cgn:name="SomeObject1"/>
+    <object cgn:name="SomeObject2"/>
+    <object cgn:name="TheObject"/>
   </objects>
 
-  
+  <objects cgn:package="com.test.type.counts.helpers.two">
+    <object cgn:name="SomeObject1"/>
+    <object cgn:name="SomeObject2"/>
+    <object cgn:name="TheObject"/>
+  </objects>
 
-  <!-- help objects -->
-  <objects>
-    <object cgn:name="SomeObject1" cgn:package="com.test.phase5.fqdn.one"/>
-    <object cgn:name="SomeObject2" cgn:package="com.test.phase5.fqdn.two"/>
-    <object cgn:name="SomeObject3" cgn:package="com.test.phase5.fqdn.package1"/>
-    <object cgn:name="SomeObject3" cgn:package="com.test.phase5.fqdn.package2"/>
+  <objects cgn:package="com.test.type.counts.helpers.three">
+    <object cgn:name="SomeObject1"/>
   </objects>
 
   

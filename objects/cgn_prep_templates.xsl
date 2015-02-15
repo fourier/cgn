@@ -68,7 +68,13 @@
        <fqdn type="com.example.Class1" count="1"/>
        <fqdn type="com.example.something.Class2" count="3"/>
        <fqdn type="com.example.Class3" count="2"/>
-       from the fields of the cgn:object. 
+       from the fields of the cgn:object.
+       This template extracts all FQDN names used in object as field types
+       and caclulates the number of FQDN names with the same short name.
+       For normal FQDN names the number will be 1.
+       When the object contains fields with the different FQDN but the
+       same short type name(class name), the number will be > 1
+       depending on number of short name clashes.
        Used to determine the amount of possible name clashes.
        Usage example:
 
@@ -99,8 +105,9 @@
       </xsl:for-each>
     </xsl:variable>
     
-    <!-- now create the mapping between the distinct FQDN type and -->
-    <!-- amount of class names equal to the class name of the FQDN type -->
+    <!-- now create the mapping between the distinct FQDN type and 
+         amount of class names equal to the class name of the FQDN type
+    -->
     <xsl:for-each select="$types">
       <xsl:variable name="short-type" select="cgn:extract-type-name(.)"/>
       <xsl:variable name="same" select="$short-types[. = $short-type]" as="xs:string*"/>
