@@ -14,7 +14,7 @@
   <xsl:template match="/" mode="jcgn:preprocess1">
     <xsl:message>Preprocess variable: jcgn:preprocessed-objects1</xsl:message>
     <!-- template for command line output -->
-    <xsl:sequence select="$jcgn:preprocessed-objects1"/>
+    <xsl:copy-of select="$jcgn:preprocessed-objects1"/>
   </xsl:template>
 
   <xsl:template match="/" mode="jcgn:preprocess2">

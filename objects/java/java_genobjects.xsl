@@ -4,9 +4,6 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
-  <xsl:output indent="no" method="text"/>
-  <xsl:strip-space elements="*" />
-
   <xsl:template name="jcgn:genobjects">
     <xsl:message>Generating POJO classes</xsl:message>
     <xsl:apply-templates select="$jcgn:preprocessed-objects//cgn:objects" mode="jcgn:genobjects"/>

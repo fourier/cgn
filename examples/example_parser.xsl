@@ -4,6 +4,8 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
                 xmlns:this="https://github.com/fourier/cgn/parser/example/java/this">
+  <xsl:output indent="no" method="text"/>
+  <xsl:strip-space elements="*" />
 
   <xsl:include href="../objects/cgn_includes.xsl"/>
   <xsl:include href="../objects/java/java_includes.xsl"/>
@@ -12,8 +14,6 @@
   <xsl:variable name="this:parser-package">com.mycompany.example.parser</xsl:variable>
   <xsl:variable name="this:generator-class">ObjectsGenerator</xsl:variable>
   <xsl:variable name="this:generator-package">com.mycompany.example.generator</xsl:variable>
-
-  
 
   <xsl:template name="jcgn:gen-parser-main">
     <xsl:call-template name="jcgn:genobjects"/>

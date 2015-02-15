@@ -2,18 +2,17 @@
 <!-- default namespace for elements: cgn -->
 <root xmlns="https://github.com/fourier/cgn"
       xmlns:cgn="https://github.com/fourier/cgn"
-      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 5th transformation phase -->
-   <cgn:copyright>
-    Copyright (c) 2014 by My Company
-    This file and its contents are Confidential.
-  </cgn:copyright>
-   <cgn:author>John Doe</cgn:author>
-   <!-- test if nothing happens with the normal field types,
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 5th transformation phase --><!-- in 5th transformation phase we attach the temporary
+       child jtmp:object-fields to every object.
+       This child contains elements like
+       <field name="some-name" type="[SomeClass]" java-name="iSomeName" java-type="ArrayList<SomeClass> java-full-type="ArrayList<com.test.SomeClass>"/>
+       
+  --><!-- test if nothing happens with the normal field types,
        like primitive types or arrays of primitive types
   -->
    <objects cgn:package="com.test.phase5.field.types.normal"
-            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-            cgn:author="John Doe"
+            cgn:copyright=""
+            cgn:author=""
             cgn:read-only="false"
             cgn:json="false"
             cgn:is-set="false"
@@ -21,8 +20,8 @@
             jcgn:parcelable="false"
             jcgn:date-type="java">
       <object cgn:name="Test1"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:package="com.test.phase5.field.types.normal"
               cgn:read-only="false"
               cgn:json="false"
@@ -78,8 +77,8 @@
    </objects>
    <!-- test field types which are not arrays -->
    <objects cgn:package="com.test.phase5.fqdn.not.arrays"
-            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-            cgn:author="John Doe"
+            cgn:copyright=""
+            cgn:author=""
             cgn:read-only="false"
             cgn:json="false"
             cgn:is-set="false"
@@ -87,8 +86,8 @@
             jcgn:parcelable="false"
             jcgn:date-type="java">
       <object cgn:name="SomeObject"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:package="com.test.phase5.fqdn.not.arrays"
               cgn:read-only="false"
               cgn:json="false"
@@ -99,8 +98,8 @@
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
       </object>
       <object cgn:name="SomeObject1"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:package="com.test.phase5.fqdn.not.arrays"
               cgn:read-only="false"
               cgn:json="false"
@@ -165,8 +164,8 @@
    </objects>
    <!-- test field types which are arrays -->
    <objects cgn:package="com.test.phase5.fqdn.arrays"
-            cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-            cgn:author="John Doe"
+            cgn:copyright=""
+            cgn:author=""
             cgn:read-only="false"
             cgn:json="false"
             cgn:is-set="false"
@@ -174,8 +173,8 @@
             jcgn:parcelable="false"
             jcgn:date-type="java">
       <object cgn:name="SomeObject"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:package="com.test.phase5.fqdn.arrays"
               cgn:read-only="false"
               cgn:json="false"
@@ -186,8 +185,8 @@
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
       </object>
       <object cgn:name="SomeObject1"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:package="com.test.phase5.fqdn.arrays"
               cgn:read-only="false"
               cgn:json="false"
@@ -251,8 +250,8 @@
       </object>
    </objects>
    <!-- help objects -->
-   <objects cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-            cgn:author="John Doe"
+   <objects cgn:copyright=""
+            cgn:author=""
             cgn:package="com.example.cgn"
             cgn:read-only="false"
             cgn:json="false"
@@ -262,8 +261,8 @@
             jcgn:date-type="java">
       <object cgn:name="SomeObject1"
               cgn:package="com.test.phase5.fqdn.one"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -274,8 +273,8 @@
       </object>
       <object cgn:name="SomeObject2"
               cgn:package="com.test.phase5.fqdn.two"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -286,8 +285,8 @@
       </object>
       <object cgn:name="SomeObject3"
               cgn:package="com.test.phase5.fqdn.package1"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -298,8 +297,8 @@
       </object>
       <object cgn:name="SomeObject3"
               cgn:package="com.test.phase5.fqdn.package2"
-              cgn:copyright="&#xA;    Copyright (c) 2014 by My Company&#xA;    This file and its contents are Confidential.&#xA;  "
-              cgn:author="John Doe"
+              cgn:copyright=""
+              cgn:author=""
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"

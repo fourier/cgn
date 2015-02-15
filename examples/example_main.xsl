@@ -3,6 +3,10 @@
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:cgn="https://github.com/fourier/cgn">
 
+  <xsl:output indent="no" method="text"/>
+  <xsl:strip-space elements="*" />
+
+  
   <xsl:include href="../objects/cgn_includes.xsl"/>
   <xsl:include href="../objects/java/java_includes.xsl"/>
 
