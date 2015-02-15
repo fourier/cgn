@@ -5,14 +5,13 @@
       xmlns:jcgn="https://github.com/fourier/cgn/java">
 
   <!-- this test tests the 5th transformation phase -->
-  
-  <cgn:copyright>
-    Copyright (c) 2014 by My Company
-    This file and its contents are Confidential.
-  </cgn:copyright>
 
-  <cgn:author>John Doe</cgn:author>
-
+  <!-- in 5th transformation phase we attach the temporary
+       child jtmp:object-fields to every object.
+       This child contains elements like
+       <field name="some-name" type="[SomeClass]" java-name="iSomeName" java-type="ArrayList<SomeClass> java-full-type="ArrayList<com.test.SomeClass>"/>
+       
+  -->
   <!-- test if nothing happens with the normal field types,
        like primitive types or arrays of primitive types
   -->

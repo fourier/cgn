@@ -5,36 +5,8 @@
                 xmlns:jcgn="https://github.com/fourier/cgn/java"
                 xmlns:this="https://github.com/fourier/cgn/parser/example/java/this">
 
-  <xsl:include href="../objects/cgn_phase1.xsl"/>
-  <xsl:include href="../objects/cgn_phase2.xsl"/>
-  <xsl:include href="../objects/cgn_phase3.xsl"/>
-  <xsl:include href="../objects/cgn_phase4.xsl"/>
-  <xsl:include href="../objects/cgn_phase5.xsl"/>
-  <xsl:include href="../objects/cgn_prepobjects.xsl"/>
-  <xsl:include href="../objects/cgn_variables.xsl"/>
-  <xsl:include href="../objects/cgn_lib.xsl"/>
-  <xsl:include href="../objects/cgn_templates.xsl"/>
-  <xsl:include href="../objects/cgn_prep_templates.xsl"/>
-  <xsl:include href="../objects/java/java_prep_templates.xsl"/>
-  <xsl:include href="../objects/java/java_prepobjects.xsl"/>
-  <xsl:include href="../objects/java/java_genobjects.xsl"/>
-  <xsl:include href="../objects/java/java_object.xsl"/>
-  <xsl:include href="../objects/java/java_functions.xsl"/>
-  <xsl:include href="../objects/java/java_templates.xsl"/>
-  <xsl:include href="../objects/java/java_variables.xsl"/>
-  <xsl:include href="../objects/java/java_phase1.xsl" />
-  <xsl:include href="../objects/java/java_phase2.xsl" />
-  <xsl:include href="../objects/java/java_phase3.xsl" />
-  <xsl:include href="../objects/java/java_phase4.xsl" />
-  <xsl:include href="../objects/java/java_phase5.xsl"/>
-  <xsl:include href="../objects/java/java_phase6.xsl"/>
-  <xsl:include href="../objects/java/java_phase7.xsl"/>
-
-  <xsl:include href="../json/java/java_parser.xsl" />
-  <xsl:include href="../json/java/java_generator.xsl" />
-  <xsl:include href="../json/java/java_genparsers.xsl" />
-
-
+  <xsl:include href="../objects/cgn_includes.xsl"/>
+  <xsl:include href="../objects/java/java_includes.xsl"/>
 
   <xsl:variable name="this:parser-class">ObjectsParser</xsl:variable>
   <xsl:variable name="this:parser-package">com.mycompany.example.parser</xsl:variable>

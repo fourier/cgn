@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 CGN_PHASES=5
 for i in $(seq 1 $CGN_PHASES); do
     TEST_FILE=cgn_phase${i}_test.xml

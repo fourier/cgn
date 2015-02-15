@@ -4,8 +4,6 @@
                 xmlns:cgn="https://github.com/fourier/cgn"
                 xmlns:jcgn="https://github.com/fourier/cgn/java">
 
-  <xsl:variable name="cgn:xml-name" select="base-uri()" as="xs:string"/>
-  
   <xsl:output indent="no" method="text"/>
   <xsl:strip-space elements="*" />
 
