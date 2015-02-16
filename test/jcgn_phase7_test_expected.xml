@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn"
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 7th transformation phase --><!-- in 6th transformation phase we just remove 
+       the temporay child jtmp:object-fields,
+       so the contents are the same as in test 6
+  --><!-- test that the appropriate jcgn:type and jcgn:variable-name
+       are attached to the fields with primitive types
+  -->
+   <objects cgn:package="com.test.java.phase7.field.types.normal"
+            cgn:copyright=""
+            cgn:author=""
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="Test1"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:package="com.test.java.phase7.field.types.normal"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java">
+         <field cgn:name="field1"
+                cgn:type="int"
+                jcgn:type="int"
+                jcgn:variable-name="mField1"
+                jcgn:full-type="int"/>
+         <field cgn:name="field2"
+                cgn:type="double"
+                jcgn:type="double"
+                jcgn:variable-name="mField2"
+                jcgn:full-type="double"/>
+         <field cgn:name="field3"
+                cgn:type="[int]"
+                jcgn:type="java.util.ArrayList&lt;Integer&gt;"
+                jcgn:variable-name="mField3"
+                jcgn:full-type="java.util.ArrayList&lt;Integer&gt;"/>
+         <field cgn:name="field4"
+                cgn:type="[string]"
+                jcgn:type="java.util.ArrayList&lt;String&gt;"
+                jcgn:variable-name="mField4"
+                jcgn:full-type="java.util.ArrayList&lt;String&gt;"/>
+         <field cgn:name="field5"
+                cgn:type="string"
+                jcgn:type="String"
+                jcgn:variable-name="mField5"
+                jcgn:full-type="String"/>
+         <field cgn:name="field6"
+                cgn:type="date"
+                jcgn:date-type="java"
+                jcgn:type="java.util.Date"
+                jcgn:variable-name="mField6"
+                jcgn:full-type="java.util.Date"/>
+         <field cgn:name="field7"
+                cgn:type="[date]"
+                jcgn:date-type="java"
+                jcgn:type="java.util.ArrayList&lt;java.util.Date&gt;"
+                jcgn:variable-name="mField7"
+                jcgn:full-type="java.util.ArrayList&lt;java.util.Date&gt;"/>
+         <field cgn:name="field8"
+                cgn:type="date"
+                jcgn:date-type="joda"
+                jcgn:type="org.joda.time.DateTime"
+                jcgn:variable-name="mField8"
+                jcgn:full-type="org.joda.time.DateTime"/>
+         <field cgn:name="field9"
+                cgn:type="[date]"
+                jcgn:date-type="joda"
+                jcgn:type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"
+                jcgn:variable-name="mField9"
+                jcgn:full-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"/>
+      </object>
+   </objects>
+   <!-- test field types which are not arrays -->
+   <objects cgn:package="com.test.java.phase7.fqdn.not.arrays"
+            cgn:copyright=""
+            cgn:author=""
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:package="com.test.java.phase7.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+      <object cgn:name="SomeObject1"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:package="com.test.java.phase7.fqdn.not.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="com.test.java.phase7.fqdn.one.SomeObject1"
+                jcgn:type="SomeObject1"
+                jcgn:variable-name="mObjectSomeobject"
+                jcgn:full-type="com.test.java.phase7.fqdn.one.SomeObject1"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type"
+                cgn:type="com.unknown.Type"
+                jcgn:type="Type"
+                jcgn:variable-name="mObjectUnknownFqdnType"
+                jcgn:full-type="com.unknown.Type"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type"
+                cgn:type="UnknownType"
+                jcgn:type="UnknownType"
+                jcgn:variable-name="mObjectUnknownType"
+                jcgn:full-type="UnknownType"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="com.test.java.phase7.fqdn.two.SomeObject2"
+                jcgn:type="SomeObject2"
+                jcgn:variable-name="mObjectSomeobject2"
+                jcgn:full-type="com.test.java.phase7.fqdn.two.SomeObject2"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="com.test.java.phase7.fqdn.not.arrays.SomeObject"
+                jcgn:type="SomeObject"
+                jcgn:variable-name="mObjectAmbigiousSamePackage"
+                jcgn:full-type="com.test.java.phase7.fqdn.not.arrays.SomeObject"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package1"
+                cgn:type="com.test.java.phase7.fqdn.package1.SomeObject3"
+                jcgn:type="com.test.java.phase7.fqdn.package1.SomeObject3"
+                jcgn:variable-name="mObjectAmbigiousAnotherPackage1"
+                jcgn:full-type="com.test.java.phase7.fqdn.package1.SomeObject3"/>
+         <field cgn:name="object-ambigious-another-package2"
+                cgn:type="com.test.java.phase7.fqdn.package2.SomeObject3"
+                jcgn:type="com.test.java.phase7.fqdn.package2.SomeObject3"
+                jcgn:variable-name="mObjectAmbigiousAnotherPackage2"
+                jcgn:full-type="com.test.java.phase7.fqdn.package2.SomeObject3"/>
+      </object>
+   </objects>
+   <!-- test field types which are arrays -->
+   <objects cgn:package="com.test.java.phase7.fqdn.arrays"
+            cgn:copyright=""
+            cgn:author=""
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:package="com.test.java.phase7.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+      <object cgn:name="SomeObject1"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:package="com.test.java.phase7.fqdn.arrays"
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"><!-- test with full FQDN -->
+         <field cgn:name="object-someobject"
+                cgn:type="[com.test.java.phase7.fqdn.one.SomeObject1]"
+                jcgn:type="java.util.ArrayList&lt;SomeObject1&gt;"
+                jcgn:variable-name="mObjectSomeobject"
+                jcgn:full-type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.one.SomeObject1&gt;"/>
+         <!-- test unknown type with FQDN -->
+         <field cgn:name="object-unknown-fqdn-type"
+                cgn:type="[com.unknown.Type]"
+                jcgn:type="java.util.ArrayList&lt;Type&gt;"
+                jcgn:variable-name="mObjectUnknownFqdnType"
+                jcgn:full-type="java.util.ArrayList&lt;com.unknown.Type&gt;"/>
+         <!-- test unknown type without FQDN -->
+         <field cgn:name="object-unknown-type"
+                cgn:type="[UnknownType]"
+                jcgn:type="java.util.ArrayList&lt;UnknownType&gt;"
+                jcgn:variable-name="mObjectUnknownType"
+                jcgn:full-type="java.util.ArrayList&lt;UnknownType&gt;"/>
+         <!-- test resolving unambiguous FQDN -->
+         <field cgn:name="object-someobject2"
+                cgn:type="[com.test.java.phase7.fqdn.two.SomeObject2]"
+                jcgn:type="java.util.ArrayList&lt;SomeObject2&gt;"
+                jcgn:variable-name="mObjectSomeobject2"
+                jcgn:full-type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.two.SomeObject2&gt;"/>
+         <!-- test resolving ambiguous FQDN where object is in the same package -->
+         <field cgn:name="object-ambigious-same-package"
+                cgn:type="[com.test.java.phase7.fqdn.arrays.SomeObject]"
+                jcgn:type="java.util.ArrayList&lt;SomeObject&gt;"
+                jcgn:variable-name="mObjectAmbigiousSamePackage"
+                jcgn:full-type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.arrays.SomeObject&gt;"/>
+         <!-- test resolving ambiguous FQDN where object is not in the same package -->
+         <field cgn:name="object-ambigious-another-package1"
+                cgn:type="[com.test.java.phase7.fqdn.package1.SomeObject3]"
+                jcgn:type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.package1.SomeObject3&gt;"
+                jcgn:variable-name="mObjectAmbigiousAnotherPackage1"
+                jcgn:full-type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.package1.SomeObject3&gt;"/>
+         <field cgn:name="object-ambigious-another-package2"
+                cgn:type="[com.test.java.phase7.fqdn.package2.SomeObject3]"
+                jcgn:type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.package2.SomeObject3&gt;"
+                jcgn:variable-name="mObjectAmbigiousAnotherPackage2"
+                jcgn:full-type="java.util.ArrayList&lt;com.test.java.phase7.fqdn.package2.SomeObject3&gt;"/>
+      </object>
+   </objects>
+   <!-- help objects -->
+   <objects cgn:copyright=""
+            cgn:author=""
+            cgn:package="com.example.cgn"
+            cgn:read-only="false"
+            cgn:json="false"
+            cgn:is-set="false"
+            jcgn:builder="false"
+            jcgn:parcelable="false"
+            jcgn:date-type="java">
+      <object cgn:name="SomeObject1"
+              cgn:package="com.test.java.phase7.fqdn.one"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+      <object cgn:name="SomeObject2"
+              cgn:package="com.test.java.phase7.fqdn.two"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.java.phase7.fqdn.package1"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+      <object cgn:name="SomeObject3"
+              cgn:package="com.test.java.phase7.fqdn.package2"
+              cgn:copyright=""
+              cgn:author=""
+              cgn:read-only="false"
+              cgn:json="false"
+              cgn:is-set="false"
+              jcgn:builder="false"
+              jcgn:parcelable="false"
+              jcgn:date-type="java"/>
+   </objects>
+</root>

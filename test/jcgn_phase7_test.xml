@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <!-- this test tests the 7th transformation phase -->
+
+  <!-- in 6th transformation phase we just remove 
+       the temporay child jtmp:object-fields,
+       so the contents are the same as in test 6
+  -->
+  <!-- test that the appropriate jcgn:type and jcgn:variable-name
+       are attached to the fields with primitive types
+  -->
+  <objects cgn:package="com.test.java.phase7.field.types.normal">
+    <object cgn:name="Test1">
+      <field cgn:name="field1" cgn:type="int"/>
+      <field cgn:name="field2" cgn:type="double"/>
+      <field cgn:name="field3" cgn:type="[int]"/>
+      <field cgn:name="field4" cgn:type="[string]"/>
+      <field cgn:name="field5" />
+      <field cgn:name="field6" cgn:type="date"/>
+      <field cgn:name="field7" cgn:type="[date]"/>
+      <field cgn:name="field8" cgn:type="date" jcgn:date-type="joda"/>
+      <field cgn:name="field9" cgn:type="[date]" jcgn:date-type="joda"/>
+    </object>
+  </objects>
+
+  <!-- test field types which are not arrays -->
+  <objects cgn:package="com.test.java.phase7.fqdn.not.arrays">
+    <object cgn:name="SomeObject"/>
+    <object cgn:name="SomeObject1">
+      <!-- test with full FQDN -->
+      <field cgn:name="object-someobject" cgn:type="com.test.java.phase7.fqdn.one.SomeObject1"/>
+      <!-- test unknown type with FQDN -->
+      <field cgn:name="object-unknown-fqdn-type" cgn:type="com.unknown.Type"/>
+      <!-- test unknown type without FQDN -->
+      <field cgn:name="object-unknown-type" cgn:type="UnknownType"/>
+      <!-- test resolving unambiguous FQDN -->
+      <field cgn:name="object-someobject2" cgn:type="SomeObject2"/>
+      <!-- test resolving ambiguous FQDN where object is in the same package -->
+      <field cgn:name="object-ambigious-same-package" cgn:type="SomeObject"/>
+      <!-- test resolving ambiguous FQDN where object is not in the same package -->
+      <field cgn:name="object-ambigious-another-package1" cgn:type="SomeObject3"/>
+      <field cgn:name="object-ambigious-another-package2" cgn:type="com.test.java.phase7.fqdn.package2.SomeObject3"/>
+    </object>
+
+  </objects>
+
+  <!-- test field types which are arrays -->
+  <objects cgn:package="com.test.java.phase7.fqdn.arrays">
+    <object cgn:name="SomeObject"/>
+    <object cgn:name="SomeObject1">
+      <!-- test with full FQDN -->
+      <field cgn:name="object-someobject" cgn:type="[com.test.java.phase7.fqdn.one.SomeObject1]"/>
+      <!-- test unknown type with FQDN -->
+      <field cgn:name="object-unknown-fqdn-type" cgn:type="[com.unknown.Type]"/>
+      <!-- test unknown type without FQDN -->
+      <field cgn:name="object-unknown-type" cgn:type="[UnknownType]"/>
+      <!-- test resolving unambiguous FQDN -->
+      <field cgn:name="object-someobject2" cgn:type="[SomeObject2]"/>
+      <!-- test resolving ambiguous FQDN where object is in the same package -->
+      <field cgn:name="object-ambigious-same-package" cgn:type="[SomeObject]"/>
+      <!-- test resolving ambiguous FQDN where object is not in the same package -->
+      <field cgn:name="object-ambigious-another-package1" cgn:type="[SomeObject3]"/>
+      <field cgn:name="object-ambigious-another-package2" cgn:type="[com.test.java.phase7.fqdn.package2.SomeObject3]"/>
+
+    </object>
+
+  </objects>
+
+  
+
+  <!-- help objects -->
+  <objects>
+    <object cgn:name="SomeObject1" cgn:package="com.test.java.phase7.fqdn.one"/>
+    <object cgn:name="SomeObject2" cgn:package="com.test.java.phase7.fqdn.two"/>
+    <object cgn:name="SomeObject3" cgn:package="com.test.java.phase7.fqdn.package1"/>
+    <object cgn:name="SomeObject3" cgn:package="com.test.java.phase7.fqdn.package2"/>
+  </objects>
+
+  
+</root>
+
