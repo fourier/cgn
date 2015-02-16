@@ -61,6 +61,24 @@
                 jcgn:type="java.util.Date"
                 jcgn:variable-name="mField6"
                 jcgn:full-type="java.util.Date"/>
+         <field cgn:name="field7"
+                cgn:type="[date]"
+                jcgn:date-type="java"
+                jcgn:type="java.util.ArrayList&lt;java.util.Date&gt;"
+                jcgn:variable-name="mField7"
+                jcgn:full-type="java.util.ArrayList&lt;java.util.Date&gt;"/>
+         <field cgn:name="field8"
+                cgn:type="date"
+                jcgn:date-type="joda"
+                jcgn:type="org.joda.time.DateTime"
+                jcgn:variable-name="mField8"
+                jcgn:full-type="org.joda.time.DateTime"/>
+         <field cgn:name="field9"
+                cgn:type="[date]"
+                jcgn:date-type="joda"
+                jcgn:type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"
+                jcgn:variable-name="mField9"
+                jcgn:full-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"/>
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
             <field xmlns=""
                    name="field1"
@@ -98,6 +116,24 @@
                    java-name="mField6"
                    java-type="java.util.Date"
                    java-full-type="java.util.Date"/>
+            <field xmlns=""
+                   name="field7"
+                   type="[date]"
+                   java-name="mField7"
+                   java-type="java.util.ArrayList&lt;java.util.Date&gt;"
+                   java-full-type="java.util.ArrayList&lt;java.util.Date&gt;"/>
+            <field xmlns=""
+                   name="field8"
+                   type="date"
+                   java-name="mField8"
+                   java-type="org.joda.time.DateTime"
+                   java-full-type="org.joda.time.DateTime"/>
+            <field xmlns=""
+                   name="field9"
+                   type="[date]"
+                   java-name="mField9"
+                   java-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"
+                   java-full-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"/>
          </jtmp:object-fields>
       </object>
    </objects>

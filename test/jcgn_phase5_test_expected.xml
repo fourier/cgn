@@ -33,6 +33,9 @@
          <field cgn:name="field4" cgn:type="[string]"/>
          <field cgn:name="field5" cgn:type="string"/>
          <field cgn:name="field6" cgn:type="date" jcgn:date-type="java"/>
+         <field cgn:name="field7" cgn:type="[date]" jcgn:date-type="java"/>
+         <field cgn:name="field8" cgn:type="date" jcgn:date-type="joda"/>
+         <field cgn:name="field9" cgn:type="[date]" jcgn:date-type="joda"/>
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
             <field xmlns=""
                    name="field1"
@@ -70,6 +73,24 @@
                    java-name="mField6"
                    java-type="java.util.Date"
                    java-full-type="java.util.Date"/>
+            <field xmlns=""
+                   name="field7"
+                   type="[date]"
+                   java-name="mField7"
+                   java-type="java.util.ArrayList&lt;java.util.Date&gt;"
+                   java-full-type="java.util.ArrayList&lt;java.util.Date&gt;"/>
+            <field xmlns=""
+                   name="field8"
+                   type="date"
+                   java-name="mField8"
+                   java-type="org.joda.time.DateTime"
+                   java-full-type="org.joda.time.DateTime"/>
+            <field xmlns=""
+                   name="field9"
+                   type="[date]"
+                   java-name="mField9"
+                   java-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"
+                   java-full-type="java.util.ArrayList&lt;org.joda.time.DateTime&gt;"/>
          </jtmp:object-fields>
       </object>
    </objects>

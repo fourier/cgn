@@ -21,6 +21,9 @@
       <field cgn:name="field4" cgn:type="[string]"/>
       <field cgn:name="field5" />
       <field cgn:name="field6" cgn:type="date"/>
+      <field cgn:name="field7" cgn:type="[date]"/>
+      <field cgn:name="field8" cgn:type="date" jcgn:date-type="joda"/>
+      <field cgn:name="field9" cgn:type="[date]" jcgn:date-type="joda"/>
     </object>
   </objects>
 
