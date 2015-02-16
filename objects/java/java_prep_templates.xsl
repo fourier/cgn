@@ -86,6 +86,23 @@
   <xsl:template name="jcgn:object-fields">
     <!-- called from cgn:object, creates the tree like
          <field name="some-name" type="[SomeClass]" java-name="iSomeName" java-type="ArrayList<SomeClass>"/>
+         This child contains elements like
+         <field name="some-name" type="[SomeClass]"
+         java-name="iSomeName" java-type="ArrayList<SomeClass>
+         java-full-type="ArrayList<com.test.SomeClass>"/>
+         @name and @type are the same as in cgn:field
+         @java-name is the member variable name, like iField
+         @java-type is the type used in class for this field,
+         like ArrayList<String>
+         @java-full-type will be the FQDN class name if the type
+         is an object (or array of objects).
+         The difference between @java-type and @java-full-type is what the
+         @java-type takes an import or package into consideration.
+         The algorithm for this is the following:
+         1) If the field type is declared in the same package or
+         field type is unambiguous(count = 1) (since it will be imported),
+         use the short name
+         2) Otherwise use the FQDN
          ...
          Usage example:
          <xsl:variable name="fields">
@@ -112,7 +129,7 @@
           </xsl:when>
           <xsl:otherwise>
             <xsl:variable name="count" select="$type-counts/fqdn[@type = $type]/@count"/>
-            <xsl:sequence select="jcgn:should-import($type, ../@cgn:package, $count) or cgn:type-is-in-package($type, ../@cgn:package)"/>
+            <xsl:sequence select="($count = 1) or cgn:type-is-in-package($type, ../@cgn:package)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>

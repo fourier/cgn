@@ -4,13 +4,11 @@
       xmlns:cgn="https://github.com/fourier/cgn"
       xmlns:jcgn="https://github.com/fourier/cgn/java"><!-- this test tests the 5th transformation phase --><!-- in 5th transformation phase we attach the temporary
        child jtmp:object-fields to every object.
-       This child contains elements like
-       <field name="some-name" type="[SomeClass]" java-name="iSomeName" java-type="ArrayList<SomeClass> java-full-type="ArrayList<com.test.SomeClass>"/>
-       
+       So here we test if jtmp:object-fields constructed properly
   --><!-- test if nothing happens with the normal field types,
        like primitive types or arrays of primitive types
   -->
-   <objects cgn:package="com.test.phase5.field.types.normal"
+   <objects cgn:package="com.test.java.phase5.field.types.normal"
             cgn:copyright=""
             cgn:author=""
             cgn:read-only="false"
@@ -22,7 +20,7 @@
       <object cgn:name="Test1"
               cgn:copyright=""
               cgn:author=""
-              cgn:package="com.test.phase5.field.types.normal"
+              cgn:package="com.test.java.phase5.field.types.normal"
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -76,7 +74,7 @@
       </object>
    </objects>
    <!-- test field types which are not arrays -->
-   <objects cgn:package="com.test.phase5.fqdn.not.arrays"
+   <objects cgn:package="com.test.java.phase5.fqdn.not.arrays"
             cgn:copyright=""
             cgn:author=""
             cgn:read-only="false"
@@ -88,7 +86,7 @@
       <object cgn:name="SomeObject"
               cgn:copyright=""
               cgn:author=""
-              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:package="com.test.java.phase5.fqdn.not.arrays"
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -100,7 +98,7 @@
       <object cgn:name="SomeObject1"
               cgn:copyright=""
               cgn:author=""
-              cgn:package="com.test.phase5.fqdn.not.arrays"
+              cgn:package="com.test.java.phase5.fqdn.not.arrays"
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -108,27 +106,29 @@
               jcgn:parcelable="false"
               jcgn:date-type="java"><!-- test with full FQDN -->
          <field cgn:name="object-someobject"
-                cgn:type="com.test.phase5.fqdn.one.SomeObject1"/>
+                cgn:type="com.test.java.phase5.fqdn.one.SomeObject1"/>
          <!-- test unknown type with FQDN -->
          <field cgn:name="object-unknown-fqdn-type" cgn:type="com.unknown.Type"/>
          <!-- test unknown type without FQDN -->
          <field cgn:name="object-unknown-type" cgn:type="UnknownType"/>
          <!-- test resolving unambiguous FQDN -->
          <field cgn:name="object-someobject2"
-                cgn:type="com.test.phase5.fqdn.two.SomeObject2"/>
+                cgn:type="com.test.java.phase5.fqdn.two.SomeObject2"/>
          <!-- test resolving ambiguous FQDN where object is in the same package -->
          <field cgn:name="object-ambigious-same-package"
-                cgn:type="com.test.phase5.fqdn.not.arrays.SomeObject"/>
+                cgn:type="com.test.java.phase5.fqdn.not.arrays.SomeObject"/>
          <!-- test resolving ambiguous FQDN where object is not in the same package -->
-         <field cgn:name="object-ambigious-another-package"
-                cgn:type="com.test.phase5.fqdn.package1.SomeObject3"/>
+         <field cgn:name="object-ambigious-another-package1"
+                cgn:type="com.test.java.phase5.fqdn.package1.SomeObject3"/>
+         <field cgn:name="object-ambigious-another-package2"
+                cgn:type="com.test.java.phase5.fqdn.package2.SomeObject3"/>
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
             <field xmlns=""
                    name="object-someobject"
-                   type="com.test.phase5.fqdn.one.SomeObject1"
+                   type="com.test.java.phase5.fqdn.one.SomeObject1"
                    java-name="mObjectSomeobject"
                    java-type="SomeObject1"
-                   java-full-type="com.test.phase5.fqdn.one.SomeObject1"/>
+                   java-full-type="com.test.java.phase5.fqdn.one.SomeObject1"/>
             <field xmlns=""
                    name="object-unknown-fqdn-type"
                    type="com.unknown.Type"
@@ -143,27 +143,33 @@
                    java-full-type="UnknownType"/>
             <field xmlns=""
                    name="object-someobject2"
-                   type="com.test.phase5.fqdn.two.SomeObject2"
+                   type="com.test.java.phase5.fqdn.two.SomeObject2"
                    java-name="mObjectSomeobject2"
                    java-type="SomeObject2"
-                   java-full-type="com.test.phase5.fqdn.two.SomeObject2"/>
+                   java-full-type="com.test.java.phase5.fqdn.two.SomeObject2"/>
             <field xmlns=""
                    name="object-ambigious-same-package"
-                   type="com.test.phase5.fqdn.not.arrays.SomeObject"
+                   type="com.test.java.phase5.fqdn.not.arrays.SomeObject"
                    java-name="mObjectAmbigiousSamePackage"
                    java-type="SomeObject"
-                   java-full-type="com.test.phase5.fqdn.not.arrays.SomeObject"/>
+                   java-full-type="com.test.java.phase5.fqdn.not.arrays.SomeObject"/>
             <field xmlns=""
-                   name="object-ambigious-another-package"
-                   type="com.test.phase5.fqdn.package1.SomeObject3"
-                   java-name="mObjectAmbigiousAnotherPackage"
-                   java-type="SomeObject3"
-                   java-full-type="com.test.phase5.fqdn.package1.SomeObject3"/>
+                   name="object-ambigious-another-package1"
+                   type="com.test.java.phase5.fqdn.package1.SomeObject3"
+                   java-name="mObjectAmbigiousAnotherPackage1"
+                   java-type="com.test.java.phase5.fqdn.package1.SomeObject3"
+                   java-full-type="com.test.java.phase5.fqdn.package1.SomeObject3"/>
+            <field xmlns=""
+                   name="object-ambigious-another-package2"
+                   type="com.test.java.phase5.fqdn.package2.SomeObject3"
+                   java-name="mObjectAmbigiousAnotherPackage2"
+                   java-type="com.test.java.phase5.fqdn.package2.SomeObject3"
+                   java-full-type="com.test.java.phase5.fqdn.package2.SomeObject3"/>
          </jtmp:object-fields>
       </object>
    </objects>
    <!-- test field types which are arrays -->
-   <objects cgn:package="com.test.phase5.fqdn.arrays"
+   <objects cgn:package="com.test.java.phase5.fqdn.arrays"
             cgn:copyright=""
             cgn:author=""
             cgn:read-only="false"
@@ -175,7 +181,7 @@
       <object cgn:name="SomeObject"
               cgn:copyright=""
               cgn:author=""
-              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:package="com.test.java.phase5.fqdn.arrays"
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -187,7 +193,7 @@
       <object cgn:name="SomeObject1"
               cgn:copyright=""
               cgn:author=""
-              cgn:package="com.test.phase5.fqdn.arrays"
+              cgn:package="com.test.java.phase5.fqdn.arrays"
               cgn:read-only="false"
               cgn:json="false"
               cgn:is-set="false"
@@ -195,27 +201,29 @@
               jcgn:parcelable="false"
               jcgn:date-type="java"><!-- test with full FQDN -->
          <field cgn:name="object-someobject"
-                cgn:type="[com.test.phase5.fqdn.one.SomeObject1]"/>
+                cgn:type="[com.test.java.phase5.fqdn.one.SomeObject1]"/>
          <!-- test unknown type with FQDN -->
          <field cgn:name="object-unknown-fqdn-type" cgn:type="[com.unknown.Type]"/>
          <!-- test unknown type without FQDN -->
          <field cgn:name="object-unknown-type" cgn:type="[UnknownType]"/>
          <!-- test resolving unambiguous FQDN -->
          <field cgn:name="object-someobject2"
-                cgn:type="[com.test.phase5.fqdn.two.SomeObject2]"/>
+                cgn:type="[com.test.java.phase5.fqdn.two.SomeObject2]"/>
          <!-- test resolving ambiguous FQDN where object is in the same package -->
          <field cgn:name="object-ambigious-same-package"
-                cgn:type="[com.test.phase5.fqdn.arrays.SomeObject]"/>
+                cgn:type="[com.test.java.phase5.fqdn.arrays.SomeObject]"/>
          <!-- test resolving ambiguous FQDN where object is not in the same package -->
-         <field cgn:name="object-ambigious-another-package"
-                cgn:type="[com.test.phase5.fqdn.package1.SomeObject3]"/>
+         <field cgn:name="object-ambigious-another-package1"
+                cgn:type="[com.test.java.phase5.fqdn.package1.SomeObject3]"/>
+         <field cgn:name="object-ambigious-another-package2"
+                cgn:type="[com.test.java.phase5.fqdn.package2.SomeObject3]"/>
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp">
             <field xmlns=""
                    name="object-someobject"
-                   type="[com.test.phase5.fqdn.one.SomeObject1]"
+                   type="[com.test.java.phase5.fqdn.one.SomeObject1]"
                    java-name="mObjectSomeobject"
                    java-type="java.util.ArrayList&lt;SomeObject1&gt;"
-                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.one.SomeObject1&gt;"/>
+                   java-full-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.one.SomeObject1&gt;"/>
             <field xmlns=""
                    name="object-unknown-fqdn-type"
                    type="[com.unknown.Type]"
@@ -230,22 +238,28 @@
                    java-full-type="java.util.ArrayList&lt;UnknownType&gt;"/>
             <field xmlns=""
                    name="object-someobject2"
-                   type="[com.test.phase5.fqdn.two.SomeObject2]"
+                   type="[com.test.java.phase5.fqdn.two.SomeObject2]"
                    java-name="mObjectSomeobject2"
                    java-type="java.util.ArrayList&lt;SomeObject2&gt;"
-                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.two.SomeObject2&gt;"/>
+                   java-full-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.two.SomeObject2&gt;"/>
             <field xmlns=""
                    name="object-ambigious-same-package"
-                   type="[com.test.phase5.fqdn.arrays.SomeObject]"
+                   type="[com.test.java.phase5.fqdn.arrays.SomeObject]"
                    java-name="mObjectAmbigiousSamePackage"
                    java-type="java.util.ArrayList&lt;SomeObject&gt;"
-                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.arrays.SomeObject&gt;"/>
+                   java-full-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.arrays.SomeObject&gt;"/>
             <field xmlns=""
-                   name="object-ambigious-another-package"
-                   type="[com.test.phase5.fqdn.package1.SomeObject3]"
-                   java-name="mObjectAmbigiousAnotherPackage"
-                   java-type="java.util.ArrayList&lt;SomeObject3&gt;"
-                   java-full-type="java.util.ArrayList&lt;com.test.phase5.fqdn.package1.SomeObject3&gt;"/>
+                   name="object-ambigious-another-package1"
+                   type="[com.test.java.phase5.fqdn.package1.SomeObject3]"
+                   java-name="mObjectAmbigiousAnotherPackage1"
+                   java-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.package1.SomeObject3&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.package1.SomeObject3&gt;"/>
+            <field xmlns=""
+                   name="object-ambigious-another-package2"
+                   type="[com.test.java.phase5.fqdn.package2.SomeObject3]"
+                   java-name="mObjectAmbigiousAnotherPackage2"
+                   java-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.package2.SomeObject3&gt;"
+                   java-full-type="java.util.ArrayList&lt;com.test.java.phase5.fqdn.package2.SomeObject3&gt;"/>
          </jtmp:object-fields>
       </object>
    </objects>
@@ -260,7 +274,7 @@
             jcgn:parcelable="false"
             jcgn:date-type="java">
       <object cgn:name="SomeObject1"
-              cgn:package="com.test.phase5.fqdn.one"
+              cgn:package="com.test.java.phase5.fqdn.one"
               cgn:copyright=""
               cgn:author=""
               cgn:read-only="false"
@@ -272,7 +286,7 @@
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
       </object>
       <object cgn:name="SomeObject2"
-              cgn:package="com.test.phase5.fqdn.two"
+              cgn:package="com.test.java.phase5.fqdn.two"
               cgn:copyright=""
               cgn:author=""
               cgn:read-only="false"
@@ -284,7 +298,7 @@
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
       </object>
       <object cgn:name="SomeObject3"
-              cgn:package="com.test.phase5.fqdn.package1"
+              cgn:package="com.test.java.phase5.fqdn.package1"
               cgn:copyright=""
               cgn:author=""
               cgn:read-only="false"
@@ -296,7 +310,7 @@
          <jtmp:object-fields xmlns:jtmp="https://github.com/fourier/cgn/java/temp"/>
       </object>
       <object cgn:name="SomeObject3"
-              cgn:package="com.test.phase5.fqdn.package2"
+              cgn:package="com.test.java.phase5.fqdn.package2"
               cgn:copyright=""
               cgn:author=""
               cgn:read-only="false"

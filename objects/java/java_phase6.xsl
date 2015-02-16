@@ -13,7 +13,7 @@
       <!-- create a new attributes using the temporary object-fields node -->
       <xsl:attribute name="jcgn:type" select="../jtmp:object-fields/field[@name=$name]/@java-type"/>
       <xsl:attribute name="jcgn:variable-name" select="../jtmp:object-fields/field[@name=$name]/@java-name"/>
-      <xsl:attribute name="jcgn:type-expanded" select="../jtmp:object-fields/field[@name=$name]/@java-full-type"/>
+      <xsl:attribute name="jcgn:full-type" select="../jtmp:object-fields/field[@name=$name]/@java-full-type"/>
       <!-- copy all nodes -->
       <xsl:copy-of select="node()" />
     </xsl:copy>

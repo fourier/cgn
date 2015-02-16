@@ -220,7 +220,7 @@
     <xsl:param name="parser-class"/>
     
     <xsl:variable name="type" select="./@cgn:type"/>
-    <xsl:variable name="jtype" select="./@jcgn:type-expanded"/>
+    <xsl:variable name="jtype" select="./@jcgn:full-type"/>
     <xsl:variable name="date-type" select="./@jcgn:date-type"/>
     <xsl:choose>
       <!-- primitive type - use a table above -->
@@ -249,7 +249,7 @@
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="date-type" select="./@jcgn:date-type"/>
-    <xsl:variable name="jtype" select="@jcgn:type-expanded"/>
+    <xsl:variable name="jtype" select="@jcgn:full-type"/>
 
     <xsl:variable name="array-type" select="cgn:array-type($type)"/>
     <xsl:value-of select="concat(cgn:indent($indent),
@@ -311,7 +311,7 @@
     <xsl:variable name="name" select="./@cgn:name"/>
     <xsl:variable name="type" select="./@cgn:type"/>
     <xsl:variable name="date-type" select="./@jcgn:date-type"/>
-    <xsl:variable name="jtype" select="@jcgn:type-expanded"/>
+    <xsl:variable name="jtype" select="@jcgn:full-type"/>
     <xsl:variable name="setter-name" select="jcgn:create-setter-name(./@cgn:name)"/>
     <!-- generate if switch -->
     <xsl:value-of select="cgn:indent($indent+2)"/>
