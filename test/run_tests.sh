@@ -10,7 +10,7 @@ for i in $(seq 1 $CGN_PHASES); do
     diff -q $RESULT_FILE $EXPECT_FILE
 done
 
-JCGN_PHASES=5
+JCGN_PHASES=6
 for i in $(seq 1 $JCGN_PHASES); do
     TEST_FILE=jcgn_phase${i}_test.xml
     RESULT_FILE=jcgn_phase${i}_test_result.xml

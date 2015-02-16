@@ -9,7 +9,7 @@ done
 # type counts test
 ../tools/cgn_run_template.sh cgn_type_counts_test.xsl create-type-counts-xml-test cgn_type_counts_test.xml > cgn_type_counts_test_expected.xml
 
-JCGN_PHASES=5
+JCGN_PHASES=6
 for i in $(seq 1 $JCGN_PHASES); do
     TEST_FILE=jcgn_phase${i}_test.xml
     RESULT_FILE=jcgn_phase${i}_test_expected.xml
