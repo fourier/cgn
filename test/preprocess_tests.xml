@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: ctt -->
+<config xmlns="https://github.com/fourier/ctt" 
+        xmlns:ctt="https://github.com/fourier/ctt">
+
+  <!-- cgn preprocess tests -->
+
+  <test-run name="cgn preprocess test 1">
+    <command-line executable="../tools/cgn_preprocess.sh"
+                  directory=".">
+      <argument>cgn_phase1_test.xml</argument>
+      <argument>1</argument>
+    </command-line>
+    <output>
+      <file generated="cgn_phase1_test_result.xml"
+            expected="cgn_phase1_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="cgn preprocess test 2">
+    <command-line executable="../tools/cgn_preprocess.sh"
+                  directory=".">
+      <argument>cgn_phase2_test.xml</argument>
+      <argument>2</argument>
+    </command-line>
+    <output>
+      <file generated="cgn_phase2_test_result.xml"
+            expected="cgn_phase2_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="cgn preprocess test 3">
+    <command-line executable="../tools/cgn_preprocess.sh"
+                  directory=".">
+      <argument>cgn_phase3_test.xml</argument>
+      <argument>3</argument>
+    </command-line>
+    <output>
+      <file generated="cgn_phase3_test_result.xml"
+            expected="cgn_phase3_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="cgn preprocess test 4">
+    <command-line executable="../tools/cgn_preprocess.sh"
+                  directory=".">
+      <argument>cgn_phase4_test.xml</argument>
+      <argument>4</argument>
+    </command-line>
+    <output>
+      <file generated="cgn_phase4_test_result.xml"
+            expected="cgn_phase4_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="cgn preprocess test 5">
+    <command-line executable="../tools/cgn_preprocess.sh"
+                  directory=".">
+      <argument>cgn_phase5_test.xml</argument>
+      <argument>5</argument>
+    </command-line>
+    <output>
+      <file generated="cgn_phase5_test_result.xml"
+            expected="cgn_phase5_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <!-- jcgn preprocess tests -->
+
+  <test-run name="jcgn preprocess test 1">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase1_test.xml</argument>
+      <argument>1</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase1_test_result.xml"
+            expected="jcgn_phase1_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="jcgn preprocess test 2">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase2_test.xml</argument>
+      <argument>2</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase2_test_result.xml"
+            expected="jcgn_phase2_test_expected.xml"/>
+    </output>
+  </test-run>
+
+    <test-run name="jcgn preprocess test 3">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase3_test.xml</argument>
+      <argument>3</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase3_test_result.xml"
+            expected="jcgn_phase3_test_expected.xml"/>
+    </output>
+  </test-run>
+
+    <test-run name="jcgn preprocess test 4">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase4_test.xml</argument>
+      <argument>4</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase4_test_result.xml"
+            expected="jcgn_phase4_test_expected.xml"/>
+    </output>
+  </test-run>
+
+    <test-run name="jcgn preprocess test 5">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase5_test.xml</argument>
+      <argument>5</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase5_test_result.xml"
+            expected="jcgn_phase5_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="jcgn preprocess test 6">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase6_test.xml</argument>
+      <argument>6</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase6_test_result.xml"
+            expected="jcgn_phase6_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="jcgn test all preprocessed">
+    <command-line executable="../tools/jcgn_preprocess.sh"
+                  directory=".">
+      <argument>jcgn_phase7_test.xml</argument>
+    </command-line>
+    <output>
+      <file generated="jcgn_phase7_test_result.xml"
+            expected="jcgn_phase7_test_expected.xml"/>
+    </output>
+  </test-run>
+
+  <test-run name="cgn test type counts">
+    <command-line executable="../tools/cgn_run_template.sh"
+                  directory=".">
+      <argument>cgn_type_counts_test.xsl</argument>
+      <argument>create-type-counts-xml-test</argument>
+      <argument>cgn_type_counts_test.xml</argument>
+    </command-line>
+    <output>
+      <!-- if stdout file attribute specified, contents are ignored -->
+      <stdout file="cgn_type_counts_test_expected.xml" filters="date"/>
+    </output>
+  </test-run>
+
+  
+  
+</config>
+
+
+
