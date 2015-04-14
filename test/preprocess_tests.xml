@@ -11,10 +11,7 @@
       <argument>cgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
-    <output>
-      <file generated="cgn_phase1_test_result.xml"
-            expected="cgn_phase1_test_expected.xml"/>
-    </output>
+    <stdout file="cgn_phase1_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 2">
@@ -23,10 +20,7 @@
       <argument>cgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
-    <output>
-      <file generated="cgn_phase2_test_result.xml"
-            expected="cgn_phase2_test_expected.xml"/>
-    </output>
+    <stdout file="cgn_phase2_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 3">
@@ -35,10 +29,7 @@
       <argument>cgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
-    <output>
-      <file generated="cgn_phase3_test_result.xml"
-            expected="cgn_phase3_test_expected.xml"/>
-    </output>
+    <stdout file="cgn_phase3_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 4">
@@ -47,10 +38,7 @@
       <argument>cgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
-    <output>
-      <file generated="cgn_phase4_test_result.xml"
-            expected="cgn_phase4_test_expected.xml"/>
-    </output>
+    <stdout file="cgn_phase4_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 5">
@@ -59,10 +47,7 @@
       <argument>cgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
-    <output>
-      <file generated="cgn_phase5_test_result.xml"
-            expected="cgn_phase5_test_expected.xml"/>
-    </output>
+    <stdout file="cgn_phase5_test_expected.xml"/>
   </test-run>
 
   <!-- jcgn preprocess tests -->
@@ -73,10 +58,7 @@
       <argument>jcgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase1_test_result.xml"
-            expected="jcgn_phase1_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase1_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn preprocess test 2">
@@ -85,10 +67,7 @@
       <argument>jcgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase2_test_result.xml"
-            expected="jcgn_phase2_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase2_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 3">
@@ -97,10 +76,7 @@
       <argument>jcgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase3_test_result.xml"
-            expected="jcgn_phase3_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase3_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 4">
@@ -109,10 +85,7 @@
       <argument>jcgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase4_test_result.xml"
-            expected="jcgn_phase4_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase4_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 5">
@@ -121,10 +94,7 @@
       <argument>jcgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase5_test_result.xml"
-            expected="jcgn_phase5_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase5_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn preprocess test 6">
@@ -133,10 +103,7 @@
       <argument>jcgn_phase6_test.xml</argument>
       <argument>6</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase6_test_result.xml"
-            expected="jcgn_phase6_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase6_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn test all preprocessed">
@@ -144,10 +111,7 @@
                   directory=".">
       <argument>jcgn_phase7_test.xml</argument>
     </command-line>
-    <output>
-      <file generated="jcgn_phase7_test_result.xml"
-            expected="jcgn_phase7_test_expected.xml"/>
-    </output>
+    <stdout file="jcgn_phase7_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn test type counts">
@@ -157,10 +121,7 @@
       <argument>create-type-counts-xml-test</argument>
       <argument>cgn_type_counts_test.xml</argument>
     </command-line>
-    <output>
-      <!-- if stdout file attribute specified, contents are ignored -->
-      <stdout file="cgn_type_counts_test_expected.xml" filters="date"/>
-    </output>
+    <stdout file="cgn_type_counts_test_expected.xml"/>
   </test-run>
 
   
