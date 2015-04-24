@@ -23,13 +23,13 @@
   <xsl:template name="this:generate-datetime-field">
     <xsl:param name="indent" select="1"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-                          'private static SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;, java.util.Locale.US);&#10;')"/>
+                          'public static SimpleDateFormat ISO8601_JAVA_DATE_FORMAT = new SimpleDateFormat(&quot;yyyy-MM-dd&apos;'T&apos;'HH:mm:ssZ&quot;, java.util.Locale.US);&#10;')"/>
   </xsl:template>
 
   <xsl:template name="this:generate-iso-date-formatter">
     <xsl:param name="indent" select="1"/>
     <xsl:value-of select="concat(cgn:indent($indent),
-                          'private static org.joda.time.format.DateTimeFormatter ISO8601_JODA_DATE_FORMAT = org.joda.time.format.ISODateTimeFormat.dateTime();&#10;')"/>
+                          'public static org.joda.time.format.DateTimeFormatter ISO8601_JODA_DATE_FORMAT = org.joda.time.format.ISODateTimeFormat.dateTime();&#10;')"/>
   </xsl:template>
 
 
