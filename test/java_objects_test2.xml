@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <cgn:copyright>
+    Copyright (c) 2015 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+
+  <cgn:author>John Doe</cgn:author>
+
+  <objects cgn:package="com.mycompany.messages" cgn:read-only="true" cgn:json="true" jcgn:builder="true">
+    <object cgn:name="Person" cgn:json="false">
+      <field cgn:name="name"/>
+      <field cgn:name="id" cgn:type="int"/>
+    </object>
+    
+    <object cgn:name="Conversation">
+      <field cgn:name="title"/>
+      <field cgn:name="participant-ids" cgn:type="[int]"/>
+      <field cgn:name="messages" cgn:type="[string]"/>
+    </object>
+    
+    <object cgn:name="Conversations" cgn:read-only="false" >
+      <field cgn:name="date" cgn:type="date" jcgn:date-type="org.joda.time.DateTime"/>
+      <field cgn:name="conversations" cgn:type="[Conversation]"/>
+      <field cgn:name="company" cgn:type="Company"/>
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:date-type="org.joda.time.DateTime"/>
+      <field cgn:name="normal-dates" cgn:type="[date]"/>
+    </object>
+
+    <object cgn:name="EntryNotIsSet" cgn:read-only="false" cgn:is-set="false" jcgn:parcelable="true">
+      <field cgn:name="date" cgn:type="date"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
+      <field cgn:name="doubleValue" cgn:type="double"/>
+      <field cgn:name="stringValue" cgn:type="string"/>
+      <field cgn:name="boolValue" cgn:type="boolean"/>
+      <field cgn:name="intValue" cgn:type="int"/>
+      <field cgn:name="longValue" cgn:type="long"/>
+      <field cgn:name="byteValue" cgn:type="byte"/>
+      <field cgn:name="longArray" cgn:type="[long]"/>
+      <field cgn:name="lat" cgn:type="double"/>
+      <field cgn:name="long" cgn:type="double"/>
+    </object>
+
+    <object cgn:name="EntryIsSet" cgn:read-only="false" cgn:is-set="true" jcgn:parcelable="true">
+      <field cgn:name="date" cgn:type="date"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
+      <field cgn:name="doubleValue" cgn:type="double"/>
+      <field cgn:name="stringValue" cgn:type="string"/>
+      <field cgn:name="boolValue" cgn:type="boolean"/>
+      <field cgn:name="intValue" cgn:type="int"/>
+      <field cgn:name="longValue" cgn:type="long"/>
+      <field cgn:name="byteValue" cgn:type="byte"/>
+      <field cgn:name="longArray" cgn:type="[long]"/>
+      <field cgn:name="lat" cgn:type="double"/>
+      <field cgn:name="long" cgn:type="double"/>
+    </object>
+    
+  </objects>
+
+
+  
+  <objects cgn:package="com.mycompany.example">
+
+    <object cgn:name="UserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
+      <field cgn:name="name"/>
+      <field cgn:name="occupation"/>
+      <field cgn:name="age" cgn:type="int"/>
+      <field cgn:name="visits" cgn:type="[date]"/>
+    </object>
+
+    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true" jcgn:date-type="joda">
+      <field cgn:name="id" cgn:type="int"/>
+      <field cgn:name="unknown" cgn:type="UnknownType"/>
+      <field cgn:name="data" cgn:type="UserData"/>
+      <field cgn:name="probation" cgn:type="boolean" />
+      <field cgn:name="started" cgn:type="date" />
+    </object>
+
+    <object cgn:name="Company" cgn:package="com.mycompany.protocol" jcgn:parcelable="true">
+      <field cgn:name="name"/>
+      <field cgn:name="employees" cgn:type="[Employee]"/>
+      <field cgn:name="ids" cgn:type="[int]"/>
+    </object>
+
+    <object cgn:name="Buffer" cgn:read-only="true" jcgn:parcelable="true">
+      <field cgn:name="tag" cgn:type="byte"/>
+      <field cgn:name="message" cgn:type="[byte]"/>
+      <field cgn:name="dates" cgn:type="[date]"/>
+      <field cgn:name="date" cgn:type="date" />
+      <field cgn:name="joda-dates" cgn:type="[date]" jcgn:date-type="org.joda.time.DateTime"/>
+      <field cgn:name="joda-date" cgn:type="date" jcgn:date-type="org.joda.time.DateTime"/>
+      <field cgn:name="strings" cgn:type="[string]"/>
+    </object>
+
+    <object cgn:name="UserName" cgn:read-only="true" jcgn:builder="true">
+      <field cgn:name="user-name" cgn:type="string"/>
+    </object>
+
+
+    <object cgn:name="Conversation"/>
+
+  </objects>
+
+
+</root>
+
