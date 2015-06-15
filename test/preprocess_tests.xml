@@ -11,7 +11,7 @@
       <argument>cgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
-    <stdout file="cgn_phase1_test_expected.xml"/>
+    <stdout file="expected/cgn_phase1_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 2">
@@ -20,7 +20,7 @@
       <argument>cgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
-    <stdout file="cgn_phase2_test_expected.xml"/>
+    <stdout file="expected/cgn_phase2_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 3">
@@ -29,7 +29,7 @@
       <argument>cgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
-    <stdout file="cgn_phase3_test_expected.xml"/>
+    <stdout file="expected/cgn_phase3_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 4">
@@ -38,7 +38,7 @@
       <argument>cgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
-    <stdout file="cgn_phase4_test_expected.xml"/>
+    <stdout file="expected/cgn_phase4_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn preprocess test 5">
@@ -47,7 +47,7 @@
       <argument>cgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
-    <stdout file="cgn_phase5_test_expected.xml"/>
+    <stdout file="expected/cgn_phase5_test_expected.xml"/>
   </test-run>
 
   <!-- jcgn preprocess tests -->
@@ -58,7 +58,7 @@
       <argument>jcgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
-    <stdout file="jcgn_phase1_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase1_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn preprocess test 2">
@@ -67,7 +67,7 @@
       <argument>jcgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
-    <stdout file="jcgn_phase2_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase2_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 3">
@@ -76,7 +76,7 @@
       <argument>jcgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
-    <stdout file="jcgn_phase3_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase3_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 4">
@@ -85,7 +85,7 @@
       <argument>jcgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
-    <stdout file="jcgn_phase4_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase4_test_expected.xml"/>
   </test-run>
 
     <test-run name="jcgn preprocess test 5">
@@ -94,7 +94,7 @@
       <argument>jcgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
-    <stdout file="jcgn_phase5_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase5_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn preprocess test 6">
@@ -103,7 +103,7 @@
       <argument>jcgn_phase6_test.xml</argument>
       <argument>6</argument>
     </command-line>
-    <stdout file="jcgn_phase6_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase6_test_expected.xml"/>
   </test-run>
 
   <test-run name="jcgn test all preprocessed">
@@ -111,7 +111,7 @@
                   directory=".">
       <argument>jcgn_phase7_test.xml</argument>
     </command-line>
-    <stdout file="jcgn_phase7_test_expected.xml"/>
+    <stdout file="expected/jcgn_phase7_test_expected.xml"/>
   </test-run>
 
   <test-run name="cgn test type counts">
@@ -121,10 +121,42 @@
       <argument>create-type-counts-xml-test</argument>
       <argument>cgn_type_counts_test.xml</argument>
     </command-line>
-    <stdout file="cgn_type_counts_test_expected.xml"/>
+    <stdout file="expected/cgn_type_counts_test_expected.xml"/>
   </test-run>
 
-  
+
+  <!-- <test-run name="Generation POJO and parsers"> -->
+  <!--   <command-line executable="./run_tests1.sh" -->
+  <!--                 directory="test/test"/> -->
+  <!--   <output> -->
+  <!--     <file generated="gen/com/mycompany/example/WorkPackage.java" -->
+  <!--           expected="test/com/mycompany/example/WorkPackage.java"/> -->
+  <!--     <file generated="gen/com/veroveli/example/PersonalUserData.java" -->
+  <!--           expected="test/com/veroveli/example/PersonalUserData.java"/> -->
+  <!--     <file generated="gen/com/veroveli/example/Employee.java" -->
+  <!--           expected="test/com/veroveli/example/Employee.java"/> -->
+  <!--     <file generated="gen/com/veroveli/protocol/Company.java" -->
+  <!--           expected="test/com/veroveli/protocol/Company.java"/> -->
+  <!--     <file generated="gen/com/veroveli/example/Buffer.java" -->
+  <!--           expected="test/com/veroveli/example/Buffer.java"/> -->
+  <!--     <file generated="gen/com/veroveli/example/UserName.java" -->
+  <!--           expected="test/com/veroveli/example/UserName.java"/> -->
+  <!--     <file generated="gen/com/veroveli/messages/Person.java" -->
+  <!--           expected="test/com/veroveli/messages/Person.java"/> -->
+  <!--     <file generated="gen/com/veroveli/messages/Conversation.java" -->
+  <!--           expected="test/com/veroveli/messages/Conversation.java"/> -->
+  <!--     <file generated="gen/com/veroveli/messages/Conversations.java" -->
+  <!--           expected="test/com/veroveli/messages/Conversations.java"/> -->
+  <!--     <file generated="gen/com/veroveli/messages/Entry.java" -->
+  <!--           expected="test/com/veroveli/messages/Entry.java"/> -->
+      <!-- JSON parsers generated -->
+  <!--     <file generated="gen/com/veroveli/example/parser/ObjectsParser.java" -->
+  <!--           expected="test/com/veroveli/example/parser/ObjectsParser.java"/> -->
+  <!--     <file generated="gen/com/veroveli/example/generator/ObjectsGenerator.java" -->
+  <!--           expected="test/com/veroveli/example/generator/ObjectsGenerator.java"/> -->
+  <!--   </output> -->
+  <!-- </test-run> -->
+
   
 </config>
 
