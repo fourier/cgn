@@ -8,7 +8,7 @@
   <test-run name="cgn preprocess test 1">
     <command-line executable="../tools/cgn_preprocess.sh"
                   directory=".">
-      <argument>cgn_phase1_test.xml</argument>
+      <argument>input_data/cgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
     <stdout file="expected/cgn_phase1_test_expected.xml"/>
@@ -17,7 +17,7 @@
   <test-run name="cgn preprocess test 2">
     <command-line executable="../tools/cgn_preprocess.sh"
                   directory=".">
-      <argument>cgn_phase2_test.xml</argument>
+      <argument>input_data/cgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
     <stdout file="expected/cgn_phase2_test_expected.xml"/>
@@ -26,7 +26,7 @@
   <test-run name="cgn preprocess test 3">
     <command-line executable="../tools/cgn_preprocess.sh"
                   directory=".">
-      <argument>cgn_phase3_test.xml</argument>
+      <argument>input_data/cgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
     <stdout file="expected/cgn_phase3_test_expected.xml"/>
@@ -35,7 +35,7 @@
   <test-run name="cgn preprocess test 4">
     <command-line executable="../tools/cgn_preprocess.sh"
                   directory=".">
-      <argument>cgn_phase4_test.xml</argument>
+      <argument>input_data/cgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
     <stdout file="expected/cgn_phase4_test_expected.xml"/>
@@ -44,7 +44,7 @@
   <test-run name="cgn preprocess test 5">
     <command-line executable="../tools/cgn_preprocess.sh"
                   directory=".">
-      <argument>cgn_phase5_test.xml</argument>
+      <argument>input_data/cgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
     <stdout file="expected/cgn_phase5_test_expected.xml"/>
@@ -55,7 +55,7 @@
   <test-run name="jcgn preprocess test 1">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase1_test.xml</argument>
+      <argument>input_data/jcgn_phase1_test.xml</argument>
       <argument>1</argument>
     </command-line>
     <stdout file="expected/jcgn_phase1_test_expected.xml"/>
@@ -64,7 +64,7 @@
   <test-run name="jcgn preprocess test 2">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase2_test.xml</argument>
+      <argument>input_data/jcgn_phase2_test.xml</argument>
       <argument>2</argument>
     </command-line>
     <stdout file="expected/jcgn_phase2_test_expected.xml"/>
@@ -73,7 +73,7 @@
     <test-run name="jcgn preprocess test 3">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase3_test.xml</argument>
+      <argument>input_data/jcgn_phase3_test.xml</argument>
       <argument>3</argument>
     </command-line>
     <stdout file="expected/jcgn_phase3_test_expected.xml"/>
@@ -82,7 +82,7 @@
     <test-run name="jcgn preprocess test 4">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase4_test.xml</argument>
+      <argument>input_data/jcgn_phase4_test.xml</argument>
       <argument>4</argument>
     </command-line>
     <stdout file="expected/jcgn_phase4_test_expected.xml"/>
@@ -91,7 +91,7 @@
     <test-run name="jcgn preprocess test 5">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase5_test.xml</argument>
+      <argument>input_data/jcgn_phase5_test.xml</argument>
       <argument>5</argument>
     </command-line>
     <stdout file="expected/jcgn_phase5_test_expected.xml"/>
@@ -100,7 +100,7 @@
   <test-run name="jcgn preprocess test 6">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase6_test.xml</argument>
+      <argument>input_data/jcgn_phase6_test.xml</argument>
       <argument>6</argument>
     </command-line>
     <stdout file="expected/jcgn_phase6_test_expected.xml"/>
@@ -109,7 +109,7 @@
   <test-run name="jcgn test all preprocessed">
     <command-line executable="../tools/jcgn_preprocess.sh"
                   directory=".">
-      <argument>jcgn_phase7_test.xml</argument>
+      <argument>input_data/jcgn_phase7_test.xml</argument>
     </command-line>
     <stdout file="expected/jcgn_phase7_test_expected.xml"/>
   </test-run>
@@ -119,15 +119,15 @@
                   directory=".">
       <argument>cgn_type_counts_test.xsl</argument>
       <argument>create-type-counts-xml-test</argument>
-      <argument>cgn_type_counts_test.xml</argument>
+      <argument>input_data/cgn_type_counts_test.xml</argument>
     </command-line>
     <stdout file="expected/cgn_type_counts_test_expected.xml"/>
   </test-run>
 
 
   <!-- <test-run name="Generation POJO and parsers"> -->
-  <!--   <command-line executable="./run_tests1.sh" -->
-  <!--                 directory="test/test"/> -->
+  <!-- <command-line executable="./run_tests1.sh" -->
+  <!--               directory="test/test"/> -->
   <!--   <output> -->
   <!--     <file generated="gen/com/mycompany/example/WorkPackage.java" -->
   <!--           expected="test/com/mycompany/example/WorkPackage.java"/> -->
