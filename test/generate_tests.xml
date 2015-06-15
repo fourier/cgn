@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: ctt -->
+<config xmlns="https://github.com/fourier/ctt" 
+        xmlns:ctt="https://github.com/fourier/ctt">
+
+  <test-run name="Generation POJO and parsers">
+    <command-line executable="./gen_java_objects_parser.sh"
+                  directory=".">
+      <argument>java_objects_test1.xml</argument>
+    </command-line>
+    <output>
+      <file generated="gen/com/arrays/test/CommandLine.java"
+            expected="expected/java_objects_test1/com/arrays/test/CommandLine.java"/>
+      <file generated="gen/com/arrays/test/CommandLineVersion1.java"
+            expected="expected/java_objects_test1/com/arrays/test/CommandLineVersion1.java"/>
+      
+      <file generated="gen/com/arrays/test/CommandLineVersion2.java"
+            expected="expected/java_objects_test1/com/arrays/test/CommandLineVersion2.java"/>
+      <file generated="gen/com/arrays/test/EmptyObject.java"
+            expected="expected/java_objects_test1/com/arrays/test/EmptyObject.java"/>
+      <file generated="gen/com/arrays/test/FieldsTest.java"
+            expected="expected/java_objects_test1/com/arrays/test/FieldsTest.java"/>
+      <file generated="gen/com/mycompany/example/generator/ObjectsGenerator.java"
+            expected="expected/java_objects_test1/com/mycompany/example/generator/ObjectsGenerator.java"/>
+      <file generated="gen/com/mycompany/example/parser/ObjectsParser.java"
+            expected="expected/java_objects_test1/com/mycompany/example/parser/ObjectsParser.java"/>
+      <file generated="gen/com/mycompany/users/Employee.java"
+            expected="expected/java_objects_test1/com/mycompany/users/Employee.java"/>
+      <file generated="gen/com/mycompany/users/PersonalUserData.java"
+            expected="expected/java_objects_test1/com/mycompany/users/PersonalUserData.java"/>
+      <file generated="gen/com/structs/test/WorkPackage.java"
+            expected="expected/java_objects_test1/com/structs/test/WorkPackage.java"/>
+    </output>
+  </test-run>
+
+  
+</config>
+
+
+

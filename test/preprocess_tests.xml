@@ -124,39 +124,6 @@
     <stdout file="expected/cgn_type_counts_test_expected.xml"/>
   </test-run>
 
-
-  <!-- <test-run name="Generation POJO and parsers"> -->
-  <!-- <command-line executable="./run_tests1.sh" -->
-  <!--               directory="test/test"/> -->
-  <!--   <output> -->
-  <!--     <file generated="gen/com/mycompany/example/WorkPackage.java" -->
-  <!--           expected="test/com/mycompany/example/WorkPackage.java"/> -->
-  <!--     <file generated="gen/com/veroveli/example/PersonalUserData.java" -->
-  <!--           expected="test/com/veroveli/example/PersonalUserData.java"/> -->
-  <!--     <file generated="gen/com/veroveli/example/Employee.java" -->
-  <!--           expected="test/com/veroveli/example/Employee.java"/> -->
-  <!--     <file generated="gen/com/veroveli/protocol/Company.java" -->
-  <!--           expected="test/com/veroveli/protocol/Company.java"/> -->
-  <!--     <file generated="gen/com/veroveli/example/Buffer.java" -->
-  <!--           expected="test/com/veroveli/example/Buffer.java"/> -->
-  <!--     <file generated="gen/com/veroveli/example/UserName.java" -->
-  <!--           expected="test/com/veroveli/example/UserName.java"/> -->
-  <!--     <file generated="gen/com/veroveli/messages/Person.java" -->
-  <!--           expected="test/com/veroveli/messages/Person.java"/> -->
-  <!--     <file generated="gen/com/veroveli/messages/Conversation.java" -->
-  <!--           expected="test/com/veroveli/messages/Conversation.java"/> -->
-  <!--     <file generated="gen/com/veroveli/messages/Conversations.java" -->
-  <!--           expected="test/com/veroveli/messages/Conversations.java"/> -->
-  <!--     <file generated="gen/com/veroveli/messages/Entry.java" -->
-  <!--           expected="test/com/veroveli/messages/Entry.java"/> -->
-      <!-- JSON parsers generated -->
-  <!--     <file generated="gen/com/veroveli/example/parser/ObjectsParser.java" -->
-  <!--           expected="test/com/veroveli/example/parser/ObjectsParser.java"/> -->
-  <!--     <file generated="gen/com/veroveli/example/generator/ObjectsGenerator.java" -->
-  <!--           expected="test/com/veroveli/example/generator/ObjectsGenerator.java"/> -->
-  <!--   </output> -->
-  <!-- </test-run> -->
-
   
 </config>
 

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- default namespace for elements: cgn -->
+<root xmlns="https://github.com/fourier/cgn" 
+      xmlns:cgn="https://github.com/fourier/cgn"
+      xmlns:jcgn="https://github.com/fourier/cgn/java">
+
+  <cgn:copyright>
+    Copyright (c) 2015 by My Company
+    This file and its contents are Confidential.
+  </cgn:copyright>
+
+  <cgn:author>John Doe</cgn:author>
+
+  <!-- generate Json parser and generator for this package -->
+  <objects cgn:package="com.arrays.test"
+           cgn:json="true">
+    <!-- use default read-only value and array of strings as one of fields -->
+    <object cgn:name="CommandLine" cgn:read-only="don't know" jcgn:builder="true" >
+      <field cgn:name="executable"/>
+      <field cgn:name="arguments" cgn:type="[string]"/>
+    </object>
+
+    <object cgn:name="CommandLineVersion1" cgn:read-only="true"/>
+    <object cgn:name="CommandLineVersion2" cgn:read-only="true"/>
+
+    <object cgn:name="FieldsTest" cgn:read-only='No'>
+      <!-- test fields starting with numbers -->
+      <field cgn:name="0field00" cgn:type="CommandLineVersion1"/>
+      <field cgn:name="1field01" cgn:type="CommandLineVersion2"/>
+
+      <field cgn:name="field1" cgn:type="CommandLine"/>
+      <!-- test FQDN name for the same package -->
+      <field cgn:name="field2" cgn:type="com.arrays.test.CommandLine"/>
+      <!-- test FQDN in another package -->
+      <field cgn:name="field3" cgn:type="com.structs.WorkPackage"/>
+      <!-- test arrays -->
+      <field cgn:name="array1" cgn:type="[CommandLine]"/>
+      <field cgn:name="array2" cgn:type="[com.arrays.test.CommandLine]"/>
+      <field cgn:name="array3" cgn:type="[com.structs.test.WorkPackage]"/>
+
+    </object>
+    <!-- object withoud fields -->
+    <object cgn:name="EmptyObject"/>
+    
+  </objects>
+
+  <objects cgn:package="com.structs.test"
+           cgn:read-only="false"
+           jcgn:builder="true"
+           jcgn:parcelable="of course">
+    <cgn:object cgn:name="WorkPackage">
+      <cgn:field cgn:name="customer-id" cgn:type="long" />
+      <cgn:field cgn:name="workcode-id" cgn:type="long"/>
+      <cgn:field cgn:name="project-id" cgn:type="long"/>
+      <jcgn:source>
+    public void dummy() {
+    }        
+      </jcgn:source>
+      <jcgn:source>
+    public void anotherDummy() {
+    }        
+      </jcgn:source>
+    </cgn:object>
+  </objects>
+
+
+  <!-- test embedded copyright and author -->
+  <objects cgn:package="com.mycompany.users"
+           cgn:copyright="Copyright (c) 2014 by My Company&#10;This file and its contents are Confidential."
+           cgn:author="The Author"
+           jcgn:date-type="joda">
+    <!-- test java date-time types: joda and java -->
+    <object cgn:name="PersonalUserData" cgn:read-only="false" cgn:json="true" jcgn:parcelable="true">
+      <field cgn:name="name"/>
+      <field cgn:name="occupation"/>
+      <field cgn:name="age" cgn:type="int"/>
+      <field cgn:name="visits" cgn:type="[date]"/>
+    </object>
+
+    <object cgn:name="Employee" cgn:read-only="true" jcgn:builder="true" jcgn:parcelable="true">
+      <field cgn:name="id" cgn:type="int"/>
+      <field cgn:name="data" cgn:type="PersonalUserData"/>
+      <field cgn:name="probation" cgn:type="boolean" />
+      <field cgn:name="started" cgn:type="date" jcgn:date-type="java"/>
+      <!-- test java code injection -->
+      <jcgn:source>
+    public void dumpEmployee() {
+        System.out.println("Employee " + mData.getName() + " started at " + org.joda.time.format.DateTimeFormat.shortDate().print(mStarted));        
+    }        
+      </jcgn:source>
+    </object>
+  </objects>
+
+
+</root>
+
