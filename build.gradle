@@ -1,0 +1,21 @@
+repositories {
+  mavenCentral()
+}
+
+configurations {
+  saxon
+}
+
+dependencies {
+  saxon 'net.sf.saxon:Saxon-HE:9.6.0-3'
+}
+
+// determine path to Saxon jar file downloaded from Maven central
+def findSaxonJar() {
+  return configurations.saxon.asPath
+}
+
+task check << {
+  println("Check")
+  println(findSaxonJar())
+}

@@ -1,5 +1,8 @@
 #! /bin/sh
-SAXON_PATH=~/Development/SaxonHE9-6-0-4J
+# using default saxon path if SAXON_PATH variable not defined
+DEFAULT_SAXON_PATH=~/Development/SaxonHE9-6-0-4J
+SAXON_PATH=${SAXON_PATH-$DEFAULT_SAXON_PATH}
+
 if [ -z $1 ]; then
     echo "Usage: $0 testfile.xml [1..6]"
     exit 1
