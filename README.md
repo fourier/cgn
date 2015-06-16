@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fourier/cgn.svg?branch=master)](https://travis-ci.org/fourier/cgn)
+
 Code generator (cgn)
 ====================
 This project makes it simple to generate Java source code (variations of [POJO](http://en.wikipedia.org/wiki/Plain_Old_Java_Object)) and Json parser/gerenartor for them (based on [jackson](https://github.com/FasterXML/jackson)) using [Saxon HE](http://saxon.sourceforge.net/) XSL processor.
