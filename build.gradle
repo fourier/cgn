@@ -1,3 +1,5 @@
+// Gradle build script. Only tests are here. Used mainly for Travis CI
+
 repositories {
   mavenCentral()
 }
@@ -15,7 +17,23 @@ def findSaxonJar() {
   return configurations.saxon.asPath
 }
 
-task check << {
-  println("Check")
-  println(findSaxonJar())
+task preprocessTests(type:Exec) {
+    workingDir 'test/'
+    environment SAXON_PATH: findSaxonJar()
+    executable 'python'
+    args '../ctt/ctt.py', 'preprocess_tests.xml'
 }
+
+task generateTests(type:Exec) {
+    workingDir 'test/'
+    environment SAXON_PATH: findSaxonJar()
+    executable 'python'
+    args '../ctt/ctt.py', 'generate_tests.xml'
+}
+
+
+task check(dependsOn: ['preprocessTests', 'generateTests']) << {
+  println("Check")
+
+}
+
