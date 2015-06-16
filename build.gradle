@@ -31,9 +31,11 @@ task generateTests(type:Exec) {
     args '../ctt/ctt.py', 'generate_tests.xml'
 }
 
-
 task check(dependsOn: ['preprocessTests', 'generateTests']) << {
   println("Check")
+}
 
+task assemble << {
+    println("Nothing to assemble")
 }
 
