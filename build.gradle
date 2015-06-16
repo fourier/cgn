@@ -19,14 +19,14 @@ def findSaxonJar() {
 
 task preprocessTests(type:Exec) {
     workingDir 'test/'
-    environment SAXON_PATH: findSaxonJar()
+    environment SAXON: findSaxonJar()
     executable 'python'
     args '../ctt/ctt.py', 'preprocess_tests.xml'
 }
 
 task generateTests(type:Exec) {
     workingDir 'test/'
-    environment SAXON_PATH: findSaxonJar()
+    environment SAXON: findSaxonJar()
     executable 'python'
     args '../ctt/ctt.py', 'generate_tests.xml'
 }
